@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alter5 — Entrevista Técnica</title>
+<title>Alter5 — SW Architect / AI Head of Engineering</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -142,7 +142,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 <div class="hdr">
   <div class="hdr-logo">Alter<span>5</span></div>
   <div class="hdr-right">
-    <span class="hdr-meta">Software Architect — AI & AWS</span>
+    <span class="hdr-meta">SW Architect / AI Head of Engineering</span>
     <span class="hdr-badge" id="hdr-status">Inicio</span>
     <span class="hdr-candidate" id="hdr-candidate" style="display:none"></span>
   </div>
@@ -153,13 +153,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <!-- INTRO -->
   <div class="screen active" id="screen-intro">
     <p class="eyebrow">Proceso de selección · Alter5</p>
-    <h1 class="big-title">Entrevista estructurada<br><em>Software Architect</em></h1>
+    <h1 class="big-title">Entrevista estructurada<br><em>SW Architect / AI Head of Engineering</em></h1>
     <p class="intro-body">Herramienta de evaluación para el proceso de selección. Cada respuesta queda registrada con su tiempo para facilitar el análisis.</p>
     <div class="info-box">
       <h3>Instrucciones</h3>
       <div class="info-row"><div class="dot"></div><span>Responde con ejemplos reales y concretos. No buscamos respuestas perfectas — buscamos criterio y honestidad.</span></div>
-      <div class="info-row"><div class="dot"></div><span>El tiempo de cada respuesta es visible para el entrevistador.</span></div>
-      <div class="info-row"><div class="dot"></div><span><strong>16 preguntas</strong> en 6 bloques · aproximadamente 40–50 minutos.</span></div>
+      <div class="info-row"><div class="dot"></div><span>El tiempo de cada respuesta es visible para el entrevistador y probamos detector de respuestas generadas por IA.</span></div>
     </div>
     <div class="cform">
       <div class="crow">
@@ -175,7 +174,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         </div>
       </div>
       <div class="crow">
-        <div class="cgrp"><label>Entrevistador</label><input type="text" id="f-interviewer" placeholder="Nombre del entrevistador"></div>
         <div class="cgrp"><label>Fecha</label><input type="date" id="f-date"></div>
       </div>
     </div>
@@ -343,10 +341,9 @@ function fmt(s){const m=Math.floor(s/60),sec=s%60;return`${m}:${sec.toString().p
 window.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('f-date').valueAsDate=new Date();
   const p=new URLSearchParams(window.location.search);
-  const n=p.get('c'),e=p.get('e'),i=p.get('i');
+  const n=p.get('c'),e=p.get('e');
   if(n){document.getElementById('f-name').value=decodeURIComponent(n);document.getElementById('f-name').readOnly=true;}
   if(e)document.getElementById('f-exp').value=e;
-  if(i)document.getElementById('f-interviewer').value=decodeURIComponent(i);
 });
 
 function startInterview(){
@@ -429,9 +426,8 @@ function showResults(){
   document.getElementById('hdr-status').textContent='Completada';
   const name=document.getElementById('f-name').value||'Candidato';
   const exp=document.getElementById('f-exp').value||'';
-  const iw=document.getElementById('f-interviewer').value||'';
   const date=document.getElementById('f-date').value||new Date().toLocaleDateString('es-ES');
-  document.getElementById('rsub').textContent=`${name}${exp?' · '+exp:''}${iw?' · Entrevistador: '+iw:''} · ${date}`;
+  document.getElementById('rsub').textContent=`${name}${exp?' · '+exp:''} · ${date}`;
   const nonComp=answers.filter(a=>a.q.block!=='compensation');
   const total=answers.reduce((a,b)=>a+b.time,0);
   const avg=nonComp.length?Math.round(nonComp.reduce((a,b)=>a+b.time,0)/nonComp.length):0;
@@ -501,10 +497,9 @@ function showResults(){
 function copyLink(){
   const name=document.getElementById('f-name').value.trim();
   const exp=document.getElementById('f-exp').value;
-  const iw=document.getElementById('f-interviewer').value.trim();
   const base=window.location.origin+window.location.pathname;
   const p=new URLSearchParams();
-  if(name)p.set('c',name);if(exp)p.set('e',exp);if(iw)p.set('i',iw);
+  if(name)p.set('c',name);if(exp)p.set('e',exp);
   const url=`${base}?${p.toString()}`;
   navigator.clipboard.writeText(url).then(()=>alert('Magic link copiado:\n'+url)).catch(()=>prompt('Copia este link:',url));
 }
