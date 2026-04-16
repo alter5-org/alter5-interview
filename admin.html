@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alter5 — Admin · Generador de Magic Links</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A1628;--emerald:#10B981;--slate:#94A3B8;--red:#EF4444;--amber:#F59E0B;
+  --bg:#F8FAFC;--white:#ffffff;--border:#E2E8F0;--text:#1E293B;--text-muted:#64748B;
+  --serif:'DM Serif Display',Georgia,serif;--sans:'Instrument Sans',sans-serif;--mono:'DM Mono',monospace;
+  --radius:12px;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+.hdr{background:var(--navy);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.hdr-logo{font-family:var(--serif);color:#fff;font-size:1.2rem}
+.hdr-logo span{color:var(--emerald)}
+.hdr-nav{display:flex;gap:0.75rem}
+.hdr-nav a{font-size:0.78rem;color:var(--slate);text-decoration:none;padding:0.3rem 0.75rem;border-radius:6px;transition:all 0.15s}
+.hdr-nav a:hover{background:rgba(255,255,255,0.08);color:#fff}
+.hdr-nav a.active{background:rgba(16,185,129,0.15);color:var(--emerald)}
+.main{flex:1;max-width:860px;width:100%;margin:0 auto;padding:2.5rem 1.5rem}
+.page-title{font-family:var(--serif);font-size:2rem;color:var(--navy);margin-bottom:0.4rem;letter-spacing:-0.02em}
+.page-sub{font-size:0.9rem;color:var(--text-muted);margin-bottom:2.5rem;line-height:1.6}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.25rem}
+.card-title{font-size:0.78rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.25rem;padding-bottom:0.6rem;border-bottom:1px solid var(--border)}
+
+/* Upload zone */
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:2.5rem;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg);position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--emerald);background:rgba(16,185,129,0.03)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2rem;margin-bottom:0.75rem;display:block}
+.upload-label{font-size:0.9rem;color:var(--text-muted);line-height:1.5}
+.upload-label strong{color:var(--text)}
+
+/* Candidates table */
+.candidates-table{width:100%;border-collapse:collapse}
+.candidates-table th{font-size:0.72rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);padding:0.6rem 0.75rem;text-align:left;border-bottom:1px solid var(--border)}
+.candidates-table td{padding:0.75rem;font-size:0.875rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.candidates-table tr:last-child td{border-bottom:none}
+.candidates-table tr:hover td{background:var(--bg)}
+.badge{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.7rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:4px}
+.badge-ok{background:#F0FDF4;color:#15803D}
+.badge-proc{background:#EFF6FF;color:#1D4ED8}
+.badge-err{background:#FEF2F2;color:#DC2626}
+.badge-wait{background:#F8FAFC;color:var(--text-muted)}
+
+/* Link pill */
+.link-pill{display:flex;align-items:center;gap:0.5rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.6rem;font-family:var(--mono);font-size:0.72rem;color:var(--text-muted);max-width:260px;overflow:hidden}
+.link-pill span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.copy-btn{background:none;border:none;cursor:pointer;font-size:0.78rem;color:var(--emerald);font-family:var(--sans);font-weight:600;padding:0 0.25rem;flex-shrink:0;white-space:nowrap}
+.copy-btn:hover{color:var(--navy)}
+
+/* Action buttons */
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 1.1rem;border-radius:7px;font-family:var(--sans);font-size:0.82rem;font-weight:600;cursor:pointer;border:none;transition:all 0.15s}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-primary:hover{background:#111f38}
+.btn-ghost{background:transparent;color:var(--text-muted);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--white);color:var(--text)}
+.btn-danger{background:transparent;color:var(--red);border:1px solid rgba(239,68,68,0.3)}
+.btn-danger:hover{background:#FEF2F2}
+.btn-sm{padding:0.35rem 0.75rem;font-size:0.75rem}
+
+/* Processing state */
+.processing-row td{background:rgba(16,185,129,0.03)!important}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--emerald);border-radius:50%;animation:spin 0.6s linear infinite;vertical-align:middle;margin-right:4px}
+
+/* Empty state */
+.empty-state{text-align:center;padding:3rem 1.5rem;color:var(--text-muted)}
+.empty-state p{font-size:0.9rem;line-height:1.6}
+.empty-icon{font-size:2.5rem;margin-bottom:0.75rem;display:block}
+
+/* API key section */
+.apikey-row{display:flex;gap:0.75rem;align-items:flex-end}
+.apikey-input{flex:1;padding:0.6rem 0.85rem;border:1px solid var(--border);border-radius:8px;font-family:var(--mono);font-size:0.82rem;color:var(--text);background:var(--white);outline:none;transition:border-color 0.15s}
+.apikey-input:focus{border-color:var(--emerald)}
+.apikey-hint{font-size:0.75rem;color:var(--text-muted);margin-top:0.35rem;line-height:1.4}
+
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:#fff;padding:0.75rem 1.25rem;border-radius:8px;font-size:0.84rem;z-index:999;transform:translateY(100px);opacity:0;transition:all 0.25s}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* Exp select */
+.exp-sel{padding:0.4rem 0.6rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.78rem;color:var(--text);background:var(--white);outline:none;cursor:pointer}
+.exp-sel:focus{border-color:var(--emerald)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">Alter<span>5</span> <span style="font-family:var(--sans);font-size:0.75rem;color:var(--slate);font-weight:400;margin-left:0.5rem">Admin</span></div>
+  <div class="hdr-nav">
+    <a href="/" class="">Entrevista</a>
+    <a href="/admin" class="active">Admin · Magic Links</a>
+  </div>
+</div>
+
+<div class="main">
+  <p style="font-family:var(--mono);font-size:0.7rem;color:var(--emerald);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.6rem">Panel de administración</p>
+  <h1 class="page-title">Generador de Magic Links</h1>
+  <p class="page-sub">Sube CVs en PDF. La IA extrae automáticamente el nombre y el email del candidato y genera el enlace personalizado para enviarle.</p>
+
+  <!-- API Key -->
+  <div class="card">
+    <p class="card-title">Configuración · API Key de Anthropic</p>
+    <div class="apikey-row">
+      <div style="flex:1">
+        <input type="password" class="apikey-input" id="api-key" placeholder="sk-ant-api03-...">
+        <p class="apikey-hint">La clave se usa solo en tu navegador para procesar los CVs. No se almacena en ningún servidor.</p>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="saveKey()">Guardar</button>
+    </div>
+  </div>
+
+  <!-- Upload -->
+  <div class="card">
+    <p class="card-title">Subir CVs</p>
+    <div class="upload-zone" id="upload-zone"
+         ondragover="ev.preventDefault();this.classList.add('drag')"
+         ondragleave="this.classList.remove('drag')"
+         ondrop="handleDrop(event)">
+      <input type="file" accept=".pdf,.doc,.docx" multiple onchange="handleFiles(this.files)">
+      <span class="upload-icon">📄</span>
+      <p class="upload-label"><strong>Haz clic o arrastra CVs aquí</strong><br>PDF, DOC o DOCX · Puedes subir varios a la vez</p>
+    </div>
+  </div>
+
+  <!-- Candidates list -->
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;padding-bottom:0.6rem;border-bottom:1px solid var(--border)">
+      <p class="card-title" style="margin:0;border:none;padding:0">Candidatos procesados</p>
+      <button class="btn btn-ghost btn-sm" onclick="clearAll()" id="clear-btn" style="display:none">Limpiar lista</button>
+    </div>
+    <div id="candidates-area">
+      <div class="empty-state">
+        <span class="empty-icon">👤</span>
+        <p>Aquí aparecerán los candidatos una vez<br>proceses sus CVs.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BASE_URL = window.location.origin;
+let candidates = JSON.parse(localStorage.getItem('a5_candidates') || '[]');
+
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('a5_apikey');
+  if (saved) document.getElementById('api-key').value = saved;
+  renderTable();
+});
+
+function saveKey() {
+  const k = document.getElementById('api-key').value.trim();
+  if (!k) { showToast('Introduce una API key válida'); return; }
+  localStorage.setItem('a5_apikey', k);
+  showToast('API key guardada ✓');
+}
+
+function getKey() {
+  return document.getElementById('api-key').value.trim() || localStorage.getItem('a5_apikey') || '';
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+}
+
+function handleFiles(files) {
+  const key = getKey();
+  if (!key) { showToast('⚠ Introduce primero tu API key de Anthropic'); return; }
+  Array.from(files).forEach(f => processCV(f, key));
+}
+
+async function processCV(file, apiKey) {
+  const id = Date.now() + Math.random().toString(36).slice(2);
+  const cand = { id, filename: file.name, name: '', email: '', exp: '5-8', status: 'processing', link: '', error: '' };
+  candidates.unshift(cand);
+  save(); renderTable();
+
+  try {
+    // Read file as base64
+    const b64 = await fileToBase64(file);
+    const isPDF = file.name.toLowerCase().endsWith('.pdf');
+    const mediaType = isPDF ? 'application/pdf' : 'application/octet-stream';
+
+    // Call Claude API
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        messages: [{
+          role: 'user',
+          content: [
+            isPDF
+              ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: b64 } }
+              : { type: 'text', text: `Filename: ${file.name}` },
+            {
+              type: 'text',
+              text: 'Extract the full name and email address from this CV. Respond ONLY with valid JSON: {"name": "Full Name", "email": "email@example.com"}. If you cannot find one of the fields, use an empty string. No other text.'
+            }
+          ]
+        }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || `API error ${res.status}`);
+    }
+
+    const data = await res.json();
+    const text = data.content?.find(c => c.type === 'text')?.text || '{}';
+    let parsed;
+    try { parsed = JSON.parse(text.replace(/```json|```/g, '').trim()); }
+    catch { parsed = extractFallback(text); }
+
+    const name = parsed.name || '';
+    const email = parsed.email || '';
+
+    if (!name && !email) throw new Error('No se pudo extraer nombre ni email del CV');
+
+    const params = new URLSearchParams();
+    if (name) params.set('c', name);
+    params.set('e', cand.exp);
+
+    cand.name = name;
+    cand.email = email;
+    cand.link = `${BASE_URL}/?${params.toString()}`;
+    cand.status = 'done';
+
+  } catch (err) {
+    cand.status = 'error';
+    cand.error = err.message;
+  }
+
+  save(); renderTable();
+}
+
+function extractFallback(text) {
+  const email = text.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/)?.[0] || '';
+  const name = text.match(/"name"\s*:\s*"([^"]+)"/)?.[1] || '';
+  return { name, email };
+}
+
+function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = () => rej(new Error('Error leyendo el archivo'));
+    r.readAsDataURL(file);
+  });
+}
+
+function updateExp(id, val) {
+  const c = candidates.find(x => x.id === id);
+  if (!c) return;
+  c.exp = val;
+  if (c.status === 'done' && c.name) {
+    const p = new URLSearchParams();
+    if (c.name) p.set('c', c.name);
+    p.set('e', val);
+    c.link = `${BASE_URL}/?${p.toString()}`;
+  }
+  save(); renderTable();
+}
+
+function copyLink(id) {
+  const c = candidates.find(x => x.id === id);
+  if (!c?.link) return;
+  navigator.clipboard.writeText(c.link).then(() => showToast(`Link de ${c.name || 'candidato'} copiado ✓`));
+}
+
+function copyEmail(id) {
+  const c = candidates.find(x => x.id === id);
+  if (!c?.email) return;
+  navigator.clipboard.writeText(c.email).then(() => showToast(`Email copiado: ${c.email}`));
+}
+
+function removeCandidate(id) {
+  candidates = candidates.filter(x => x.id !== id);
+  save(); renderTable();
+}
+
+function clearAll() {
+  if (!confirm('¿Eliminar todos los candidatos de la lista?')) return;
+  candidates = []; save(); renderTable();
+}
+
+function save() {
+  localStorage.setItem('a5_candidates', JSON.stringify(candidates));
+}
+
+function renderTable() {
+  const area = document.getElementById('candidates-area');
+  const clearBtn = document.getElementById('clear-btn');
+  if (!candidates.length) {
+    area.innerHTML = `<div class="empty-state"><span class="empty-icon">👤</span><p>Aquí aparecerán los candidatos una vez<br>proceses sus CVs.</p></div>`;
+    clearBtn.style.display = 'none';
+    return;
+  }
+  clearBtn.style.display = '';
+  area.innerHTML = `
+    <table class="candidates-table">
+      <thead><tr>
+        <th>Candidato</th>
+        <th>Email</th>
+        <th>Exp.</th>
+        <th>Magic link</th>
+        <th>Estado</th>
+        <th></th>
+      </tr></thead>
+      <tbody>
+        ${candidates.map(c => `
+          <tr class="${c.status === 'processing' ? 'processing-row' : ''}">
+            <td>
+              <div style="font-weight:500;color:var(--text)">${c.name || `<span style="color:var(--text-muted);font-style:italic">${c.filename}</span>`}</div>
+              ${c.name ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">${c.filename}</div>` : ''}
+            </td>
+            <td>
+              ${c.email
+                ? `<div style="display:flex;align-items:center;gap:0.4rem">
+                    <span style="font-family:var(--mono);font-size:0.78rem">${c.email}</span>
+                    <button class="copy-btn" onclick="copyEmail('${c.id}')">copiar</button>
+                   </div>`
+                : `<span style="color:var(--text-muted);font-style:italic;font-size:0.82rem">—</span>`}
+            </td>
+            <td>
+              <select class="exp-sel" onchange="updateExp('${c.id}', this.value)" ${c.status !== 'done' ? 'disabled' : ''}>
+                <option value="3-5" ${c.exp==='3-5'?'selected':''}>3–5 años</option>
+                <option value="5-8" ${c.exp==='5-8'?'selected':''}>5–8 años</option>
+                <option value="8-12" ${c.exp==='8-12'?'selected':''}>8–12 años</option>
+                <option value="12+" ${c.exp==='12+'?'selected':''}>12+ años</option>
+              </select>
+            </td>
+            <td>
+              ${c.status === 'done' && c.link
+                ? `<div class="link-pill"><span>${c.link}</span><button class="copy-btn" onclick="copyLink('${c.id}')">copiar</button></div>`
+                : c.status === 'processing'
+                ? `<span style="font-size:0.82rem;color:var(--text-muted)"><span class="spinner"></span>Procesando...</span>`
+                : `<span style="font-size:0.82rem;color:var(--red)">—</span>`}
+            </td>
+            <td>
+              ${c.status === 'done'
+                ? `<span class="badge badge-ok">✓ Listo</span>`
+                : c.status === 'processing'
+                ? `<span class="badge badge-proc">Procesando</span>`
+                : `<span class="badge badge-err" title="${c.error}">Error</span>`}
+            </td>
+            <td>
+              <button class="btn btn-danger btn-sm" onclick="removeCandidate('${c.id}')">✕</button>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

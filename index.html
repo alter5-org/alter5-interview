@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alter5 — Entrevista Técnica</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A1628;--navy2:#111f38;--emerald:#10B981;--emerald-dim:#0d9268;
+  --slate:#94A3B8;--slate-light:#CBD5E1;--red:#EF4444;--amber:#F59E0B;
+  --purple:#7C3AED;--bg:#F8FAFC;--white:#ffffff;--border:#E2E8F0;
+  --text:#1E293B;--text-muted:#64748B;
+  --serif:'DM Serif Display',Georgia,serif;
+  --sans:'Instrument Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+  --radius:12px;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+.hdr{background:var(--navy);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hdr-logo{font-family:var(--serif);color:#fff;font-size:1.2rem;letter-spacing:-0.01em}
+.hdr-logo span{color:var(--emerald)}
+.hdr-right{display:flex;align-items:center;gap:1rem}
+.hdr-meta{font-family:var(--mono);font-size:0.72rem;color:var(--slate)}
+.hdr-badge{background:rgba(16,185,129,0.15);color:var(--emerald);padding:0.2rem 0.6rem;border-radius:4px;font-size:0.68rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase}
+.hdr-candidate{font-family:var(--mono);font-size:0.72rem;color:#fff;background:rgba(255,255,255,0.08);padding:0.25rem 0.75rem;border-radius:4px}
+.main{flex:1;max-width:780px;width:100%;margin:0 auto;padding:2.5rem 1.5rem}
+.screen{display:none}.screen.active{display:block}
+.eyebrow{font-family:var(--mono);font-size:0.7rem;color:var(--emerald);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem}
+.big-title{font-family:var(--serif);font-size:2.4rem;color:var(--navy);line-height:1.15;margin-bottom:1rem;letter-spacing:-0.02em}
+.intro-body{font-size:0.95rem;color:var(--text-muted);line-height:1.75;margin-bottom:1.75rem;max-width:540px}
+.info-box{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:2rem}
+.info-box h3{font-size:0.75rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.85rem}
+.info-row{display:flex;gap:0.65rem;align-items:flex-start;font-size:0.875rem;color:var(--text);margin-bottom:0.5rem;line-height:1.5}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--emerald);margin-top:0.42rem;flex-shrink:0}
+.cform{display:flex;flex-direction:column;gap:0.85rem;margin-bottom:2rem}
+.crow{display:flex;gap:0.85rem}
+.cgrp{display:flex;flex-direction:column;gap:0.35rem;flex:1}
+.cgrp label{font-size:0.75rem;font-weight:500;color:var(--text-muted);letter-spacing:0.03em}
+.cgrp input,.cgrp select{padding:0.6rem 0.85rem;border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:0.875rem;color:var(--text);background:var(--white);outline:none;transition:border-color 0.15s}
+.cgrp input:focus,.cgrp select:focus{border-color:var(--emerald)}
+.cgrp input:read-only{background:var(--bg);color:var(--text-muted)}
+.btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;border-radius:8px;font-family:var(--sans);font-size:0.875rem;font-weight:600;cursor:pointer;border:none;transition:all 0.15s}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-primary:hover{background:var(--navy2);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text-muted);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--white);color:var(--text)}
+.btn-sm{padding:0.45rem 1rem;font-size:0.8rem}
+.prog-wrap{background:var(--border);height:3px;border-radius:2px;margin-bottom:2rem;overflow:hidden}
+.prog-fill{height:100%;background:var(--emerald);border-radius:2px;transition:width 0.4s ease}
+.block-intro{background:var(--navy);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.75rem;display:flex;align-items:center;gap:1rem}
+.block-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.block-text h3{font-size:0.9rem;font-weight:600;color:#fff;margin-bottom:0.15rem}
+.block-text p{font-size:0.78rem;color:var(--slate);line-height:1.4}
+.qheader{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem}
+.qmeta{display:flex;align-items:center;gap:0.65rem}
+.qnum{font-family:var(--mono);font-size:0.72rem;color:var(--text-muted)}
+.qcat{font-size:0.68rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:0.18rem 0.55rem;border-radius:4px}
+.cat-tech{background:#EFF6FF;color:#1D4ED8}
+.cat-ai{background:#F0FDF4;color:#15803D}
+.cat-leadership{background:#FDF4FF;color:#7E22CE}
+.cat-product{background:#FFF7ED;color:#C2410C}
+.cat-strategy{background:#F0F9FF;color:#0369A1}
+.cat-multiwork{background:#FEF2F2;color:#DC2626}
+.cat-compensation{background:#FEFCE8;color:#854D0E}
+.timer{display:flex;align-items:center;gap:0.45rem;font-family:var(--mono);font-size:1rem;font-weight:500;color:var(--navy);transition:color 0.3s}
+.timer.warn{color:var(--amber)}.timer.danger{color:var(--red)}
+.tdot{width:7px;height:7px;border-radius:50%;background:var(--emerald);animation:pulse 1.2s infinite}
+.tdot.warn{background:var(--amber)}.tdot.danger{background:var(--red)}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.qtext{font-family:var(--serif);font-size:1.5rem;color:var(--navy);line-height:1.4;margin-bottom:0.65rem;letter-spacing:-0.01em}
+.qhint{font-size:0.84rem;color:var(--text-muted);margin-bottom:1.5rem;line-height:1.55;font-style:italic}
+.atextarea{width:100%;min-height:150px;padding:0.9rem 1rem;border:1px solid var(--border);border-radius:var(--radius);font-family:var(--sans);font-size:0.9rem;color:var(--text);background:var(--white);resize:vertical;outline:none;transition:border-color 0.15s;line-height:1.7}
+.atextarea:focus{border-color:var(--emerald)}
+.opts{display:flex;flex-direction:column;gap:0.5rem}
+.opt{display:flex;align-items:center;gap:0.8rem;padding:0.8rem 0.9rem;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:var(--white);transition:all 0.12s;font-size:0.875rem;color:var(--text);user-select:none}
+.opt:hover{border-color:var(--slate-light);background:#f8fafc}
+.opt.sel{border-color:var(--emerald);background:rgba(16,185,129,0.05);color:var(--navy);font-weight:500}
+.radio{width:17px;height:17px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.12s}
+.opt.sel .radio{border-color:var(--emerald);background:var(--emerald)}
+.rdot{width:5px;height:5px;border-radius:50%;background:#fff;opacity:0;transition:opacity 0.12s}
+.opt.sel .rdot{opacity:1}
+.chk{width:17px;height:17px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.12s;font-size:10px;color:#fff}
+.opt.sel .chk{border-color:var(--emerald);background:var(--emerald)}
+.scale-row{display:flex;gap:0.4rem;margin-bottom:0.4rem}
+.sbtn{flex:1;padding:0.6rem 0;border:1px solid var(--border);border-radius:8px;background:var(--white);font-family:var(--mono);font-size:0.875rem;font-weight:500;cursor:pointer;transition:all 0.12s;color:var(--text-muted)}
+.sbtn:hover{border-color:var(--slate-light);color:var(--text)}
+.sbtn.sel{background:var(--navy);border-color:var(--navy);color:#fff}
+.scale-labels{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--text-muted);padding:0 0.2rem}
+.aactions{display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem}
+.chars{font-family:var(--mono);font-size:0.72rem;color:var(--text-muted)}
+.aiflag{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:4px}
+.aiflag.susp{background:#FEF2F2;color:#DC2626}
+.aiflag.fast{background:#F0FDF4;color:#16A34A}
+.aiflag.ok{background:var(--bg);color:var(--text-muted)}
+.rtitle{font-family:var(--serif);font-size:2.1rem;color:var(--navy);margin-bottom:0.4rem;letter-spacing:-0.02em}
+.rsub{font-size:0.9rem;color:var(--text-muted);margin-bottom:2rem;line-height:1.6}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.85rem;margin-bottom:2rem}
+.scard{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;text-align:center}
+.sval{font-family:var(--mono);font-size:1.75rem;font-weight:500;color:var(--navy);display:block;line-height:1;margin-bottom:0.35rem}
+.slabel{font-size:0.7rem;color:var(--text-muted);font-weight:500;letter-spacing:0.03em;text-transform:uppercase}
+.verdict{padding:1.1rem 1.25rem;border-radius:var(--radius);margin-bottom:2rem;display:flex;align-items:flex-start;gap:0.85rem}
+.verdict.green{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25)}
+.verdict.amber{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25)}
+.verdict.red{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25)}
+.vicon{font-size:1.25rem;flex-shrink:0;margin-top:0.1rem}
+.vtext strong{font-weight:600;display:block;font-size:0.9rem;margin-bottom:0.2rem;color:var(--text)}
+.vtext p{font-size:0.84rem;color:var(--text-muted);line-height:1.55}
+.rsec-title{font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.85rem;padding-bottom:0.4rem;border-bottom:1px solid var(--border)}
+.rsec{margin-bottom:2rem}
+.acard{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;margin-bottom:0.75rem}
+.acard.flag-susp{border-left:3px solid var(--red)}
+.acard.flag-fast{border-left:3px solid var(--emerald)}
+.acard.flag-multi{border-left:3px solid var(--amber)}
+.acard-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:0.65rem}
+.acard-q{font-size:0.9rem;font-weight:500;color:var(--navy);line-height:1.4;flex:1}
+.acard-timing{display:flex;flex-direction:column;align-items:flex-end;gap:0.25rem;flex-shrink:0}
+.acard-body{font-size:0.85rem;color:var(--text-muted);line-height:1.65;padding-top:0.65rem;border-top:1px solid var(--border)}
+.notes-lbl{font-size:0.72rem;font-weight:500;color:var(--text-muted);letter-spacing:0.03em;margin-top:0.65rem;display:block}
+.notes-ta{width:100%;min-height:60px;padding:0.6rem 0.8rem;border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:0.82rem;color:var(--text);background:var(--bg);resize:vertical;outline:none;margin-top:0.35rem;transition:border-color 0.15s}
+.notes-ta:focus{border-color:var(--emerald)}
+.export-bar{display:flex;gap:0.65rem;margin-top:2rem;padding-top:1.75rem;border-top:1px solid var(--border);flex-wrap:wrap}
+.dims-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:2rem}
+.dim-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem}
+.dim-name{font-size:0.72rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.4rem}
+.dim-val{font-family:var(--mono);font-size:1.4rem;font-weight:500;color:var(--navy);margin-bottom:0.3rem}
+.dim-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.dim-fill{height:100%;border-radius:2px}
+.multiwork-box{background:#FFF7ED;border:1px solid rgba(245,158,11,0.35);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1.5rem}
+.multiwork-box h4{font-size:0.8rem;font-weight:600;color:#92400E;margin-bottom:0.5rem}
+.multiwork-box ul{list-style:none;display:flex;flex-direction:column;gap:0.3rem}
+.multiwork-box li{font-size:0.82rem;color:#78350F;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.45}
+.multiwork-box li::before{content:"·";font-weight:700;flex-shrink:0}
+.salary-highlight{background:#FEFCE8;border:1px solid rgba(133,77,14,0.2);border-radius:var(--radius);padding:0.85rem 1.1rem;margin-bottom:1.5rem;font-size:0.875rem;color:#713F12}
+.salary-highlight strong{font-weight:600}
+@media print{.hdr,.export-bar,.btn{display:none!important}.screen{display:block!important}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">Alter<span>5</span></div>
+  <div class="hdr-right">
+    <span class="hdr-meta">Software Architect — AI & AWS</span>
+    <span class="hdr-badge" id="hdr-status">Inicio</span>
+    <span class="hdr-candidate" id="hdr-candidate" style="display:none"></span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <p class="eyebrow">Proceso de selección · Alter5</p>
+    <h1 class="big-title">Entrevista estructurada<br><em>Software Architect</em></h1>
+    <p class="intro-body">Herramienta de evaluación para el proceso de selección. Cada respuesta queda registrada con su tiempo para facilitar el análisis.</p>
+    <div class="info-box">
+      <h3>Instrucciones</h3>
+      <div class="info-row"><div class="dot"></div><span>Responde con ejemplos reales y concretos. No buscamos respuestas perfectas — buscamos criterio y honestidad.</span></div>
+      <div class="info-row"><div class="dot"></div><span>El tiempo de cada respuesta es visible para el entrevistador.</span></div>
+      <div class="info-row"><div class="dot"></div><span><strong>16 preguntas</strong> en 6 bloques · aproximadamente 40–50 minutos.</span></div>
+    </div>
+    <div class="cform">
+      <div class="crow">
+        <div class="cgrp"><label>Nombre del candidato</label><input type="text" id="f-name" placeholder="Nombre y apellido"></div>
+        <div class="cgrp"><label>Años de experiencia</label>
+          <select id="f-exp">
+            <option value="">Seleccionar</option>
+            <option value="3-5">3–5 años</option>
+            <option value="5-8">5–8 años</option>
+            <option value="8-12">8–12 años</option>
+            <option value="12+">12+ años</option>
+          </select>
+        </div>
+      </div>
+      <div class="crow">
+        <div class="cgrp"><label>Entrevistador</label><input type="text" id="f-interviewer" placeholder="Nombre del entrevistador"></div>
+        <div class="cgrp"><label>Fecha</label><input type="date" id="f-date"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="startInterview()">Comenzar entrevista →</button>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="screen" id="screen-question">
+    <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+    <div id="block-header"></div>
+    <div class="qheader">
+      <div class="qmeta">
+        <span class="qnum" id="qnum">Pregunta 1 / 16</span>
+        <span class="qcat" id="qcat"></span>
+      </div>
+      <div class="timer" id="timer"><div class="tdot" id="tdot"></div><span id="tval">0:00</span></div>
+    </div>
+    <h2 class="qtext" id="qtext"></h2>
+    <p class="qhint" id="qhint"></p>
+    <div id="answer-area"></div>
+    <div class="aactions">
+      <span class="chars" id="chars"></span>
+      <div style="display:flex;gap:0.65rem">
+        <button class="btn btn-ghost btn-sm" onclick="skipQ()">Omitir</button>
+        <button class="btn btn-primary btn-sm" onclick="nextQ()">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="screen-results">
+    <p class="eyebrow">Informe de evaluación</p>
+    <h2 class="rtitle">Resultados</h2>
+    <p class="rsub" id="rsub"></p>
+    <div id="verdict-area"></div>
+    <div class="stats-grid">
+      <div class="scard"><span class="sval" id="st-time">—</span><span class="slabel">Tiempo total</span></div>
+      <div class="scard"><span class="sval" id="st-avg">—</span><span class="slabel">Tiempo medio</span></div>
+      <div class="scard"><span class="sval" id="st-flags">—</span><span class="slabel">Alertas</span></div>
+      <div class="scard"><span class="sval" id="st-score">—</span><span class="slabel">Puntuación</span></div>
+    </div>
+    <div id="salary-area"></div>
+    <div class="rsec"><p class="rsec-title">Evaluación por dimensión</p><div class="dims-grid" id="dims-grid"></div></div>
+    <div id="multiwork-area"></div>
+    <div class="rsec"><p class="rsec-title">Detalle de respuestas</p><div id="answers-detail"></div></div>
+    <div class="rsec">
+      <p class="rsec-title">Valoración final del entrevistador</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;margin-bottom:1rem">
+        <div>
+          <label class="notes-lbl">Recomendación</label>
+          <select class="notes-ta" style="min-height:auto;padding:0.6rem 0.8rem" id="final-rec">
+            <option value="">Seleccionar...</option>
+            <option value="avanzar">✓ Avanzar a segunda entrevista</option>
+            <option value="reserva">~ Candidato en reserva</option>
+            <option value="descartar">✗ Descartar</option>
+          </select>
+        </div>
+        <div>
+          <label class="notes-lbl">Puntuación subjetiva (1–10)</label>
+          <input type="number" min="1" max="10" class="notes-ta" style="min-height:auto;padding:0.6rem 0.8rem" id="final-score" placeholder="7">
+        </div>
+      </div>
+      <label class="notes-lbl">Observaciones generales</label>
+      <textarea class="notes-ta" id="final-notes" style="min-height:100px" placeholder="Impresión general, puntos fuertes, dudas, próximos pasos..."></textarea>
+    </div>
+    <div class="export-bar">
+      <button class="btn btn-primary" onclick="window.print()">Exportar PDF</button>
+      <button class="btn btn-ghost" onclick="copyLink()">Copiar magic link →</button>
+      <button class="btn btn-ghost" onclick="resetAll()">Nueva entrevista</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const BLOCKS=[
+  {id:'compensation',label:'Compensación',color:'#854D0E',icon:'$',desc:'Alineamos expectativas económicas desde el inicio del proceso.'},
+  {id:'tech',label:'Arquitectura técnica',color:'#1D4ED8',icon:'⬡',desc:'Evaluamos criterio técnico real en backend, infraestructura y buenas prácticas.'},
+  {id:'ai',label:'IA aplicada',color:'#15803D',icon:'◈',desc:'Evaluamos uso real de IA: agentes, orquestación y programación agéntica.'},
+  {id:'leadership',label:'Liderazgo de equipo',color:'#7E22CE',icon:'◎',desc:'Evaluamos experiencia real gestionando personas, no solo liderazgo técnico informal.'},
+  {id:'product',label:'Producto y negocio',color:'#C2410C',icon:'◇',desc:'Evaluamos capacidad de colaborar con negocio y traducir necesidades en decisiones técnicas.'},
+  {id:'multiwork',label:'Compromiso y dedicación',color:'#DC2626',icon:'◉',desc:'Evaluamos señales de exclusividad y compromiso real con el proyecto.'},
+];
+
+const QS=[
+  // COMPENSATION
+  {block:'compensation',type:'single',w:1,
+   text:'¿Cuál es tu rango salarial anual esperado para este puesto?',
+   hint:'En dólares americanos (USD). Selecciona el rango que mejor representa tu expectativa.',
+   options:['Menos de $50,000','$50,000 – $70,000','$70,000 – $90,000','$90,000 – $110,000','$110,000 – $130,000','Más de $130,000'],
+   min:5,sus:60},
+  // TECH
+  {block:'tech',type:'open',w:3,
+   text:'Cuéntame un sistema backend complejo que hayas diseñado desde cero.',
+   hint:'Describe las decisiones de arquitectura que tomaste, qué funcionó bien y qué cambiarías hoy.',
+   min:50,sus:220},
+  {block:'tech',type:'single',w:2,
+   text:'¿Cuándo priorizas AWS Lambda frente a EC2 para un servicio nuevo?',
+   hint:'Elige la opción que mejor representa tu criterio habitual.',
+   options:['Lambda para tareas event-driven de corta duración; EC2 para servicios con estado o larga ejecución','Lambda siempre que sea posible — más barato y sin gestión de infraestructura','EC2 siempre — Lambda tiene demasiadas limitaciones','Depende del equipo: uso lo que mejor domina el equipo en ese momento'],
+   correct:0,min:15,sus:100},
+  {block:'tech',type:'open',w:3,
+   text:'¿Qué significa para ti observabilidad en producción? ¿Qué has implementado concretamente?',
+   hint:'No la definición teórica — qué herramientas, qué métricas, cómo lo construiste.',
+   min:35,sus:170},
+  // AI
+  {block:'ai',type:'multi',w:2,
+   text:'¿Con qué frameworks de orquestación de agentes de IA has trabajado en proyectos reales?',
+   hint:'Selecciona solo los que hayas usado en producción o proyectos reales.',
+   options:['LangChain / LangGraph','Mastra','AutoGen / AG2','CrewAI','Vercel AI SDK','Semantic Kernel','He construido mi propia orquestación','Ninguno todavía'],
+   min:10,sus:70},
+  {block:'ai',type:'open',w:3,
+   text:'¿Cómo usas herramientas de IA en tu flujo de trabajo de desarrollo hoy? Dame ejemplos concretos.',
+   hint:'Qué herramientas, para qué tareas, con qué resultado. Evita respuestas genéricas.',
+   min:35,sus:160},
+  {block:'ai',type:'open',w:3,
+   text:'¿Dónde están los límites reales de la programación agéntica? ¿Qué no le delegan y por qué?',
+   hint:'Buscamos tu opinión crítica y fundamentada.',
+   min:45,sus:200},
+  // LEADERSHIP
+  {block:'leadership',type:'scale',w:1,
+   text:'¿Cuántas personas has gestionado directamente con responsabilidad sobre su evaluación y desarrollo profesional?',
+   hint:'Cuenta solo reportes directos, no influencia informal.',
+   labels:['0','1–2','3–5','6–10','10+'],min:5,sus:35},
+  {block:'leadership',type:'open',w:3,
+   text:'Cuéntame una situación en la que tuviste que gestionar a alguien del equipo que no estaba rindiendo lo esperado.',
+   hint:'Describe el caso concreto: qué pasó, qué hiciste paso a paso, qué resultado tuvo.',
+   min:50,sus:220},
+  {block:'leadership',type:'open',w:3,
+   text:'Tu mejor desarrollador tiene otra oferta con un 30% más de salario que no puedes igualar ahora mismo. ¿Qué haces exactamente?',
+   hint:'Describe lo que harías paso a paso.',
+   min:45,sus:210},
+  {block:'leadership',type:'open',w:2,
+   text:'¿Cómo organizas el trabajo de un equipo distribuido para garantizar calidad y visibilidad sin microgestionar?',
+   hint:'Qué procesos, herramientas y cadencias utilizas.',
+   min:40,sus:190},
+  // PRODUCT
+  {block:'product',type:'open',w:2,
+   text:'Un perfil de negocio sin background técnico te pide una feature urgente cuya implementación propuesta no tiene sentido técnicamente. ¿Cómo lo gestionas?',
+   hint:'Dame el proceso que seguirías, no la respuesta teórica.',
+   min:35,sus:170},
+  {block:'product',type:'open',w:2,
+   text:'¿Cómo decides qué deuda técnica atacar primero cuando hay presión simultánea por features nuevas?',
+   hint:'Describe tu proceso de priorización.',
+   min:40,sus:190},
+  // MULTIWORK
+  {block:'multiwork',type:'single',w:3,
+   text:'¿Tienes actualmente algún otro compromiso profesional activo — contrato, proyecto freelance o colaboración — que compatibilizarías con este rol?',
+   hint:'Respuesta directa. Esta información es relevante para valorar la dedicación.',
+   options:['No, estaría dedicado exclusivamente a Alter5','Tengo un compromiso menor que termina en menos de 30 días','Tengo compromisos activos pero puedo compatibilizarlos','Prefiero no responder'],
+   min:5,sus:60},
+  {block:'multiwork',type:'open',w:2,
+   text:'¿Cuántas horas semanales reales podrías dedicar a este proyecto desde el primer día?',
+   hint:'Un número concreto, no "las que hagan falta".',
+   min:10,sus:80},
+  {block:'multiwork',type:'open',w:2,
+   text:'Si detectas que uno de tus developers trabaja para otra empresa en paralelo sin haberlo declarado, ¿cómo lo gestionas?',
+   hint:'Proceso concreto: cómo lo detectarías, cómo lo abordarías, qué consecuencias tendría.',
+   min:40,sus:190},
+];
+
+let curQ=0,timer=null,elapsed=0,answers=[],selOpt=null,selMulti=[];
+function fmt(s){const m=Math.floor(s/60),sec=s%60;return`${m}:${sec.toString().padStart(2,'0')}`}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('f-date').valueAsDate=new Date();
+  const p=new URLSearchParams(window.location.search);
+  const n=p.get('c'),e=p.get('e'),i=p.get('i');
+  if(n){document.getElementById('f-name').value=decodeURIComponent(n);document.getElementById('f-name').readOnly=true;}
+  if(e)document.getElementById('f-exp').value=e;
+  if(i)document.getElementById('f-interviewer').value=decodeURIComponent(i);
+});
+
+function startInterview(){
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){alert('Por favor introduce el nombre del candidato.');return;}
+  curQ=0;answers=[];clearInterval(timer);
+  document.getElementById('hdr-candidate').textContent=name;
+  document.getElementById('hdr-candidate').style.display='block';
+  document.getElementById('hdr-status').textContent='En curso';
+  showScreen('screen-question');showQ();
+}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+
+let lastBlock=null;
+function showQ(){
+  const q=QS[curQ];selOpt=null;selMulti=[];elapsed=0;
+  document.getElementById('prog').style.width=`${(curQ/QS.length)*100}%`;
+  document.getElementById('qnum').textContent=`Pregunta ${curQ+1} / ${QS.length}`;
+  const bh=document.getElementById('block-header');
+  if(q.block!==lastBlock){
+    const b=BLOCKS.find(x=>x.id===q.block);
+    bh.innerHTML=`<div class="block-intro"><div class="block-icon" style="background:rgba(255,255,255,0.1);color:#fff;font-size:1.1rem">${b.icon}</div><div class="block-text"><h3>${b.label}</h3><p>${b.desc}</p></div></div>`;
+    lastBlock=q.block;
+  }else bh.innerHTML='';
+  const b=BLOCKS.find(x=>x.id===q.block);
+  const catEl=document.getElementById('qcat');
+  catEl.textContent=b.label;catEl.className=`qcat cat-${q.block}`;
+  document.getElementById('qtext').textContent=q.text;
+  document.getElementById('qhint').textContent=q.hint;
+  const area=document.getElementById('answer-area'),chars=document.getElementById('chars');
+  if(q.type==='open'){
+    area.innerHTML=`<textarea class="atextarea" id="ainput" placeholder="Escribe tu respuesta aquí..."></textarea>`;
+    document.getElementById('ainput').addEventListener('input',e=>chars.textContent=`${e.target.value.length} caracteres`);
+    chars.textContent='0 caracteres';
+  }else if(q.type==='single'){
+    chars.textContent='';
+    area.innerHTML=`<div class="opts">${q.options.map((o,i)=>`<div class="opt" onclick="selSingle(${i})" id="opt${i}"><div class="radio" id="rad${i}"><div class="rdot"></div></div><span>${o}</span></div>`).join('')}</div>`;
+  }else if(q.type==='multi'){
+    chars.textContent='';
+    area.innerHTML=`<div class="opts">${q.options.map((o,i)=>`<div class="opt" onclick="togMulti(${i})" id="opt${i}"><div class="chk" id="chk${i}">✓</div><span>${o}</span></div>`).join('')}</div><p style="font-size:0.78rem;color:var(--text-muted);margin-top:0.5rem">Selecciona todos los que apliquen.</p>`;
+  }else if(q.type==='scale'){
+    chars.textContent='';
+    area.innerHTML=`<div class="scale-row">${q.labels.map((l,i)=>`<button class="sbtn" onclick="selScale(${i})" id="sc${i}">${l}</button>`).join('')}</div><div class="scale-labels"><span>Ninguna</span><span>Equipo grande</span></div>`;
+  }
+  startTimer(q);
+}
+
+function selSingle(i){selOpt=i;document.querySelectorAll('.opt').forEach((e,j)=>e.classList.toggle('sel',j===i))}
+function togMulti(i){const x=selMulti.indexOf(i);if(x>=0){selMulti.splice(x,1);document.getElementById(`opt${i}`).classList.remove('sel')}else{selMulti.push(i);document.getElementById(`opt${i}`).classList.add('sel')}}
+function selScale(i){selOpt=i;document.querySelectorAll('.sbtn').forEach((e,j)=>e.classList.toggle('sel',j===i))}
+
+function startTimer(q){clearInterval(timer);elapsed=0;updateTimer(q,0);timer=setInterval(()=>{elapsed++;updateTimer(q,elapsed)},1000);}
+function updateTimer(q,s){
+  const el=document.getElementById('timer'),dot=document.getElementById('tdot'),val=document.getElementById('tval');
+  val.textContent=fmt(s);
+  if(s>q.sus){el.className='timer danger';dot.className='tdot danger'}
+  else if(s>q.sus*0.6){el.className='timer warn';dot.className='tdot warn'}
+  else{el.className='timer';dot.className='tdot'}
+}
+function getAnswer(){
+  const q=QS[curQ];
+  if(q.type==='open')return document.getElementById('ainput')?.value||'';
+  if(q.type==='scale')return selOpt===null?null:q.labels[selOpt];
+  if(q.type==='single')return selOpt===null?null:q.options[selOpt];
+  if(q.type==='multi')return selMulti.map(i=>q.options[i]);
+  return null;
+}
+function getFlag(q,s){
+  if(q.block==='multiwork')return 'multiwork';
+  if(q.block==='compensation')return 'ok';
+  if(s<q.min)return 'fast';
+  if(s>q.sus)return 'susp';
+  return 'ok';
+}
+function nextQ(){clearInterval(timer);answers.push({q:QS[curQ],ans:getAnswer(),time:elapsed,flag:getFlag(QS[curQ],elapsed),skipped:false});curQ++;if(curQ>=QS.length)showResults();else showQ();}
+function skipQ(){clearInterval(timer);answers.push({q:QS[curQ],ans:null,time:elapsed,flag:'ok',skipped:true});curQ++;if(curQ>=QS.length)showResults();else showQ();}
+
+function showResults(){
+  showScreen('screen-results');
+  document.getElementById('hdr-status').textContent='Completada';
+  const name=document.getElementById('f-name').value||'Candidato';
+  const exp=document.getElementById('f-exp').value||'';
+  const iw=document.getElementById('f-interviewer').value||'';
+  const date=document.getElementById('f-date').value||new Date().toLocaleDateString('es-ES');
+  document.getElementById('rsub').textContent=`${name}${exp?' · '+exp:''}${iw?' · Entrevistador: '+iw:''} · ${date}`;
+  const nonComp=answers.filter(a=>a.q.block!=='compensation');
+  const total=answers.reduce((a,b)=>a+b.time,0);
+  const avg=nonComp.length?Math.round(nonComp.reduce((a,b)=>a+b.time,0)/nonComp.length):0;
+  const flags=nonComp.filter(a=>a.flag==='susp').length;
+  const dims={};
+  BLOCKS.forEach(b=>{dims[b.id]={pts:0,max:0,name:b.label}});
+  answers.forEach(a=>{
+    if(a.skipped||a.ans===null||a.q.block==='compensation')return;
+    dims[a.q.block].max+=a.q.w*3;
+    let pts=a.q.w;
+    if(a.q.type==='open'){const len=typeof a.ans==='string'?a.ans.length:0;if(len>200)pts=a.q.w*3;else if(len>80)pts=a.q.w*2;}
+    else if(a.q.type==='single'){if(a.q.correct!==undefined&&a.ans===a.q.options[a.q.correct])pts=a.q.w*3;else pts=a.q.w;}
+    else if(a.q.type==='multi'){if(Array.isArray(a.ans)&&a.ans.length>=2)pts=a.q.w*3;else if(Array.isArray(a.ans)&&a.ans.length===1)pts=a.q.w*2;}
+    else if(a.q.type==='scale'){if(a.ans==='3–5'||a.ans==='6–10'||a.ans==='10+')pts=a.q.w*3;else if(a.ans==='1–2')pts=a.q.w*2;}
+    dims[a.q.block].pts+=pts;
+  });
+  let tp=0,tm=0;Object.values(dims).forEach(d=>{tp+=d.pts;tm+=d.max});
+  const gs=tm>0?Math.round((tp/tm)*10):0;
+  document.getElementById('st-time').textContent=fmt(total);
+  document.getElementById('st-avg').textContent=fmt(avg);
+  document.getElementById('st-flags').textContent=flags;
+  document.getElementById('st-score').textContent=`${gs}/10`;
+
+  // Salary highlight
+  const salaryAns=answers.find(a=>a.q.block==='compensation');
+  if(salaryAns&&salaryAns.ans){
+    document.getElementById('salary-area').innerHTML=`<div class="salary-highlight"><strong>Expectativa salarial declarada:</strong> ${salaryAns.ans}</div>`;
+  }
+
+  // Verdict
+  const va=document.getElementById('verdict-area');
+  let v;
+  if(flags===0&&gs>=7)v={cls:'green',icon:'✓',title:'Perfil sólido',body:'Sin alertas de tiempo y puntuación global alta. Los indicadores son favorables para avanzar.'};
+  else if(flags<=2||gs>=5)v={cls:'amber',icon:'!',title:'Perfil con puntos a validar',body:`${flags} respuesta${flags!==1?'s':''} con tiempo elevado. Se recomienda profundizar en segunda entrevista.`};
+  else v={cls:'red',icon:'⚠',title:'Múltiples alertas detectadas',body:'Varias respuestas superaron el tiempo esperado. Revisar en detalle antes de avanzar.'};
+  va.innerHTML=`<div class="verdict ${v.cls}"><div class="vicon">${v.icon}</div><div class="vtext"><strong>${v.title}</strong><p>${v.body}</p></div></div>`;
+
+  const dimColors={compensation:'#854D0E',tech:'#1D4ED8',ai:'#15803D',leadership:'#7E22CE',product:'#C2410C',multiwork:'#DC2626'};
+  document.getElementById('dims-grid').innerHTML=Object.entries(dims).filter(([k])=>k!=='compensation').map(([k,d])=>{
+    const pct=d.max>0?Math.round((d.pts/d.max)*100):0;
+    return`<div class="dim-card"><div class="dim-name">${d.name}</div><div class="dim-val">${pct}%</div><div class="dim-bar"><div class="dim-fill" style="width:${pct}%;background:${dimColors[k]}"></div></div></div>`;
+  }).join('');
+
+  const mwA=answers.filter(a=>a.q.block==='multiwork'&&!a.skipped);
+  const mwS=[];
+  mwA.forEach(a=>{
+    if(a.q.type==='single'&&a.ans&&(a.ans.includes('Tengo compromisos')||a.ans.includes('no responder')))mwS.push('Declaró compromisos activos o evitó responder sobre exclusividad.');
+    if(a.q.type==='open'&&typeof a.ans==='string'&&a.time<a.q.min)mwS.push(`Respuesta muy rápida en pregunta de dedicación (${fmt(a.time)}).`);
+  });
+  document.getElementById('multiwork-area').innerHTML=mwS.length>0
+    ?`<div class="multiwork-box"><h4>⚠ Señales de multiempleo a revisar</h4><ul>${mwS.map(s=>`<li>${s}</li>`).join('')}</ul></div>`
+    :`<div style="background:#F0FDF4;border:1px solid rgba(16,185,129,0.25);border-radius:var(--radius);padding:0.85rem 1.1rem;margin-bottom:1.5rem;font-size:0.84rem;color:#166534">✓ Sin señales de alerta en el bloque de compromiso y dedicación.</div>`;
+
+  document.getElementById('answers-detail').innerHTML=answers.map((a,i)=>{
+    const fc=a.flag==='susp'?'flag-susp':a.flag==='fast'?'flag-fast':a.flag==='multiwork'?'flag-multi':'';
+    const fl=a.flag==='susp'?`<span class="aiflag susp">⚠ ${fmt(a.time)}</span>`:a.flag==='fast'?`<span class="aiflag fast">✓ ${fmt(a.time)}</span>`:`<span class="aiflag ok">${fmt(a.time)}</span>`;
+    let at='';
+    if(a.skipped)at='<em style="color:var(--text-muted)">Omitida</em>';
+    else if(a.ans===null)at='<em style="color:var(--text-muted)">Sin respuesta</em>';
+    else if(Array.isArray(a.ans))at=a.ans.join(', ')||'<em>Sin selección</em>';
+    else at=a.ans||'<em>Sin respuesta</em>';
+    const b=BLOCKS.find(x=>x.id===a.q.block);
+    return`<div class="acard ${fc}"><div class="acard-hdr"><div><span class="qcat cat-${a.q.block}" style="margin-bottom:0.35rem;display:inline-block">${b.label}</span><p class="acard-q">${a.q.text}</p></div><div class="acard-timing">${fl}</div></div><div class="acard-body">${at}</div><label class="notes-lbl">Notas</label><textarea class="notes-ta" id="note-${i}" placeholder="Observaciones..."></textarea></div>`;
+  }).join('');
+}
+
+function copyLink(){
+  const name=document.getElementById('f-name').value.trim();
+  const exp=document.getElementById('f-exp').value;
+  const iw=document.getElementById('f-interviewer').value.trim();
+  const base=window.location.origin+window.location.pathname;
+  const p=new URLSearchParams();
+  if(name)p.set('c',name);if(exp)p.set('e',exp);if(iw)p.set('i',iw);
+  const url=`${base}?${p.toString()}`;
+  navigator.clipboard.writeText(url).then(()=>alert('Magic link copiado:\n'+url)).catch(()=>prompt('Copia este link:',url));
+}
+function resetAll(){curQ=0;answers=[];clearInterval(timer);lastBlock=null;document.getElementById('f-name').value='';document.getElementById('f-exp').value='';document.getElementById('f-name').readOnly=false;document.getElementById('hdr-candidate').style.display='none';document.getElementById('hdr-status').textContent='Inicio';showScreen('screen-intro');}
+</script>
+</body>
+</html>
