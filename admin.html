@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alter5 — Admin · Generador de Magic Links</title>
+<title>Alter5 — Admin · Screening & Magic Links</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -21,65 +21,72 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .hdr-nav a{font-size:0.78rem;color:var(--slate);text-decoration:none;padding:0.3rem 0.75rem;border-radius:6px;transition:all 0.15s}
 .hdr-nav a:hover{background:rgba(255,255,255,0.08);color:#fff}
 .hdr-nav a.active{background:rgba(16,185,129,0.15);color:var(--emerald)}
-.main{flex:1;max-width:860px;width:100%;margin:0 auto;padding:2.5rem 1.5rem}
+.main{flex:1;max-width:960px;width:100%;margin:0 auto;padding:2.5rem 1.5rem}
 .page-title{font-family:var(--serif);font-size:2rem;color:var(--navy);margin-bottom:0.4rem;letter-spacing:-0.02em}
 .page-sub{font-size:0.9rem;color:var(--text-muted);margin-bottom:2.5rem;line-height:1.6}
 .card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.25rem}
 .card-title{font-size:0.78rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.25rem;padding-bottom:0.6rem;border-bottom:1px solid var(--border)}
-
-/* Upload zone */
 .upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:2.5rem;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg);position:relative}
 .upload-zone:hover,.upload-zone.drag{border-color:var(--emerald);background:rgba(16,185,129,0.03)}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .upload-icon{font-size:2rem;margin-bottom:0.75rem;display:block}
 .upload-label{font-size:0.9rem;color:var(--text-muted);line-height:1.5}
 .upload-label strong{color:var(--text)}
-
-/* Candidates table */
-.candidates-table{width:100%;border-collapse:collapse}
-.candidates-table th{font-size:0.72rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);padding:0.6rem 0.75rem;text-align:left;border-bottom:1px solid var(--border)}
-.candidates-table td{padding:0.75rem;font-size:0.875rem;border-bottom:1px solid var(--border);vertical-align:middle}
-.candidates-table tr:last-child td{border-bottom:none}
-.candidates-table tr:hover td{background:var(--bg)}
 .badge{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.7rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:4px}
 .badge-ok{background:#F0FDF4;color:#15803D}
 .badge-proc{background:#EFF6FF;color:#1D4ED8}
 .badge-err{background:#FEF2F2;color:#DC2626}
 .badge-wait{background:#F8FAFC;color:var(--text-muted)}
-
-/* Link pill */
-.link-pill{display:flex;align-items:center;gap:0.5rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.6rem;font-family:var(--mono);font-size:0.72rem;color:var(--text-muted);max-width:260px;overflow:hidden}
-.link-pill span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.badge-enviar{background:#F0FDF4;color:#15803D}
+.badge-revisar{background:#FFF7ED;color:#92400E}
+.badge-descartar{background:#FEF2F2;color:#DC2626}
 .copy-btn{background:none;border:none;cursor:pointer;font-size:0.78rem;color:var(--emerald);font-family:var(--sans);font-weight:600;padding:0 0.25rem;flex-shrink:0;white-space:nowrap}
 .copy-btn:hover{color:var(--navy)}
-
-/* Action buttons */
 .btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 1.1rem;border-radius:7px;font-family:var(--sans);font-size:0.82rem;font-weight:600;cursor:pointer;border:none;transition:all 0.15s}
 .btn-primary{background:var(--navy);color:#fff}
 .btn-primary:hover{background:#111f38}
+.btn-emerald{background:var(--emerald);color:#fff}
+.btn-emerald:hover{background:#0d9268}
 .btn-ghost{background:transparent;color:var(--text-muted);border:1px solid var(--border)}
 .btn-ghost:hover{background:var(--white);color:var(--text)}
 .btn-danger{background:transparent;color:var(--red);border:1px solid rgba(239,68,68,0.3)}
 .btn-danger:hover{background:#FEF2F2}
 .btn-sm{padding:0.35rem 0.75rem;font-size:0.75rem}
-
-/* Processing state */
 .processing-row td{background:rgba(16,185,129,0.03)!important}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--emerald);border-radius:50%;animation:spin 0.6s linear infinite;vertical-align:middle;margin-right:4px}
-
-/* Empty state */
 .empty-state{text-align:center;padding:3rem 1.5rem;color:var(--text-muted)}
 .empty-state p{font-size:0.9rem;line-height:1.6}
 .empty-icon{font-size:2.5rem;margin-bottom:0.75rem;display:block}
-
-/* Toast */
 .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:#fff;padding:0.75rem 1.25rem;border-radius:8px;font-size:0.84rem;z-index:999;transform:translateY(100px);opacity:0;transition:all 0.25s}
 .toast.show{transform:translateY(0);opacity:1}
-
-/* Exp select */
 .exp-sel{padding:0.4rem 0.6rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.78rem;color:var(--text);background:var(--white);outline:none;cursor:pointer}
 .exp-sel:focus{border-color:var(--emerald)}
+
+/* Candidate card */
+.cand-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:0.85rem;transition:box-shadow 0.15s}
+.cand-card:hover{box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.cand-card.fit-enviar{border-left:4px solid var(--emerald)}
+.cand-card.fit-revisar{border-left:4px solid var(--amber)}
+.cand-card.fit-descartar{border-left:4px solid var(--red)}
+.cand-card.processing{border-left:4px solid #60A5FA;opacity:0.8}
+.cand-card.error{border-left:4px solid var(--red);opacity:0.7}
+.cand-row{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
+.cand-info{flex:1;min-width:0}
+.cand-name{font-weight:600;font-size:0.95rem;color:var(--text)}
+.cand-file{font-size:0.72rem;color:var(--text-muted);margin-top:0.15rem}
+.cand-email{font-family:var(--mono);font-size:0.78rem;color:var(--text-muted);margin-top:0.25rem}
+.cand-fit{display:flex;align-items:center;gap:0.65rem;margin-top:0.65rem;padding-top:0.65rem;border-top:1px solid var(--border)}
+.fit-score{font-family:var(--mono);font-size:1.4rem;font-weight:500;line-height:1;width:40px;text-align:center}
+.fit-score.high{color:#15803D}
+.fit-score.mid{color:#92400E}
+.fit-score.low{color:#DC2626}
+.fit-summary{font-size:0.8rem;color:var(--text-muted);line-height:1.5;flex:1}
+.cand-actions{display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;flex-shrink:0}
+.stats-row{display:flex;gap:0.85rem;margin-bottom:1.25rem}
+.stat-pill{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:0.6rem 1rem;text-align:center;flex:1}
+.stat-val{font-family:var(--mono);font-size:1.3rem;font-weight:500;color:var(--navy);display:block}
+.stat-label{font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em}
 </style>
 </head>
 <body>
@@ -87,17 +94,17 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 <div class="hdr">
   <div class="hdr-logo">Alter<span>5</span> <span style="font-family:var(--sans);font-size:0.75rem;color:var(--slate);font-weight:400;margin-left:0.5rem">Admin</span></div>
   <div class="hdr-nav">
-    <a href="/" class="">Entrevista</a>
-    <a href="/admin" class="active">Admin · Magic Links</a>
+    <a href="/">Entrevista</a>
+    <a href="/dashboard">Panel</a>
+    <a href="/admin" class="active">Admin · Screening</a>
   </div>
 </div>
 
 <div class="main">
   <p style="font-family:var(--mono);font-size:0.7rem;color:var(--emerald);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.6rem">Panel de administración</p>
-  <h1 class="page-title">Generador de Magic Links</h1>
-  <p class="page-sub">Sube CVs en PDF. La IA extrae automáticamente el nombre y el email del candidato y genera el enlace personalizado para enviarle.</p>
+  <h1 class="page-title">Screening de CVs e invitaciones</h1>
+  <p class="page-sub">Sube CVs en PDF. La IA analiza el fit de cada candidato con la posición y recomienda a quién invitar. Tú decides a quién enviar la entrevista.</p>
 
-  <!-- Upload -->
   <div class="card">
     <p class="card-title">Subir CVs</p>
     <div class="upload-zone" id="upload-zone"
@@ -110,11 +117,20 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
-  <!-- Candidates list -->
   <div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;padding-bottom:0.6rem;border-bottom:1px solid var(--border)">
-      <p class="card-title" style="margin:0;border:none;padding:0">Candidatos procesados</p>
-      <button class="btn btn-ghost btn-sm" onclick="clearAll()" id="clear-btn" style="display:none">Limpiar lista</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.6rem;border-bottom:1px solid var(--border)">
+      <p class="card-title" style="margin:0;border:none;padding:0">Candidatos</p>
+      <div style="display:flex;gap:0.5rem">
+        <button class="btn btn-emerald btn-sm" onclick="sendAllRecommended()" id="send-all-btn" style="display:none">Enviar a todos los recomendados</button>
+        <button class="btn btn-ghost btn-sm" onclick="clearAll()" id="clear-btn" style="display:none">Limpiar</button>
+      </div>
+    </div>
+    <div class="stats-row" id="stats-row" style="display:none">
+      <div class="stat-pill"><span class="stat-val" id="st-total">0</span><span class="stat-label">Total</span></div>
+      <div class="stat-pill"><span class="stat-val" id="st-enviar" style="color:#15803D">0</span><span class="stat-label">Recomendados</span></div>
+      <div class="stat-pill"><span class="stat-val" id="st-revisar" style="color:#92400E">0</span><span class="stat-label">Revisar</span></div>
+      <div class="stat-pill"><span class="stat-val" id="st-descartar" style="color:#DC2626">0</span><span class="stat-label">Descartados</span></div>
+      <div class="stat-pill"><span class="stat-val" id="st-sent" style="color:var(--emerald)">0</span><span class="stat-label">Enviados</span></div>
     </div>
     <div id="candidates-area">
       <div class="empty-state">
@@ -136,7 +152,7 @@ function esc(s){const d=document.createElement('div');d.textContent=String(s||''
 
 let candidates = loadStorage('a5_candidates', []);
 
-window.addEventListener('DOMContentLoaded', () => { renderTable(); });
+window.addEventListener('DOMContentLoaded', () => { render(); });
 
 function handleDrop(e) {
   e.preventDefault();
@@ -151,13 +167,12 @@ function handleFiles(files) {
 async function processCV(file) {
   const id = Date.now() + Math.random().toString(36).slice(2);
   const token = crypto.randomUUID().replace(/-/g,'');
-  const cand = { id, filename: file.name, name: '', email: '', exp: '5-8', status: 'processing', link: '', token, emailStatus: 'pending', error: '' };
+  const cand = { id, filename: file.name, name: '', email: '', exp: '8-12', status: 'processing', link: '', token, emailStatus: 'pending', error: '', fit: null };
   candidates.unshift(cand);
-  save(); renderTable();
+  save(); render();
 
   try {
     const b64 = await fileToBase64(file);
-
     const res = await fetch('/api/process-cv', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -166,50 +181,17 @@ async function processCV(file) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Error procesando CV');
 
-    const name = data.name || '';
-    const email = data.email || '';
-
-    if (!name && !email) throw new Error('No se pudo extraer nombre ni email del CV');
-
-    cand.name = name;
-    cand.email = email;
-    cand.link = `${BASE_URL}/?c=${encodeURIComponent(name)}&e=${encodeURIComponent(cand.exp)}&t=${token}`;
+    cand.name = data.name || '';
+    cand.email = data.email || '';
+    cand.fit = data.fit || null;
+    cand.link = `${BASE_URL}/?c=${encodeURIComponent(cand.name)}&e=${encodeURIComponent(cand.exp)}&t=${token}`;
     cand.status = 'done';
-    save(); renderTable();
-
-    if (email) {
-      cand.emailStatus = 'sending';
-      save(); renderTable();
-      try {
-        const emailRes = await fetch('/api/send-invite', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, token })
-        });
-        const emailData = await emailRes.json();
-        if (emailRes.ok && emailData.success) {
-          cand.emailStatus = 'sent';
-          showToast(`Invitación enviada a ${email}`);
-        } else {
-          cand.emailStatus = 'email_error';
-          cand.error = emailData.error || 'Error enviando email';
-          showToast(`CV procesado pero error al enviar email a ${email}`);
-        }
-      } catch (emailErr) {
-        cand.emailStatus = 'email_error';
-        cand.error = emailErr.message;
-      }
-    } else {
-      cand.emailStatus = 'no_email';
-    }
-
   } catch (err) {
     cand.status = 'error';
-    cand.emailStatus = 'error';
     cand.error = err.message;
   }
 
-  save(); renderTable();
+  save(); render();
 }
 
 function fileToBase64(file) {
@@ -221,137 +203,11 @@ function fileToBase64(file) {
   });
 }
 
-function updateExp(id, val) {
-  const c = candidates.find(x => x.id === id);
-  if (!c) return;
-  c.exp = val;
-  if (c.status === 'done' && c.name) {
-    const p = new URLSearchParams();
-    if (c.name) p.set('c', c.name);
-    p.set('e', val);
-    p.set('t', c.token);
-    c.link = `${BASE_URL}/?${p.toString()}`;
-  }
-  save(); renderTable();
-}
-
-function copyLink(id) {
-  const c = candidates.find(x => x.id === id);
-  if (!c?.link) return;
-  navigator.clipboard.writeText(c.link).then(() => showToast(`Link de ${esc(c.name) || 'candidato'} copiado`)).catch(() => prompt('Copia este link:', c.link));
-}
-
-function copyEmail(id) {
-  const c = candidates.find(x => x.id === id);
-  if (!c?.email) return;
-  navigator.clipboard.writeText(c.email).then(() => showToast(`Email copiado: ${c.email}`)).catch(() => prompt('Copia este email:', c.email));
-}
-
-function removeCandidate(id) {
-  candidates = candidates.filter(x => x.id !== id);
-  save(); renderTable();
-}
-
-function clearAll() {
-  if (!confirm('Eliminar todos los candidatos de la lista?')) return;
-  candidates = []; save(); renderTable();
-}
-
-function save() {
-  saveStorage('a5_candidates', candidates);
-}
-
-function renderTable() {
-  const area = document.getElementById('candidates-area');
-  const clearBtn = document.getElementById('clear-btn');
-  if (!candidates.length) {
-    area.innerHTML = `<div class="empty-state"><span class="empty-icon">👤</span><p>Aquí aparecerán los candidatos una vez<br>proceses sus CVs.</p></div>`;
-    clearBtn.style.display = 'none';
-    return;
-  }
-  clearBtn.style.display = '';
-  area.innerHTML = `
-    <table class="candidates-table">
-      <thead><tr>
-        <th>Candidato</th>
-        <th>Email</th>
-        <th>Exp.</th>
-        <th>Magic link</th>
-        <th>Estado</th>
-        <th>Invitación</th>
-        <th></th>
-      </tr></thead>
-      <tbody>
-        ${candidates.map(c => {
-          const safeName = esc(c.name);
-          const safeFilename = esc(c.filename);
-          const safeEmail = esc(c.email);
-          const safeError = esc(c.error);
-          const safeLink = esc(c.link);
-          const safeId = esc(c.id);
-          return `
-          <tr class="${c.status === 'processing' ? 'processing-row' : ''}">
-            <td>
-              <div style="font-weight:500;color:var(--text)">${safeName || `<span style="color:var(--text-muted);font-style:italic">${safeFilename}</span>`}</div>
-              ${safeName ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">${safeFilename}</div>` : ''}
-            </td>
-            <td>
-              ${c.email
-                ? `<div style="display:flex;align-items:center;gap:0.4rem">
-                    <span style="font-family:var(--mono);font-size:0.78rem">${safeEmail}</span>
-                    <button class="copy-btn" onclick="copyEmail('${safeId}')">copiar</button>
-                   </div>`
-                : `<span style="color:var(--text-muted);font-style:italic;font-size:0.82rem">—</span>`}
-            </td>
-            <td>
-              <select class="exp-sel" onchange="updateExp('${safeId}', this.value)" ${c.status !== 'done' ? 'disabled' : ''}>
-                <option value="3-5" ${c.exp==='3-5'?'selected':''}>3–5 años</option>
-                <option value="5-8" ${c.exp==='5-8'?'selected':''}>5–8 años</option>
-                <option value="8-12" ${c.exp==='8-12'?'selected':''}>8–12 años</option>
-                <option value="12+" ${c.exp==='12+'?'selected':''}>12+ años</option>
-              </select>
-            </td>
-            <td>
-              ${c.status === 'done' && c.link
-                ? `<div class="link-pill"><span>${safeLink}</span><button class="copy-btn" onclick="copyLink('${safeId}')">copiar</button></div>`
-                : c.status === 'processing'
-                ? `<span style="font-size:0.82rem;color:var(--text-muted)"><span class="spinner"></span>Procesando...</span>`
-                : `<span style="font-size:0.82rem;color:var(--red)">—</span>`}
-            </td>
-            <td>
-              ${c.status === 'done'
-                ? `<span class="badge badge-ok">CV</span>`
-                : c.status === 'processing'
-                ? `<span class="badge badge-proc">Procesando</span>`
-                : `<span class="badge badge-err" title="${safeError}">Error</span>`}
-            </td>
-            <td>
-              ${c.emailStatus === 'sent'
-                ? `<span class="badge badge-ok">Enviada</span>`
-                : c.emailStatus === 'sending'
-                ? `<span style="font-size:0.78rem;color:var(--text-muted)"><span class="spinner"></span></span>`
-                : c.emailStatus === 'email_error'
-                ? `<span class="badge badge-err" title="${safeError}">Error</span> <button class="copy-btn" onclick="resendInvite('${safeId}')">reenviar</button>`
-                : c.emailStatus === 'no_email'
-                ? `<span class="badge badge-wait">Sin email</span>`
-                : c.status === 'done' && c.email
-                ? `<button class="copy-btn" onclick="resendInvite('${safeId}')">enviar</button>`
-                : `<span style="color:var(--text-muted);font-size:0.78rem">—</span>`}
-            </td>
-            <td>
-              <button class="btn btn-danger btn-sm" onclick="removeCandidate('${safeId}')">x</button>
-            </td>
-          </tr>
-        `}).join('')}
-      </tbody>
-    </table>`;
-}
-
-async function resendInvite(id) {
+async function sendInvite(id) {
   const c = candidates.find(x => x.id === id);
   if (!c || !c.email || !c.name) { showToast('Faltan datos del candidato'); return; }
   c.emailStatus = 'sending';
-  save(); renderTable();
+  save(); render();
   try {
     const res = await fetch('/api/send-invite', {
       method: 'POST',
@@ -361,17 +217,142 @@ async function resendInvite(id) {
     const data = await res.json();
     if (res.ok && data.success) {
       c.emailStatus = 'sent';
-      showToast(`Invitación reenviada a ${c.email}`);
+      showToast(`Invitación enviada a ${c.email}`);
     } else {
       c.emailStatus = 'email_error';
       c.error = data.error || 'Error enviando email';
-      showToast(`Error al reenviar: ${data.error || 'desconocido'}`);
+      showToast(`Error: ${data.error || 'desconocido'}`);
     }
   } catch (err) {
     c.emailStatus = 'email_error';
     c.error = err.message;
   }
-  save(); renderTable();
+  save(); render();
+}
+
+async function sendAllRecommended() {
+  const toSend = candidates.filter(c => c.status === 'done' && c.email && c.fit?.recommendation === 'enviar' && c.emailStatus !== 'sent' && c.emailStatus !== 'sending');
+  if (!toSend.length) { showToast('No hay candidatos recomendados pendientes de envío'); return; }
+  if (!confirm(`Enviar invitación a ${toSend.length} candidato${toSend.length > 1 ? 's' : ''} recomendados?`)) return;
+  for (const c of toSend) {
+    await sendInvite(c.id);
+  }
+  showToast(`Proceso completado: ${toSend.length} invitaciones`);
+}
+
+function updateExp(id, val) {
+  const c = candidates.find(x => x.id === id);
+  if (!c) return;
+  c.exp = val;
+  if (c.status === 'done' && c.name) {
+    c.link = `${BASE_URL}/?c=${encodeURIComponent(c.name)}&e=${encodeURIComponent(val)}&t=${c.token}`;
+  }
+  save(); render();
+}
+
+function copyLink(id) {
+  const c = candidates.find(x => x.id === id);
+  if (!c?.link) return;
+  navigator.clipboard.writeText(c.link).then(() => showToast('Link copiado')).catch(() => prompt('Copia este link:', c.link));
+}
+
+function removeCandidate(id) {
+  candidates = candidates.filter(x => x.id !== id);
+  save(); render();
+}
+
+function clearAll() {
+  if (!confirm('Eliminar todos los candidatos de la lista?')) return;
+  candidates = []; save(); render();
+}
+
+function save() { saveStorage('a5_candidates', candidates); }
+
+function render() {
+  const area = document.getElementById('candidates-area');
+  const clearBtn = document.getElementById('clear-btn');
+  const sendAllBtn = document.getElementById('send-all-btn');
+  const statsRow = document.getElementById('stats-row');
+
+  if (!candidates.length) {
+    area.innerHTML = `<div class="empty-state"><span class="empty-icon">👤</span><p>Aquí aparecerán los candidatos una vez<br>proceses sus CVs.</p></div>`;
+    clearBtn.style.display = 'none';
+    sendAllBtn.style.display = 'none';
+    statsRow.style.display = 'none';
+    return;
+  }
+
+  clearBtn.style.display = '';
+  statsRow.style.display = '';
+
+  const done = candidates.filter(c => c.status === 'done' && c.fit);
+  const enviar = done.filter(c => c.fit.recommendation === 'enviar');
+  const revisar = done.filter(c => c.fit.recommendation === 'revisar');
+  const descartar = done.filter(c => c.fit.recommendation === 'descartar');
+  const sent = candidates.filter(c => c.emailStatus === 'sent');
+  const pendingSend = enviar.filter(c => c.email && c.emailStatus !== 'sent' && c.emailStatus !== 'sending');
+
+  document.getElementById('st-total').textContent = candidates.length;
+  document.getElementById('st-enviar').textContent = enviar.length;
+  document.getElementById('st-revisar').textContent = revisar.length;
+  document.getElementById('st-descartar').textContent = descartar.length;
+  document.getElementById('st-sent').textContent = sent.length;
+
+  sendAllBtn.style.display = pendingSend.length > 0 ? '' : 'none';
+
+  area.innerHTML = candidates.map(c => {
+    const safeName = esc(c.name);
+    const safeFile = esc(c.filename);
+    const safeEmail = esc(c.email);
+    const safeId = esc(c.id);
+    const safeError = esc(c.error);
+    const fit = c.fit;
+
+    if (c.status === 'processing') {
+      return `<div class="cand-card processing"><div class="cand-row"><div class="cand-info"><div class="cand-name"><span class="spinner"></span> Analizando CV...</div><div class="cand-file">${safeFile}</div></div></div></div>`;
+    }
+    if (c.status === 'error') {
+      return `<div class="cand-card error"><div class="cand-row"><div class="cand-info"><div class="cand-name">${safeFile}</div><div style="font-size:0.78rem;color:var(--red);margin-top:0.25rem">${safeError}</div></div><div class="cand-actions"><button class="btn btn-danger btn-sm" onclick="removeCandidate('${safeId}')">x</button></div></div></div>`;
+    }
+
+    const fitClass = fit ? `fit-${fit.recommendation}` : '';
+    const scoreClass = fit ? (fit.score >= 6 ? 'high' : fit.score >= 4 ? 'mid' : 'low') : '';
+    const recLabel = fit ? (fit.recommendation === 'enviar' ? 'Recomendado' : fit.recommendation === 'revisar' ? 'Revisar' : 'Descartar') : '';
+    const recBadge = fit ? `badge-${fit.recommendation}` : '';
+
+    let emailBtn = '';
+    if (c.emailStatus === 'sent') {
+      emailBtn = `<span class="badge badge-ok">Enviada</span>`;
+    } else if (c.emailStatus === 'sending') {
+      emailBtn = `<span class="spinner"></span>`;
+    } else if (c.email) {
+      emailBtn = `<button class="btn btn-emerald btn-sm" onclick="sendInvite('${safeId}')">Enviar invitación</button>`;
+    } else {
+      emailBtn = `<span class="badge badge-wait">Sin email</span>`;
+    }
+
+    return `<div class="cand-card ${fitClass}">
+      <div class="cand-row">
+        <div class="cand-info">
+          <div class="cand-name">${safeName || safeFile}</div>
+          ${safeName ? `<div class="cand-file">${safeFile}</div>` : ''}
+          ${c.email ? `<div class="cand-email">${safeEmail}</div>` : ''}
+        </div>
+        <div class="cand-actions">
+          ${fit ? `<span class="badge ${recBadge}">${fit.score}/10 · ${recLabel}</span>` : ''}
+          ${emailBtn}
+          <div style="display:flex;gap:0.35rem">
+            <button class="btn btn-ghost btn-sm" onclick="copyLink('${safeId}')">Link</button>
+            <button class="btn btn-danger btn-sm" onclick="removeCandidate('${safeId}')">x</button>
+          </div>
+        </div>
+      </div>
+      ${fit ? `<div class="cand-fit">
+        <div class="fit-score ${scoreClass}">${fit.score}</div>
+        <div class="fit-summary">${esc(fit.summary)}</div>
+      </div>` : ''}
+    </div>`;
+  }).join('');
 }
 
 function showToast(msg) {
