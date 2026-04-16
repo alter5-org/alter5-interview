@@ -180,7 +180,8 @@ function handleFiles(files) {
 
 async function processCV(file, apiKey) {
   const id = Date.now() + Math.random().toString(36).slice(2);
-  const cand = { id, filename: file.name, name: '', email: '', exp: '5-8', status: 'processing', link: '', error: '' };
+  const token = crypto.randomUUID().replace(/-/g,'').slice(0,16);
+  const cand = { id, filename: file.name, name: '', email: '', exp: '5-8', status: 'processing', link: '', token, emailStatus: 'pending', error: '' };
   candidates.unshift(cand);
   save(); renderTable();
 
@@ -228,17 +229,42 @@ async function processCV(file, apiKey) {
 
     if (!name && !email) throw new Error('No se pudo extraer nombre ni email del CV');
 
-    const params = new URLSearchParams();
-    if (name) params.set('c', name);
-    params.set('e', cand.exp);
-
     cand.name = name;
     cand.email = email;
-    cand.link = `${BASE_URL}/?${params.toString()}`;
+    cand.link = `${BASE_URL}/?c=${encodeURIComponent(name)}&t=${token}`;
     cand.status = 'done';
+    save(); renderTable();
+
+    // Auto-send email if we have an email address
+    if (email) {
+      cand.emailStatus = 'sending';
+      save(); renderTable();
+      try {
+        const emailRes = await fetch('/api/send-invite', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, token, baseUrl: BASE_URL })
+        });
+        const emailData = await emailRes.json();
+        if (emailRes.ok && emailData.success) {
+          cand.emailStatus = 'sent';
+          showToast(`✓ Invitación enviada a ${email}`);
+        } else {
+          cand.emailStatus = 'email_error';
+          cand.error = emailData.error || 'Error enviando email';
+          showToast(`⚠ CV procesado pero error al enviar email a ${email}`);
+        }
+      } catch (emailErr) {
+        cand.emailStatus = 'email_error';
+        cand.error = emailErr.message;
+      }
+    } else {
+      cand.emailStatus = 'no_email';
+    }
 
   } catch (err) {
     cand.status = 'error';
+    cand.emailStatus = 'error';
     cand.error = err.message;
   }
 
@@ -316,6 +342,7 @@ function renderTable() {
         <th>Exp.</th>
         <th>Magic link</th>
         <th>Estado</th>
+        <th>Invitación</th>
         <th></th>
       </tr></thead>
       <tbody>
@@ -350,10 +377,23 @@ function renderTable() {
             </td>
             <td>
               ${c.status === 'done'
-                ? `<span class="badge badge-ok">✓ Listo</span>`
+                ? `<span class="badge badge-ok">✓ CV</span>`
                 : c.status === 'processing'
                 ? `<span class="badge badge-proc">Procesando</span>`
                 : `<span class="badge badge-err" title="${c.error}">Error</span>`}
+            </td>
+            <td>
+              ${c.emailStatus === 'sent'
+                ? `<span class="badge badge-ok">✓ Enviada</span>`
+                : c.emailStatus === 'sending'
+                ? `<span style="font-size:0.78rem;color:var(--text-muted)"><span class="spinner"></span></span>`
+                : c.emailStatus === 'email_error'
+                ? `<span class="badge badge-err" title="${c.error}">Error</span> <button class="copy-btn" onclick="resendInvite('${c.id}')">reenviar</button>`
+                : c.emailStatus === 'no_email'
+                ? `<span class="badge badge-wait">Sin email</span>`
+                : c.status === 'done' && c.email
+                ? `<button class="copy-btn" onclick="resendInvite('${c.id}')">enviar</button>`
+                : `<span style="color:var(--text-muted);font-size:0.78rem">—</span>`}
             </td>
             <td>
               <button class="btn btn-danger btn-sm" onclick="removeCandidate('${c.id}')">✕</button>
@@ -362,6 +402,33 @@ function renderTable() {
         `).join('')}
       </tbody>
     </table>`;
+}
+
+async function resendInvite(id) {
+  const c = candidates.find(x => x.id === id);
+  if (!c || !c.email || !c.name) { showToast('Faltan datos del candidato'); return; }
+  c.emailStatus = 'sending';
+  save(); renderTable();
+  try {
+    const res = await fetch('/api/send-invite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: c.name, email: c.email, token: c.token, baseUrl: BASE_URL })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      c.emailStatus = 'sent';
+      showToast(`✓ Invitación reenviada a ${c.email}`);
+    } else {
+      c.emailStatus = 'email_error';
+      c.error = data.error || 'Error enviando email';
+      showToast(`⚠ Error al reenviar: ${data.error || 'desconocido'}`);
+    }
+  } catch (err) {
+    c.emailStatus = 'email_error';
+    c.error = err.message;
+  }
+  save(); renderTable();
 }
 
 function showToast(msg) {
