@@ -1,0 +1,25 @@
+{
+  "name": "alter5-interview",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salvac12/alter5-interview.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/salvac12/alter5-interview/issues"
+  },
+  "homepage": "https://github.com/salvac12/alter5-interview#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1"
+  }
+}
