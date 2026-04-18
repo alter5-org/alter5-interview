@@ -19,12 +19,12 @@ function redirect(res, url, extraHeaders = {}) {
   res.end();
 }
 
-module.exports = async function handler(req, res) {
+module.exports.default = async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const baseUrl = process.env.APPLY_BASE_URL || 'https://careers.alter-5.com/sw-architect';
+  const baseUrl = process.env.APPLY_BASE_URL || 'https://careers.alter-5.com/hoe';
   const origin = new URL(baseUrl).origin;
 
   const token = String((req.query && req.query.token) || '').trim();

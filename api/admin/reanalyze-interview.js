@@ -5,6 +5,7 @@
 
 const { supabaseAdmin } = require('../../lib/supabase');
 const { analyzeInterview } = require('../../lib/interview-analysis');
+const { sanitizeHtml } = require('../../lib/sanitize-html');
 
 module.exports.default = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'method' });
@@ -46,12 +47,15 @@ module.exports.default = async function handler(req, res) {
     });
     if (!result.ok) return res.status(502).json({ error: result.error });
 
+    // Sanitize at write time — see lib/sanitize-html.js for rationale.
+    const safeHtml = sanitizeHtml(result.html);
+
     await supabaseAdmin
       .from('interviews')
-      .update({ ai_analysis_html: result.html })
+      .update({ ai_analysis_html: safeHtml })
       .eq('id', interviewId);
 
-    return res.status(200).json({ ok: true, html: result.html });
+    return res.status(200).json({ ok: true, html: safeHtml });
   } catch (e) {
     console.error('[admin/reanalyze-interview] error:', e.message);
     return res.status(500).json({ error: 'internal_error' });

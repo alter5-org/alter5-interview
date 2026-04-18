@@ -44,10 +44,12 @@ module.exports.default = async function handler(req, res) {
 
   try {
     // Find or create application.
+    // We only need a handful of fields downstream — don't pull the whole
+    // PII-laden row just to check existence.
     let appRow;
     const { data: existing } = await supabaseAdmin
       .from('applications')
-      .select('*')
+      .select('id, email, name, experience')
       .eq('email', normEmail)
       .is('deleted_at', null)
       .maybeSingle();
@@ -68,7 +70,7 @@ module.exports.default = async function handler(req, res) {
           apply_ip: ip,
           apply_user_agent: ua,
         })
-        .select('*')
+        .select('id, email, name, experience')
         .single();
       if (cerr) throw cerr;
       appRow = created;

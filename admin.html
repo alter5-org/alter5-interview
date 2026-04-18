@@ -6,6 +6,12 @@
 <title>Alter5 — Admin</title>
 <meta name="robots" content="noindex">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- DOMPurify (client-side HTML sanitizer). Pinned to a specific version
+     so behaviour is predictable; loaded from jsdelivr (allowlisted in CSP).
+     SRI not pinned because we currently rely on CSP source restriction +
+     pinned version + crossorigin to reduce attack surface; rotate the
+     version explicitly when upgrading and consider re-adding integrity. -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.11/dist/purify.min.js" crossorigin="anonymous"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -119,7 +125,7 @@ h1{font-family:var(--serif);font-size:1.9rem;color:var(--navy);margin-bottom:0.3
   <div class="hdr-nav">
     <a href="/admin" class="active">Admin</a>
     <a href="/reports">Reports</a>
-    <a href="/sw-architect" target="_blank">Landing ↗</a>
+    <a href="/hoe" target="_blank">Landing ↗</a>
   </div>
 </header>
 
@@ -262,17 +268,23 @@ function statusBadge(s){
   const [cls,label]=map[s]||['b-gray',s||'—'];
   return `<span class="badge ${cls}">${label}</span>`;
 }
+// DOMPurify with explicit allowlist matching the tags the interview-analysis
+// prompt is supposed to emit (see lib/interview-analysis.js). The server
+// already sanitizes ai_analysis_html at write time (lib/sanitize-html.js);
+// this is defense-in-depth for any legacy rows persisted before that.
+const PURIFY_CONFIG={
+  ALLOWED_TAGS:['h3','h4','h5','h6','p','br','hr','ul','ol','li','strong','em','b','i','u','span','div','blockquote','code'],
+  ALLOWED_ATTR:['class'],
+  ALLOW_DATA_ATTR:false,
+  KEEP_CONTENT:true,
+};
 function sanitizeHTML(html){
-  const tmp=document.createElement('div');
-  tmp.innerHTML=html;
-  tmp.querySelectorAll('script,iframe,object,embed,link,style,form,input,textarea,select,button,meta,base').forEach(el=>el.remove());
-  tmp.querySelectorAll('*').forEach(el=>{
-    for(const attr of [...el.attributes]){
-      if(attr.name.startsWith('on'))el.removeAttribute(attr.name);
-      if(['src','href','action','formaction','data','background'].includes(attr.name)&&/^\s*javascript:/i.test(attr.value))el.removeAttribute(attr.name);
-    }
-  });
-  return tmp.innerHTML;
+  if(typeof DOMPurify==='undefined'){
+    // Fallback if the CDN failed to load — render as plain text so a
+    // missing sanitizer never becomes an XSS sink.
+    const d=document.createElement('div');d.textContent=String(html||'');return d.innerHTML;
+  }
+  return DOMPurify.sanitize(String(html||''),PURIFY_CONFIG);
 }
 
 // ───────────────────────────────────────────────────────────────────────────

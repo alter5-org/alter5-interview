@@ -4,25 +4,114 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revisa tu email — Alter5</title>
-<link rel="icon" type="image/svg+xml" href="/alter-logo-blue.svg">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/ds/alter5-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ds/tokens.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Instrument Sans',sans-serif;background:#F5F7FA;color:#13285B;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
-.hdr{background:#13285B;padding:1rem 2rem;display:flex;align-items:center}
+body{
+  font-family:var(--a5-font-landing);
+  background:#fafbfc;
+  color:var(--a5-text-primary);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.hdr{
+  background:var(--a5-blue);
+  padding:14px 32px;
+  display:flex;align-items:center;
+}
 .hdr-logo{display:inline-flex;align-items:center}
 .hdr-logo img{height:28px;width:auto;display:block}
-.main{flex:1;max-width:560px;width:100%;margin:0 auto;padding:3rem 1.5rem;text-align:center}
-.icon{width:72px;height:72px;background:rgba(80,182,190,0.12);border:2px solid rgba(80,182,190,0.35);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;color:#3a99a1}
-h1{font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:2.2rem;color:#13285B;margin-bottom:1rem;letter-spacing:-0.025em}
-p{font-size:1rem;color:#64748B;line-height:1.7;margin-bottom:1rem}
-.email-out{font-family:'DM Mono',monospace;background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:0.75rem 1rem;font-size:0.9rem;color:#1E293B;display:inline-block;margin:0.5rem 0}
-.note{font-size:0.82rem;color:#94A3B8;margin-top:2rem;line-height:1.6;padding:1rem;background:#fff;border:1px solid #E2E8F0;border-radius:8px}
-.ftr{text-align:center;padding:1.5rem;font-size:0.72rem;color:#94A3B8;font-family:'DM Mono',monospace}
+
+.main{
+  flex:1;max-width:560px;width:100%;
+  margin:0 auto;
+  padding:64px 24px 40px;
+  text-align:center;
+}
+.icon{
+  width:80px;height:80px;
+  background:var(--a5-teal-light);
+  border:2px solid rgba(81,182,190,0.35);
+  border-radius:var(--a5-radius-full);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 24px;
+  font-size:32px;
+  color:var(--a5-teal-dark);
+}
+h1{
+  font-family:var(--a5-font-landing);
+  font-weight:700;
+  font-size:36px;
+  color:var(--a5-blue);
+  margin-bottom:14px;
+  letter-spacing:-0.025em;
+  text-wrap:balance;
+}
+p{
+  font-size:16px;
+  color:var(--a5-slate);
+  line-height:1.65;
+  margin-bottom:14px;
+}
+.email-out{
+  font-family:'JetBrains Mono',monospace;
+  background:var(--a5-light-card);
+  border:1px solid var(--a5-light-border);
+  border-radius:var(--a5-radius-md);
+  padding:12px 18px;
+  font-size:14px;
+  color:var(--a5-text-primary);
+  display:inline-block;
+  margin:8px 0 16px;
+}
+.note{
+  font-size:13.5px;
+  color:var(--a5-text-secondary);
+  margin-top:32px;
+  line-height:1.65;
+  padding:18px 22px;
+  background:var(--a5-light-card);
+  border:1px solid var(--a5-light-border);
+  border-radius:var(--a5-radius-lg);
+  text-align:left;
+}
+.note code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12.5px;
+  background:var(--a5-light-hover);
+  padding:1px 6px;
+  border-radius:var(--a5-radius-sm);
+  color:var(--a5-blue);
+}
+.note a{color:var(--a5-teal-dark);text-decoration:underline;text-underline-offset:2px}
+.note a:hover{color:var(--a5-blue)}
+
+.ftr{
+  text-align:center;
+  padding:24px 16px;
+  font-size:12px;
+  color:var(--a5-text-muted);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.05em;
+}
+
+@media (max-width:640px){
+  .hdr{padding:12px 20px}
+  .main{padding:40px 20px}
+  h1{font-size:28px}
+}
 </style>
 </head>
 <body>
-<header class="hdr"><a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5"><img src="/alter-logo-white.svg" alt="Alter5"></a></header>
+<header class="hdr">
+  <a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5">
+    <img src="/ds/alter5-logo-white.svg" alt="Alter5">
+  </a>
+</header>
 <main class="main">
   <div class="icon">✉</div>
   <h1>Revisa tu email</h1>
@@ -31,7 +120,7 @@ p{font-size:1rem;color:#64748B;line-height:1.7;margin-bottom:1rem}
   <p>Haz click en el botón del email para verificar tu dirección y subir tu CV. El enlace caduca en <strong>30 minutos</strong>.</p>
   <div class="note">
     <strong>¿No lo encuentras?</strong> Revisa tu carpeta de spam o promociones. El remitente es <code>hiring@alter-5.com</code>.
-    Si no llega en unos minutos, puedes <a href="/sw-architect" style="color:#50B6BE">volver a empezar</a>.
+    Si no llega en unos minutos, puedes <a href="/hoe">volver a empezar</a>.
   </div>
 </main>
 <footer class="ftr">Alter5 Financial Technologies, S.L. · Madrid</footer>

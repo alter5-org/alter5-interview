@@ -4,35 +4,121 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Política de privacidad para candidatos — Alter5</title>
-<link rel="icon" type="image/svg+xml" href="/alter-logo-blue.svg">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/ds/alter5-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ds/tokens.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Instrument Sans',sans-serif;background:#F5F7FA;color:#13285B;line-height:1.65;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
-.hdr{background:#13285B;padding:1rem 2rem;display:flex;align-items:center}
+body{
+  font-family:var(--a5-font-landing);
+  background:#fafbfc;
+  color:var(--a5-text-primary);
+  line-height:1.65;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.hdr{
+  background:var(--a5-blue);
+  padding:14px 32px;
+  display:flex;align-items:center;
+}
 .hdr-logo{display:inline-flex;align-items:center}
 .hdr-logo img{height:28px;width:auto;display:block}
-.main{flex:1;max-width:780px;width:100%;margin:0 auto;padding:2.5rem 1.5rem}
-h1{font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:2.2rem;color:#13285B;margin-bottom:0.5rem;letter-spacing:-0.025em}
-.sub{font-size:0.9rem;color:#94A3B8;margin-bottom:2rem;font-family:'DM Mono',monospace}
-h2{font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:1.3rem;color:#13285B;margin:2rem 0 0.75rem;letter-spacing:-0.015em}
-h3{font-size:1rem;color:#13285B;margin:1.25rem 0 0.5rem;font-weight:600}
-p,li{font-size:0.95rem;color:#475569;margin-bottom:0.75rem}
-ul,ol{margin:0.5rem 0 1rem 1.5rem}
-a{color:#50B6BE;text-decoration:underline}
-a:hover{color:#3a99a1}
-.box{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
-.box table{width:100%;border-collapse:collapse;font-size:0.9rem}
-.box th,.box td{padding:0.55rem 0.4rem;text-align:left;border-bottom:1px solid #E2E8F0;vertical-align:top}
-.box th{font-weight:600;color:#13285B;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.04em}
+
+.main{
+  flex:1;max-width:780px;width:100%;
+  margin:0 auto;
+  padding:48px 24px 40px;
+}
+h1{
+  font-family:var(--a5-font-landing);
+  font-weight:700;
+  font-size:36px;
+  color:var(--a5-blue);
+  margin-bottom:8px;
+  letter-spacing:-0.025em;
+  text-wrap:balance;
+}
+.sub{
+  font-size:13px;
+  color:var(--a5-text-secondary);
+  margin-bottom:32px;
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+}
+h2{
+  font-family:var(--a5-font-landing);
+  font-weight:700;
+  font-size:22px;
+  color:var(--a5-blue);
+  margin:32px 0 14px;
+  letter-spacing:-0.02em;
+}
+h3{
+  font-size:16px;
+  color:var(--a5-blue);
+  margin:20px 0 8px;
+  font-weight:600;
+}
+p,li{
+  font-size:15px;
+  color:var(--a5-text-primary);
+  margin-bottom:10px;
+}
+ul,ol{margin:8px 0 16px 24px}
+li{line-height:1.6}
+a{color:var(--a5-teal-dark);text-decoration:underline;text-underline-offset:2px}
+a:hover{color:var(--a5-blue)}
+
+.box{
+  background:var(--a5-light-card);
+  border:1px solid var(--a5-light-border);
+  border-radius:var(--a5-radius-lg);
+  padding:20px 24px;
+  margin-bottom:18px;
+}
+.box table{width:100%;border-collapse:collapse;font-size:14px}
+.box th,.box td{padding:9px 6px;text-align:left;border-bottom:1px solid var(--a5-light-border);vertical-align:top}
+.box th{
+  font-weight:600;
+  color:var(--a5-blue);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  font-family:'JetBrains Mono',monospace;
+  color:var(--a5-teal-dark);
+}
 .box tr:last-child td{border-bottom:none}
-.small{font-size:0.82rem;color:#64748B}
-.ftr{text-align:center;padding:1.5rem;font-size:0.72rem;color:#94A3B8;font-family:'DM Mono',monospace}
-.ftr a{color:#64748B;margin:0 0.5rem}
+.small{font-size:13px;color:var(--a5-text-secondary)}
+
+.ftr{
+  text-align:center;
+  padding:24px 16px;
+  font-size:12px;
+  color:var(--a5-text-muted);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.05em;
+}
+.ftr a{color:var(--a5-text-muted);text-decoration:underline;text-underline-offset:2px;margin:0 8px}
+.ftr a:hover{color:var(--a5-blue)}
+
+@media (max-width:640px){
+  .hdr{padding:12px 20px}
+  .main{padding:32px 20px}
+  h1{font-size:28px}
+  h2{font-size:20px}
+}
 </style>
 </head>
 <body>
-<header class="hdr"><a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5"><img src="/alter-logo-white.svg" alt="Alter5"></a></header>
+<header class="hdr">
+  <a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5">
+    <img src="/ds/alter5-logo-white.svg" alt="Alter5">
+  </a>
+</header>
 
 <main class="main">
   <h1>Política de privacidad · Proceso de selección</h1>
@@ -151,7 +237,7 @@ a:hover{color:#3a99a1}
   Alter5 Financial Technologies, S.L. · Madrid ·
   <a href="https://www.alter5.com/es/privacy" target="_blank" rel="noopener">Privacidad general</a>
   <a href="https://www.alter5.com/es/legal" target="_blank" rel="noopener">Aviso legal</a>
-  <a href="/sw-architect">Volver a la oferta</a>
+  <a href="/hoe">Volver a la oferta</a>
 </footer>
 </body>
 </html>

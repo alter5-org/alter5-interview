@@ -4,31 +4,107 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Enlace no válido — Alter5</title>
-<link rel="icon" type="image/svg+xml" href="/alter-logo-blue.svg">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/ds/alter5-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ds/tokens.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Instrument Sans',sans-serif;background:#F5F7FA;color:#13285B;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
-.hdr{background:#13285B;padding:1rem 2rem;display:flex;align-items:center}
+body{
+  font-family:var(--a5-font-landing);
+  background:#fafbfc;
+  color:var(--a5-text-primary);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.hdr{
+  background:var(--a5-blue);
+  padding:14px 32px;
+  display:flex;align-items:center;
+}
 .hdr-logo{display:inline-flex;align-items:center}
 .hdr-logo img{height:28px;width:auto;display:block}
-.main{flex:1;max-width:560px;width:100%;margin:0 auto;padding:3rem 1.5rem;text-align:center}
-.icon{width:72px;height:72px;background:#FEF2F2;border:2px solid #FECACA;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;color:#DC2626}
-h1{font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:2.2rem;color:#13285B;margin-bottom:1rem;letter-spacing:-0.025em}
-p{font-size:1rem;color:#64748B;line-height:1.7;margin-bottom:1rem}
-.btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.8rem 1.5rem;border-radius:8px;font-weight:600;background:#13285B;color:#fff;text-decoration:none;margin-top:1rem}
-.btn:hover{background:#0e1f48}
-.ftr{text-align:center;padding:1.5rem;font-size:0.72rem;color:#94A3B8;font-family:monospace}
+
+.main{
+  flex:1;max-width:560px;width:100%;
+  margin:0 auto;
+  padding:64px 24px 40px;
+  text-align:center;
+}
+.icon{
+  width:80px;height:80px;
+  background:#FEF2F2;
+  border:2px solid #FECACA;
+  border-radius:var(--a5-radius-full);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 24px;
+  font-size:32px;
+  color:#DC2626;
+  font-weight:700;
+}
+h1{
+  font-family:var(--a5-font-landing);
+  font-weight:700;
+  font-size:36px;
+  color:var(--a5-blue);
+  margin-bottom:14px;
+  letter-spacing:-0.025em;
+  text-wrap:balance;
+}
+p{
+  font-size:16px;
+  color:var(--a5-slate);
+  line-height:1.65;
+  margin-bottom:14px;
+}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:8px;
+  font-family:var(--a5-font-landing);
+  font-weight:600;
+  font-size:16px;
+  cursor:pointer;
+  border:0;
+  border-radius:var(--a5-radius-full);
+  padding:14px 32px;
+  background:var(--a5-blue);
+  color:white;
+  text-decoration:none;
+  margin-top:16px;
+  transition:background-color var(--a5-ease-fast), transform var(--a5-ease-fast), box-shadow var(--a5-ease-fast);
+}
+.btn:hover{background:#0e1f47;transform:translateY(-1px);box-shadow:0 6px 16px rgba(19,40,91,0.25)}
+
+.ftr{
+  text-align:center;
+  padding:24px 16px;
+  font-size:12px;
+  color:var(--a5-text-muted);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.05em;
+}
+
+@media (max-width:640px){
+  .hdr{padding:12px 20px}
+  .main{padding:40px 20px}
+  h1{font-size:28px}
+}
 </style>
 </head>
 <body>
-<header class="hdr"><a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5"><img src="/alter-logo-white.svg" alt="Alter5"></a></header>
+<header class="hdr">
+  <a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5">
+    <img src="/ds/alter5-logo-white.svg" alt="Alter5">
+  </a>
+</header>
 <main class="main">
   <div class="icon">!</div>
   <h1 id="title">Enlace no válido</h1>
   <p id="reason">Este enlace de verificación no se puede usar.</p>
   <p>Por favor, vuelve a introducir tu email para recibir un enlace nuevo.</p>
-  <a href="/sw-architect" class="btn">Volver a empezar</a>
+  <a href="/hoe" class="btn">Volver a empezar</a>
 </main>
 <footer class="ftr">Alter5 Financial Technologies, S.L.</footer>
 <script>

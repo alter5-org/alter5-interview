@@ -5,92 +5,236 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sube tu CV — Alter5</title>
 <meta name="robots" content="noindex">
-<link rel="icon" type="image/svg+xml" href="/alter-logo-blue.svg">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/ds/alter5-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ds/tokens.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#13285B;--navy2:#0e1f48;--emerald:#50B6BE;--emerald-dim:#3a99a1;
-  --slate:#94A3B8;--slate-light:#CBD5E1;--red:#EF4444;--amber:#F59E0B;
-  --bg:#F8FAFC;--white:#ffffff;--border:#E2E8F0;
-  --text:#1E293B;--text-muted:#64748B;
-  --serif:'Instrument Sans',sans-serif;
-  --sans:'Instrument Sans',sans-serif;
-  --mono:'DM Mono',monospace;
-  --radius:12px;
+body{
+  font-family:var(--a5-font-landing);
+  background:#fafbfc;
+  color:var(--a5-text-primary);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  line-height:var(--a5-leading-normal);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
-body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;line-height:1.5}
-.hdr{background:var(--navy);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+
+/* ── Header ─────────────────────────────────────────────── */
+.hdr{
+  background:var(--a5-blue);
+  padding:14px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+}
 .hdr-logo{display:inline-flex;align-items:center}
 .hdr-logo img{height:28px;width:auto;display:block}
-.hdr-badge{background:rgba(80,182,190,0.15);color:var(--emerald);padding:0.2rem 0.6rem;border-radius:4px;font-size:0.68rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;font-family:var(--mono)}
-.main{flex:1;max-width:700px;width:100%;margin:0 auto;padding:2.5rem 1.5rem}
-.eyebrow{font-family:var(--mono);font-size:0.7rem;color:var(--emerald);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem}
-h1{font-family:var(--serif);font-size:2rem;color:var(--navy);line-height:1.15;margin-bottom:0.75rem;letter-spacing:-0.02em}
-.lead{font-size:0.95rem;color:var(--text-muted);margin-bottom:2rem;line-height:1.7}
+.hdr-badge{
+  background:rgba(81,182,190,0.18);
+  color:var(--a5-teal);
+  padding:6px 12px;
+  border-radius:var(--a5-radius-full);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;font-weight:500;
+  letter-spacing:0.06em;text-transform:uppercase;
+}
 
-.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-bottom:1rem}
+/* ── Main ───────────────────────────────────────────────── */
+.main{flex:1;max-width:700px;width:100%;margin:0 auto;padding:48px 24px 40px}
 
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--a5-teal-dark);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  font-weight:500;
+}
+h1{
+  font-family:var(--a5-font-landing);
+  font-weight:700;
+  font-size:36px;
+  color:var(--a5-blue);
+  line-height:1.1;
+  margin-bottom:14px;
+  letter-spacing:-0.025em;
+  text-wrap:balance;
+}
+.lead{
+  font-size:16px;
+  color:var(--a5-slate);
+  margin-bottom:32px;
+  line-height:1.65;
+}
+
+/* ── Card ───────────────────────────────────────────────── */
+.card{
+  background:var(--a5-light-card);
+  border:1px solid var(--a5-light-border);
+  border-radius:var(--a5-radius-xl);
+  padding:32px;
+  margin-bottom:16px;
+  box-shadow:var(--a5-shadow-md);
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:"";
+  position:absolute;left:0;right:0;top:0;height:3px;
+  background:var(--a5-gradient-primary);
+}
+
+/* ── Drop zone ──────────────────────────────────────────── */
 .drop{
-  border:2px dashed var(--border);
-  border-radius:var(--radius);
-  padding:2.5rem 1.5rem;
+  border:2px dashed var(--a5-light-border);
+  border-radius:var(--a5-radius-lg);
+  padding:40px 24px;
   text-align:center;
   cursor:pointer;
-  transition:all 0.15s;
+  transition:all var(--a5-ease-fast);
   background:#F8FAFC;
 }
-.drop:hover,.drop.dragover{border-color:var(--emerald);background:#F0FDF4}
-.drop.has-file{border-color:var(--emerald);background:#F0FDF4;border-style:solid}
-.drop-icon{width:48px;height:48px;margin:0 auto 0.75rem;color:var(--text-muted)}
-.drop.has-file .drop-icon{color:var(--emerald)}
-.drop-title{font-size:1rem;font-weight:600;color:var(--navy);margin-bottom:0.25rem}
-.drop-hint{font-size:0.82rem;color:var(--text-muted)}
+.drop:hover,.drop.dragover{border-color:var(--a5-teal);background:var(--a5-teal-light)}
+.drop.has-file{border-color:var(--a5-teal);background:var(--a5-teal-light);border-style:solid}
+.drop-icon{width:48px;height:48px;margin:0 auto 12px;color:var(--a5-text-secondary)}
+.drop.has-file .drop-icon{color:var(--a5-teal-dark)}
+.drop-title{font-size:16px;font-weight:600;color:var(--a5-blue);margin-bottom:4px}
+.drop-hint{font-size:13px;color:var(--a5-text-secondary)}
 .drop input[type=file]{display:none}
 
-.file-info{margin-top:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.75rem 1rem;background:#fff;border:1px solid var(--emerald);border-radius:8px;font-size:0.88rem}
-.file-info .fname{color:var(--navy);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.file-info .fsize{color:var(--text-muted);font-family:var(--mono);font-size:0.78rem}
-.file-info .fclear{background:none;border:none;color:var(--red);font-size:1.1rem;cursor:pointer;padding:0 0.3rem}
+/* ── File info ──────────────────────────────────────────── */
+.file-info{
+  margin-top:14px;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 16px;
+  background:white;
+  border:1px solid var(--a5-teal);
+  border-radius:var(--a5-radius-md);
+  font-size:14px;
+}
+.file-info .fname{color:var(--a5-blue);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.file-info .fsize{color:var(--a5-text-secondary);font-family:'JetBrains Mono',monospace;font-size:12px}
+.file-info .fclear{background:none;border:none;color:var(--a5-accent-red);font-size:18px;cursor:pointer;padding:0 4px;line-height:1}
 .file-info .fclear:hover{color:#b91c1c}
 
-.field{margin-top:1.5rem}
-.field label{display:block;font-size:0.82rem;font-weight:500;color:var(--text);margin-bottom:0.4rem}
-.field select{width:100%;padding:0.7rem 0.9rem;border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:0.95rem;color:var(--text);background:var(--white);outline:none;cursor:pointer}
-.field select:focus{border-color:var(--emerald)}
+/* ── Field ──────────────────────────────────────────────── */
+.field{margin-top:20px}
+.field label{
+  display:block;
+  font-size:11px;font-weight:600;
+  color:var(--a5-text-secondary);
+  margin-bottom:8px;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+}
+.field select{
+  width:100%;
+  padding:12px 16px;
+  border:1px solid var(--a5-light-border);
+  border-radius:var(--a5-radius-md);
+  font-family:var(--a5-font-landing);
+  font-size:15px;
+  color:var(--a5-text-primary);
+  background:white;
+  outline:none;
+  cursor:pointer;
+  transition:border-color var(--a5-ease-fast), box-shadow var(--a5-ease-fast);
+}
+.field select:focus{
+  border-color:var(--a5-accent-blue);
+  box-shadow:0 0 0 3px rgba(59,130,246,0.12);
+}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.85rem 1.75rem;border-radius:8px;font-family:var(--sans);font-size:0.95rem;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;width:100%;margin-top:1.5rem}
-.btn-primary{background:var(--navy);color:#fff}
-.btn-primary:hover:not(:disabled){background:var(--navy2);transform:translateY(-1px)}
-.btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+/* ── Buttons ────────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:8px;
+  font-family:var(--a5-font-landing);
+  font-weight:600;
+  cursor:pointer;
+  border:0;
+  border-radius:var(--a5-radius-full);
+  transition:background-color var(--a5-ease-fast), opacity var(--a5-ease-fast), transform var(--a5-ease-fast), box-shadow var(--a5-ease-fast);
+  width:100%;
+  padding:14px 32px;
+  font-size:16px;
+  margin-top:24px;
+}
+.btn-primary{background:var(--a5-blue);color:white}
+.btn-primary:hover:not(:disabled){background:#0e1f47;transform:translateY(-1px);box-shadow:0 6px 16px rgba(19,40,91,0.25)}
+.btn-primary:disabled{opacity:0.55;cursor:not-allowed;transform:none;box-shadow:none}
 
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.err,.ok{padding:0.85rem 1rem;border-radius:8px;font-size:0.88rem;line-height:1.55;margin-top:1rem}
-.err{background:#FEF2F2;color:#991B1B;border:1px solid #FEE2E2}
-.ok{background:#F0FDF4;color:#166534;border:1px solid #BBF7D0}
+/* ── Status ─────────────────────────────────────────────── */
+.err,.ok{
+  padding:12px 16px;
+  border-radius:var(--a5-radius-md);
+  font-size:14px;line-height:1.55;
+  margin-top:16px;
+}
+.err{background:#FEF2F2;color:#991B1B;border:1px solid #FECACA}
+.ok{background:var(--a5-teal-light);color:var(--a5-blue);border:1px solid rgba(81,182,190,0.3)}
 .hidden{display:none}
 
-.progress{margin-top:1rem;background:#F1F5F9;border-radius:8px;overflow:hidden;height:6px}
-.progress-bar{height:100%;background:var(--emerald);width:0%;transition:width 0.3s}
+.progress{margin-top:16px;background:#F1F5F9;border-radius:var(--a5-radius-full);overflow:hidden;height:6px}
+.progress-bar{height:100%;background:var(--a5-teal);width:0%;transition:width 0.3s}
 
-.success-screen{text-align:center;padding:2rem 1rem}
-.success-icon{width:64px;height:64px;margin:0 auto 1rem;color:var(--emerald)}
-.success-screen h2{font-family:var(--serif);font-size:1.8rem;color:var(--navy);margin-bottom:0.75rem;letter-spacing:-0.01em}
-.success-screen p{color:var(--text-muted);font-size:0.95rem;line-height:1.7;max-width:480px;margin:0 auto 0.75rem}
+/* ── Success ────────────────────────────────────────────── */
+.success-screen{text-align:center;padding:24px 16px}
+.success-icon{width:72px;height:72px;margin:0 auto 18px;color:var(--a5-teal)}
+.success-screen h2{
+  font-family:var(--a5-font-landing);
+  font-size:28px;font-weight:700;
+  color:var(--a5-blue);
+  margin-bottom:14px;
+  letter-spacing:-0.02em;
+}
+.success-screen p{
+  color:var(--a5-slate);
+  font-size:16px;line-height:1.65;
+  max-width:480px;margin:0 auto 12px;
+}
 
-.privacy-note{font-size:0.75rem;color:var(--text-muted);line-height:1.6;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)}
-.privacy-note a{color:var(--text-muted);text-decoration:underline}
+.privacy-note{
+  font-size:12px;
+  color:var(--a5-text-secondary);
+  line-height:1.65;
+  margin-top:20px;
+  padding-top:16px;
+  border-top:1px solid var(--a5-light-border);
+}
+.privacy-note a{color:var(--a5-text-secondary);text-decoration:underline;text-underline-offset:2px}
+.privacy-note a:hover{color:var(--a5-blue)}
 
-.ftr{text-align:center;padding:1.5rem 1rem;font-size:0.72rem;color:var(--text-muted);font-family:var(--mono);letter-spacing:0.05em}
-.ftr a{color:var(--text-muted);text-decoration:underline;margin:0 0.5rem}
+/* ── Footer ─────────────────────────────────────────────── */
+.ftr{
+  text-align:center;
+  padding:24px 16px;
+  font-size:12px;
+  color:var(--a5-text-muted);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.05em;
+}
+.ftr a{color:var(--a5-text-muted);text-decoration:underline;text-underline-offset:2px;margin:0 8px}
+.ftr a:hover{color:var(--a5-blue)}
+
+@media (max-width:640px){
+  .hdr{padding:12px 20px}
+  .main{padding:32px 20px}
+  h1{font-size:28px}
+  .card{padding:22px}
+}
 </style>
 </head>
 <body>
 
 <header class="hdr">
-  <a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5"><img src="/alter-logo-white.svg" alt="Alter5"></a>
+  <a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5">
+    <img src="/ds/alter5-logo-white.svg" alt="Alter5">
+  </a>
   <div class="hdr-badge">Paso 2 de 3 · Subir CV</div>
 </header>
 
@@ -101,7 +245,7 @@ h1{font-family:var(--serif);font-size:2rem;color:var(--navy);line-height:1.15;ma
     <h1>Sube tu CV</h1>
     <p class="lead">
       Sube tu CV en PDF (máx. 5&nbsp;MB). Revisaremos tu perfil frente a los requisitos de
-      <strong>SW Architect / AI Head of Engineering</strong> y te contestaremos por email.
+      <strong>Head of Engineering (AI & Infrastructure)</strong> y te contestaremos por email.
     </p>
 
     <div class="card">
@@ -156,7 +300,7 @@ h1{font-family:var(--serif);font-size:2rem;color:var(--navy);line-height:1.15;ma
         Te escribiremos al email que verificaste <strong>si hay encaje con el puesto</strong>.
         Si tu perfil encaja, recibirás un enlace a un pequeño cuestionario y una posterior entrevista.
       </p>
-      <p class="privacy-note" style="border:none;padding:0;margin-top:1.5rem;text-align:center">
+      <p class="privacy-note" style="border:none;padding:0;margin-top:20px;text-align:center">
         Puedes consultar o borrar tus datos en cualquier momento en
         <a href="/privacy/my-data">gestionar mis datos</a>.
       </p>
@@ -194,13 +338,13 @@ h1{font-family:var(--serif);font-size:2rem;color:var(--navy);line-height:1.15;ma
   let currentFile = null;
 
   const ERRORS = {
-    session_expired: 'Tu sesión ha caducado. Vuelve a <a href="/sw-architect">empezar el proceso</a> para recibir un nuevo enlace.',
+    session_expired: 'Tu sesión ha caducado. Vuelve a <a href="/hoe">empezar el proceso</a> para recibir un nuevo enlace.',
     missing_fields: 'Falta información. Revisa el archivo y vuelve a intentarlo.',
     filename_too_long: 'El nombre del archivo es demasiado largo.',
     file_too_large: 'El archivo supera el máximo de 5 MB.',
     invalid_base64: 'No se pudo leer el archivo. Prueba a subirlo de nuevo.',
     invalid_pdf: 'El archivo no parece un PDF válido.',
-    application_not_found: 'No encontramos tu candidatura. Vuelve a <a href="/sw-architect">empezar el proceso</a>.',
+    application_not_found: 'No encontramos tu candidatura. Vuelve a <a href="/hoe">empezar el proceso</a>.',
     invalid_state: 'Tu candidatura ya está en otra fase. Si crees que es un error, escribe a <a href="mailto:careers@alter-5.com">careers@alter-5.com</a>.',
     internal_error: 'Ha ocurrido un error inesperado. Inténtalo en unos minutos.',
   };

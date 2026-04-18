@@ -13,6 +13,7 @@ const { supabaseAdmin } = require('../lib/supabase');
 const { hashToken, isValidTokenFormat } = require('../lib/tokens');
 const { getClientIp, getUserAgent } = require('../lib/validation');
 const { analyzeInterview } = require('../lib/interview-analysis');
+const { sanitizeHtml } = require('../lib/sanitize-html');
 
 module.exports.config = {
   api: { bodyParser: { sizeLimit: '2mb' } },
@@ -168,9 +169,13 @@ module.exports.default = async function handler(req, res) {
       clearTimeout(timeoutId);
 
       if (analysis.ok) {
+        // Sanitize at WRITE time so admin/reports HTML is always trusted
+        // when read. A prompt injection inside a candidate answer cannot
+        // smuggle <script> or onerror= past this allowlist.
+        const safeHtml = sanitizeHtml(analysis.html);
         await supabaseAdmin
           .from('interviews')
-          .update({ ai_analysis_html: analysis.html })
+          .update({ ai_analysis_html: safeHtml })
           .eq('id', interview.id);
       } else {
         await supabaseAdmin.from('application_events').insert({

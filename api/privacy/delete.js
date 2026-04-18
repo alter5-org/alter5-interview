@@ -1,8 +1,9 @@
 // POST /api/privacy/delete
 //
 // ARCO: user's right to erasure. Validates a `privacy_arco` token, calls
-// arco_delete_application() RPC (soft-delete + PII scrub), and consumes the
-// token so it can't be reused.
+// arco_delete_application() RPC (soft-delete + PII scrub), removes the
+// underlying CV PDFs from Storage, and consumes the token so it can't be
+// reused.
 //
 // Body: { token }
 // Returns: { ok:true } or { ok:false, reason }
@@ -10,6 +11,7 @@
 const { supabaseAdmin } = require('../../lib/supabase');
 const { hashToken, isValidTokenFormat } = require('../../lib/tokens');
 const { getClientIp } = require('../../lib/validation');
+const { deleteCvsForApp } = require('../../lib/cv-storage');
 
 module.exports.default = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -45,25 +47,51 @@ module.exports.default = async function handler(req, res) {
     }
 
     // Consume the token first so a crash mid-way can't allow a retry from a
-    // leaked link. If the RPC fails, we've burned the token — user must
-    // request a new ARCO link.
-    await supabaseAdmin
+    // leaked link. If the RPC fails, we revert `used_at` so the user can
+    // retry — without that revert, a transient Supabase error would burn the
+    // candidate's only ARCO link permanently (TOCTOU window).
+    const consumedAt = new Date().toISOString();
+    const { error: consumeErr } = await supabaseAdmin
       .from('magic_links')
-      .update({ used_at: new Date().toISOString() })
-      .eq('id', link.id);
+      .update({ used_at: consumedAt })
+      .eq('id', link.id)
+      .is('used_at', null);          // Only consume if still unused (race-safe)
+    if (consumeErr) throw consumeErr;
 
     const { error: rpcErr } = await supabaseAdmin.rpc('arco_delete_application', {
       app_id: app.id,
       reason: 'candidate_self_service',
     });
-    if (rpcErr) throw rpcErr;
+    if (rpcErr) {
+      // Revert the consume so the candidate can retry their ARCO link.
+      await supabaseAdmin
+        .from('magic_links')
+        .update({ used_at: null })
+        .eq('id', link.id)
+        .eq('used_at', consumedAt);
+      throw rpcErr;
+    }
+
+    // Now that the DB-side scrub succeeded, wipe the candidate's CV files
+    // from Storage. Best-effort: a storage failure does NOT undo the
+    // application scrub (PII is already gone from the row), but we log it.
+    let storageResult = null;
+    try {
+      storageResult = await deleteCvsForApp(app.id);
+      if (storageResult.errors.length > 0) {
+        console.error('[privacy/delete] storage cleanup partial:', storageResult.errors);
+      }
+    } catch (storageErr) {
+      console.error('[privacy/delete] storage cleanup failed:', storageErr.message);
+      storageResult = { error: storageErr.message };
+    }
 
     // Log the deletion event with the candidate's IP (before scrub already
     // dropped apply_ip; this new event row keeps the self-service trace).
     await supabaseAdmin.from('application_events').insert({
       application_id: app.id,
       event_type: 'arco_self_delete',
-      event_data: { via: 'privacy_link' },
+      event_data: { via: 'privacy_link', storage: storageResult },
       actor: 'candidate',
       ip,
     });

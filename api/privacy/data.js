@@ -34,7 +34,14 @@ module.exports.default = async function handler(req, res) {
 
     const { data: app } = await supabaseAdmin
       .from('applications')
-      .select('*')
+      .select([
+        'id', 'email', 'name', 'status', 'source', 'experience',
+        'consent_privacy', 'consent_ai_decision', 'requested_human_review',
+        'utm_source', 'utm_medium', 'utm_campaign',
+        'created_at', 'verified_at', 'cv_uploaded_at', 'analyzed_at',
+        'interview_started_at', 'interview_completed_at',
+        'expires_at', 'deleted_at',
+      ].join(','))
       .eq('id', link.application_id)
       .maybeSingle();
     if (!app || app.deleted_at) return res.status(200).json({ ok: false, reason: 'not_found' });

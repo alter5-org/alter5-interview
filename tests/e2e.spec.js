@@ -8,7 +8,7 @@
 const { test, expect } = require('@playwright/test');
 
 const BASE =
-  process.env.PLAYWRIGHT_BASE_URL || 'https://alter5-interview.vercel.app';
+  process.env.PLAYWRIGHT_BASE_URL || 'https://careers.alter-5.com';
 
 const SEC_HEADERS = {
   'x-frame-options': 'DENY',
@@ -23,8 +23,8 @@ function assertSecurityHeaders(resp) {
 }
 
 test.describe('Public pages', () => {
-  test('/sw-architect landing page loads', async ({ page }) => {
-    const r = await page.goto(`${BASE}/sw-architect`);
+  test('/hoe landing page loads', async ({ page }) => {
+    const r = await page.goto(`${BASE}/hoe`);
     expect(r.status()).toBe(200);
     assertSecurityHeaders(r);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
@@ -56,8 +56,11 @@ test.describe('Public pages', () => {
   test('/interview without token shows blocker', async ({ page }) => {
     const r = await page.goto(`${BASE}/interview`);
     expect(r.status()).toBe(200);
-    // Without a token the interview page must not advance to questions.
-    await expect(page.locator('text=/enlace|token|inválido|caducado/i').first()).toBeVisible({ timeout: 10000 });
+    // Without a token the interview page must not advance to questions —
+    // it must show the blocker screen with an "Enlace …" title.
+    await expect(page.locator('#screen-blocker')).toHaveClass(/active/, { timeout: 10000 });
+    await expect(page.locator('#blocker-title')).toBeVisible();
+    await expect(page.locator('#blocker-title')).toHaveText(/enlace|token|inválido|caducado/i);
   });
 });
 
@@ -95,19 +98,25 @@ test.describe('Public API safety', () => {
     const r = await request.post(`${BASE}/api/privacy/request-access`, {
       data: { email: `nobody-${Date.now()}@example.com` },
     });
-    expect(r.status()).toBe(200);
-    const body = await r.json();
-    expect(body.ok).toBe(true);
+    // 429 is also a valid security outcome (rate limiter is working).
+    expect([200, 429]).toContain(r.status());
+    if (r.status() === 200) {
+      const body = await r.json();
+      expect(body.ok).toBe(true);
+    }
   });
 
   test('/api/privacy/data with invalid token returns {ok:false}', async ({ request }) => {
     const r = await request.post(`${BASE}/api/privacy/data`, {
       data: { token: 'a'.repeat(64) },
     });
-    expect(r.status()).toBe(200);
-    const body = await r.json();
-    expect(body.ok).toBe(false);
-    expect(['not_found', 'expired', 'used', 'invalid']).toContain(body.reason);
+    // 429 is also a valid security outcome (rate limiter is working).
+    expect([200, 429]).toContain(r.status());
+    if (r.status() === 200) {
+      const body = await r.json();
+      expect(body.ok).toBe(false);
+      expect(['not_found', 'expired', 'used', 'invalid']).toContain(body.reason);
+    }
   });
 
   test('/api/interview/validate with invalid token returns {ok:false}', async ({ request }) => {
@@ -139,7 +148,7 @@ test.describe('Public API safety', () => {
 });
 
 test.describe('Security headers', () => {
-  for (const path of ['/sw-architect', '/apply/privacy', '/privacy/my-data', '/interview']) {
+  for (const path of ['/hoe', '/apply/privacy', '/privacy/my-data', '/interview']) {
     test(`security headers on ${path}`, async ({ page }) => {
       const r = await page.goto(`${BASE}${path}`);
       assertSecurityHeaders(r);

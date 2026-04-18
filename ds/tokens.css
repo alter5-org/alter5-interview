@@ -1,0 +1,246 @@
+/* ============================================================
+   Alter5 Design System — Core Tokens
+   Source of truth for colors, type, spacing, radii, shadows.
+   Extracted from alter5-landing + alter5-platform codebases.
+   ============================================================ */
+
+:root {
+  /* ── Brand — core ──────────────────────────────────────── */
+  --a5-blue:          #13285B;  /* Primary navy — logo, bg, headings */
+  --a5-blue-light:    #2583e6;  /* Accent blue */
+  --a5-blue-dark:     #0a1836;  /* Deepest navy — hero bg */
+  --a5-teal:          #51b6be;  /* Brand teal (logo mark) */
+  --a5-teal-light:    #f1f9fa;
+  --a5-teal-dark:     #2ca1ab;
+  --a5-navy:          #2B303C;
+  --a5-slate:         #58617C;
+
+  /* Alto / platform accents */
+  --a5-alto-green:        #3CA6A6;
+  --a5-alto-green-light:  #3fffc2;
+  --a5-alto-green-dark:   #267373;
+  --a5-alto-navy:         #16202A;
+
+  /* ── Platform (BI) — neutrals & surfaces ───────────────── */
+  --a5-app-bg:         #13285B;
+  --a5-content-bg:     #F0F4F8;
+  --a5-header-bg:      rgba(19,40,91,0.85);
+
+  --a5-dark-bg:        #0A1628;
+  --a5-dark-card:      #132238;
+  --a5-dark-border:    #1B3A5C;
+  --a5-dark-surface:   #1E293B;
+  --a5-dark-hover:     #243B53;
+
+  --a5-light-bg:       #F0F4F8;
+  --a5-light-card:     #FFFFFF;
+  --a5-light-border:   #E2E8F0;
+  --a5-light-hover:    #F8FAFC;
+
+  /* ── Accent palette (data, states) ─────────────────────── */
+  --a5-accent-blue:    #3B82F6;
+  --a5-accent-green:   #10B981;
+  --a5-accent-purple:  #8B5CF6;
+  --a5-accent-orange:  #F97316;
+  --a5-accent-red:     #EF4444;
+  --a5-accent-yellow:  #F59E0B;
+  --a5-accent-cyan:    #06B6D4;
+
+  /* ── Text ──────────────────────────────────────────────── */
+  --a5-text-primary:          #1A2B3D;
+  --a5-text-secondary:        #6B7F94;
+  --a5-text-muted:            #94A3B8;
+  --a5-text-on-dark:          #F1F5F9;
+  --a5-text-on-dark-secondary:#94A3B8;
+  --a5-text-on-dark-muted:    #64748B;
+
+  /* ── Status ────────────────────────────────────────────── */
+  --a5-status-active:   #10B981;
+  --a5-status-dormant:  #F59E0B;
+  --a5-status-lost:     #EF4444;
+
+  /* ── Type ──────────────────────────────────────────────── */
+  --a5-font-landing:  'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --a5-font-platform: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --a5-size-xs:   11px;
+  --a5-size-sm:   12px;
+  --a5-size-base: 13px;
+  --a5-size-md:   14px;
+  --a5-size-lg:   16px;
+  --a5-size-xl:   18px;
+  --a5-size-2xl:  24px;
+  --a5-size-3xl:  30px;
+
+  --a5-weight-normal:   400;
+  --a5-weight-medium:   500;
+  --a5-weight-semibold: 600;
+  --a5-weight-bold:     700;
+
+  --a5-leading-tight:   1.3;
+  --a5-leading-normal:  1.5;
+  --a5-leading-relaxed: 1.6;
+
+  /* ── Spacing ───────────────────────────────────────────── */
+  --a5-space-xs:  4px;
+  --a5-space-sm:  8px;
+  --a5-space-md:  12px;
+  --a5-space-lg:  16px;
+  --a5-space-xl:  20px;
+  --a5-space-2xl: 24px;
+  --a5-space-3xl: 32px;
+  --a5-space-4xl: 40px;
+
+  /* ── Layout constants (platform) ───────────────────────── */
+  --a5-header-h:         60px;
+  --a5-sidenav-w:        200px;
+  --a5-sidenav-collapsed:64px;
+  --a5-filter-w:         270px;
+  --a5-detail-w:         720px;
+  --a5-content-radius:   20px;
+
+  /* ── Radii ─────────────────────────────────────────────── */
+  --a5-radius-sm:   6px;
+  --a5-radius-md:   10px;
+  --a5-radius-lg:   14px;
+  --a5-radius-xl:   20px;
+  --a5-radius-full: 9999px;
+
+  /* ── Shadows ───────────────────────────────────────────── */
+  --a5-shadow-sm:    0 1px 2px rgba(0,0,0,0.05);
+  --a5-shadow-md:    0 4px 6px -1px rgba(0,0,0,0.10), 0 2px 4px -2px rgba(0,0,0,0.10);
+  --a5-shadow-lg:    0 10px 15px -3px rgba(0,0,0,0.10), 0 4px 6px -4px rgba(0,0,0,0.10);
+  --a5-shadow-xl:    0 20px 25px -5px rgba(0,0,0,0.10), 0 8px 10px -6px rgba(0,0,0,0.10);
+  --a5-shadow-panel: 0 25px 50px -12px rgba(0,0,0,0.25);
+  --a5-shadow-alter: 0 4px 14px 0 rgba(14,165,233,.20);
+  --a5-shadow-card-hover: 0 4px 24px 0 rgba(44,62,80,.12), 0 1.5px 4px 0 rgba(44,62,80,.06);
+
+  /* ── Transitions ───────────────────────────────────────── */
+  --a5-ease-fast:   0.15s ease;
+  --a5-ease:        0.2s ease;
+  --a5-ease-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Signature gradients ───────────────────────────────── */
+  --a5-gradient-primary:
+    linear-gradient(to right, var(--a5-blue), var(--a5-teal));
+  --a5-gradient-alto:
+    linear-gradient(to right, var(--a5-blue), var(--a5-alto-green));
+  --a5-gradient-hero:
+    linear-gradient(120deg,#93c5fd 0%,#f0faff 35%,#f0fdf4 70%,#6ee7b7 100%);
+  --a5-gradient-card:
+    linear-gradient(to right, rgba(14,165,233,.10), rgba(16,185,129,.10));
+  --a5-gradient-hero-overlay:
+    linear-gradient(to bottom, rgba(0,0,0,.60), rgba(43,48,60,.50), rgba(0,0,0,.70));
+}
+
+/* ─── Doc scaffold ───────────────────────────────────────── */
+html { font-size: 16px; }
+body {
+  font-family: var(--a5-font-landing);
+  color: var(--a5-text-primary);
+  background: #fafbfc;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+* { box-sizing: border-box; }
+
+.ds-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 64px 48px 120px;
+}
+.ds-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--a5-teal-dark);
+}
+.ds-h1 {
+  font-size: 48px;
+  letter-spacing: -0.025em;
+  margin: 8px 0 16px;
+  font-weight: 700;
+  color: var(--a5-blue);
+}
+.ds-lede {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--a5-slate);
+  max-width: 720px;
+  text-wrap: pretty;
+}
+.ds-h2 {
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  margin: 64px 0 8px;
+  font-weight: 700;
+  color: var(--a5-blue);
+}
+.ds-h3 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--a5-slate);
+  margin: 32px 0 12px;
+}
+.ds-note {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--a5-slate);
+  max-width: 640px;
+}
+hr.ds-rule {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, var(--a5-light-border), transparent);
+  margin: 64px 0;
+}
+
+/* Tile grid used by several pages */
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.ds-tile {
+  border: 1px solid var(--a5-light-border);
+  border-radius: var(--a5-radius-md);
+  padding: 16px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ds-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+}
+
+/* Page nav strip (top of every doc page) */
+.ds-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--a5-light-border);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+}
+.ds-nav img { height: 20px; }
+.ds-nav a {
+  color: var(--a5-slate);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.ds-nav a:hover { color: var(--a5-blue); background: var(--a5-teal-light); }
+.ds-nav a.active { color: var(--a5-blue); font-weight: 600; }
+.ds-nav .spacer { flex: 1; }

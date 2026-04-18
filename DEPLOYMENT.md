@@ -46,7 +46,7 @@ Production and Preview:
 | `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile (server) |
 | `CRON_SECRET` | `openssl rand -hex 32` — guards `/api/cron/*` |
 | `INTERVIEW_BASE_URL` | `https://careers.alter-5.com` |
-| `APPLY_BASE_URL` | `https://careers.alter-5.com/sw-architect` |
+| `APPLY_BASE_URL` | `https://careers.alter-5.com/hoe` |
 | `INTERVIEW_BOOKING_URL` | Google Calendar Appointment URL (Salva) |
 
 ## 3. Resend
@@ -101,7 +101,7 @@ request form. It is read-only and safe to run against production.
 
 ## 9. Manual acceptance checklist
 
-- [ ] `/sw-architect` renders, form submits, magic link arrives.
+- [ ] `/hoe` renders, form submits, magic link arrives.
 - [ ] Magic link → `/apply/upload` accepts a PDF ≤ 5 MB.
 - [ ] CV ≥ 7 → auto-invite email sent.
 - [ ] CV 4–6 → appears in `/admin` review queue.

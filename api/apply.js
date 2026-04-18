@@ -13,7 +13,12 @@ const { sendMagicLinkEmail } = require('../lib/email');
 
 const MAGIC_LINK_TTL_MINUTES = 30;
 
-module.exports = async function handler(req, res) {
+// Current privacy policy version. Bump this whenever the wording of the
+// consent checkboxes OR the linked privacy notice changes, so the audit
+// log can later prove WHICH policy a given candidate agreed to.
+const POLICY_VERSION = process.env.PRIVACY_POLICY_VERSION || '2026-04-18';
+
+module.exports.default = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -44,7 +49,7 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'turnstile_failed' });
   }
 
-  const baseUrl = process.env.APPLY_BASE_URL || 'https://careers.alter-5.com/sw-architect';
+  const baseUrl = process.env.APPLY_BASE_URL || 'https://careers.alter-5.com/hoe';
   const origin = new URL(baseUrl).origin;
 
   try {
@@ -121,7 +126,38 @@ module.exports = async function handler(req, res) {
       ttlMinutes: MAGIC_LINK_TTL_MINUTES,
     });
 
-    // 5. Audit event.
+    // 5. Record consent events (GDPR Art.7(1) — we must be able to prove
+    //    when + which policy version the candidate accepted). One row per
+    //    declared consent; the booleans on `applications` remain for fast
+    //    lookups but this table is the audit source of truth.
+    await supabaseAdmin.from('consent_events').insert([
+      {
+        application_id: applicationId,
+        consent_type: 'privacy',
+        granted: !!consent_privacy,
+        policy_version: POLICY_VERSION,
+        ip,
+        user_agent: ua,
+      },
+      {
+        application_id: applicationId,
+        consent_type: 'ai_decision',
+        granted: !!consent_ai_decision,
+        policy_version: POLICY_VERSION,
+        ip,
+        user_agent: ua,
+      },
+      {
+        application_id: applicationId,
+        consent_type: 'human_review',
+        granted: !!requested_human_review,
+        policy_version: POLICY_VERSION,
+        ip,
+        user_agent: ua,
+      },
+    ]);
+
+    // 6. Audit event.
     await supabaseAdmin.from('application_events').insert({
       application_id: applicationId,
       event_type: existing ? 'apply_retry' : 'apply_created',
@@ -129,6 +165,7 @@ module.exports = async function handler(req, res) {
         email_sent: mail.ok,
         email_id: mail.id || null,
         turnstile_skipped: !!turnstile.skipped,
+        policy_version: POLICY_VERSION,
       },
       actor: 'candidate',
       ip,

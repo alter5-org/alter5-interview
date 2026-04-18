@@ -4,67 +4,191 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mis datos — Alter5</title>
-<link rel="icon" type="image/svg+xml" href="/alter-logo-blue.svg">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/ds/alter5-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ds/tokens.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Instrument Sans',sans-serif;background:#F5F7FA;color:#13285B;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
-.hdr{background:#13285B;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+body{
+  font-family:var(--a5-font-landing);
+  background:#fafbfc;
+  color:var(--a5-text-primary);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.hdr{
+  background:var(--a5-blue);
+  padding:14px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+}
 .hdr-logo{display:inline-flex;align-items:center}
 .hdr-logo img{height:28px;width:auto;display:block}
-.hdr-tag{font-size:0.72rem;color:#94A3B8;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.1em}
-.main{flex:1;max-width:860px;width:100%;margin:0 auto;padding:2.5rem 1.5rem}
-.hero h1{font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:2rem;color:#13285B;margin-bottom:0.5rem;letter-spacing:-0.025em}
-.hero p.lead{font-size:1rem;color:#64748B;line-height:1.7;margin-bottom:2rem;max-width:620px}
+.hdr-tag{
+  font-size:11px;
+  color:rgba(255,255,255,0.7);
+  font-family:'JetBrains Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+}
 
-.card{background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:1.75rem;margin-bottom:1.25rem}
-.card h2{font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:1.3rem;color:#13285B;margin-bottom:0.75rem;letter-spacing:-0.015em}
-.card p{font-size:0.92rem;color:#475569;line-height:1.65;margin-bottom:0.75rem}
+.main{flex:1;max-width:860px;width:100%;margin:0 auto;padding:48px 24px 40px}
 
-label{display:block;font-size:0.78rem;color:#475569;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem}
-input[type=email]{width:100%;padding:0.75rem 0.9rem;border:1px solid #CBD5E1;border-radius:8px;font-size:0.95rem;font-family:inherit;color:#1E293B;background:#fff}
-input[type=email]:focus{outline:none;border-color:#13285B;box-shadow:0 0 0 3px rgba(10,22,40,0.08)}
+.hero h1{
+  font-family:var(--a5-font-landing);
+  font-weight:700;
+  font-size:36px;
+  color:var(--a5-blue);
+  margin-bottom:10px;
+  letter-spacing:-0.025em;
+  text-wrap:balance;
+}
+.hero p.lead{
+  font-size:16px;
+  color:var(--a5-slate);
+  line-height:1.65;
+  margin-bottom:32px;
+  max-width:620px;
+}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem 1.4rem;border:none;border-radius:8px;font-size:0.92rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s;text-decoration:none}
-.btn-primary{background:#13285B;color:#fff}
-.btn-primary:hover{background:#1E293B}
-.btn-primary:disabled{background:#94A3B8;cursor:not-allowed}
-.btn-secondary{background:#fff;color:#1E293B;border:1px solid #CBD5E1}
-.btn-secondary:hover{background:#F1F5F9}
-.btn-danger{background:#DC2626;color:#fff}
-.btn-danger:hover{background:#B91C1C}
-.btn-row{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.5rem}
+.card{
+  background:var(--a5-light-card);
+  border:1px solid var(--a5-light-border);
+  border-radius:var(--a5-radius-lg);
+  padding:28px;
+  margin-bottom:18px;
+}
+.card h2{
+  font-family:var(--a5-font-landing);
+  font-weight:700;
+  font-size:22px;
+  color:var(--a5-blue);
+  margin-bottom:12px;
+  letter-spacing:-0.02em;
+}
+.card p{
+  font-size:15px;
+  color:var(--a5-text-primary);
+  line-height:1.65;
+  margin-bottom:12px;
+}
+.card a{color:var(--a5-teal-dark);text-decoration:underline;text-underline-offset:2px}
+.card a:hover{color:var(--a5-blue)}
 
-.msg{padding:0.9rem 1.1rem;border-radius:8px;font-size:0.9rem;margin-top:1rem;line-height:1.5}
-.msg-ok{background:#F0FDF4;border:1px solid #BBF7D0;color:#14532D}
+label{
+  display:block;
+  font-size:11px;font-weight:600;
+  color:var(--a5-text-secondary);
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  margin-bottom:8px;
+}
+input[type=email]{
+  width:100%;
+  padding:12px 16px;
+  border:1px solid var(--a5-light-border);
+  border-radius:var(--a5-radius-md);
+  font-size:15px;
+  font-family:var(--a5-font-landing);
+  color:var(--a5-text-primary);
+  background:white;
+  outline:none;
+  transition:border-color var(--a5-ease-fast), box-shadow var(--a5-ease-fast);
+}
+input[type=email]:focus{
+  border-color:var(--a5-accent-blue);
+  box-shadow:0 0 0 3px rgba(59,130,246,0.12);
+}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:8px;
+  padding:12px 24px;
+  border:0;
+  border-radius:var(--a5-radius-full);
+  font-size:15px;font-weight:600;
+  cursor:pointer;
+  font-family:var(--a5-font-landing);
+  transition:background-color var(--a5-ease-fast), opacity var(--a5-ease-fast), transform var(--a5-ease-fast);
+  text-decoration:none;
+}
+.btn-primary{background:var(--a5-blue);color:white}
+.btn-primary:hover{background:#0e1f47;transform:translateY(-1px)}
+.btn-primary:disabled{background:var(--a5-text-muted);cursor:not-allowed;transform:none}
+.btn-secondary{background:transparent;color:var(--a5-blue-dark);border:1px solid var(--a5-blue-dark)}
+.btn-secondary:hover{background:rgba(19,40,91,0.06)}
+.btn-danger{background:var(--a5-accent-red);color:white}
+.btn-danger:hover{background:#DC2626;transform:translateY(-1px)}
+.btn-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+
+.msg{
+  padding:14px 18px;
+  border-radius:var(--a5-radius-md);
+  font-size:14px;
+  margin-top:16px;
+  line-height:1.55;
+}
+.msg-ok{background:var(--a5-teal-light);border:1px solid rgba(81,182,190,0.4);color:var(--a5-blue)}
 .msg-err{background:#FEF2F2;border:1px solid #FECACA;color:#991B1B}
 .msg-info{background:#F0F9FF;border:1px solid #BAE6FD;color:#075985}
 
-.kv{display:grid;grid-template-columns:220px 1fr;gap:0.4rem 1rem;font-size:0.9rem;margin-top:0.5rem}
-.kv dt{color:#64748B;font-weight:500}
-.kv dd{color:#1E293B;font-family:'DM Mono',monospace;word-break:break-word}
-.kv dd.muted{color:#94A3B8;font-style:italic}
+.kv{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:8px 16px;
+  font-size:14px;
+  margin-top:8px;
+}
+.kv dt{color:var(--a5-text-secondary);font-weight:500}
+.kv dd{color:var(--a5-text-primary);font-family:'JetBrains Mono',monospace;word-break:break-word;font-size:13px}
+.kv dd.muted{color:var(--a5-text-muted);font-style:italic}
 
-.sec-list{margin-top:0.75rem;border-top:1px solid #F1F5F9}
-.sec-list .row{display:grid;grid-template-columns:160px 1fr;gap:1rem;padding:0.65rem 0;border-bottom:1px solid #F1F5F9;font-size:0.88rem}
-.sec-list .row .date{color:#64748B;font-family:'DM Mono',monospace;font-size:0.8rem}
-.sec-list .row .info{color:#1E293B}
-.sec-list .row .info em{color:#64748B;font-style:normal}
-.empty{font-size:0.85rem;color:#94A3B8;font-style:italic;margin:0.5rem 0}
+.sec-list{margin-top:12px;border-top:1px solid var(--a5-light-border)}
+.sec-list .row{
+  display:grid;grid-template-columns:160px 1fr;
+  gap:16px;padding:10px 0;
+  border-bottom:1px solid var(--a5-light-border);
+  font-size:14px;
+}
+.sec-list .row .date{color:var(--a5-text-secondary);font-family:'JetBrains Mono',monospace;font-size:12.5px}
+.sec-list .row .info{color:var(--a5-text-primary)}
+.sec-list .row .info em{color:var(--a5-text-secondary);font-style:normal}
+.empty{font-size:13.5px;color:var(--a5-text-muted);font-style:italic;margin:8px 0}
 
 .danger-card{border-color:#FECACA;background:#FEF2F2}
 .danger-card h2{color:#991B1B}
 .danger-card p{color:#7F1D1D}
 
-.ftr{text-align:center;padding:1.5rem;font-size:0.72rem;color:#94A3B8;font-family:'DM Mono',monospace}
-.ftr a{color:#64748B;text-decoration:none}
+.ftr{
+  text-align:center;
+  padding:24px 16px;
+  font-size:12px;
+  color:var(--a5-text-muted);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.05em;
+}
+.ftr a{color:var(--a5-text-muted);text-decoration:underline;text-underline-offset:2px;margin:0 8px}
+.ftr a:hover{color:var(--a5-blue)}
+
 .hide{display:none}
-.loading{text-align:center;color:#64748B;padding:2rem;font-size:0.9rem}
+.loading{text-align:center;color:var(--a5-text-secondary);padding:32px;font-size:14px}
+
+@media (max-width:640px){
+  .hdr{padding:12px 20px;flex-wrap:wrap;gap:8px}
+  .main{padding:32px 20px}
+  .hero h1{font-size:28px}
+  .kv{grid-template-columns:1fr}
+  .kv dt{margin-top:8px}
+  .sec-list .row{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 <header class="hdr">
-  <a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5"><img src="/alter-logo-white.svg" alt="Alter5"></a>
+  <a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5">
+    <img src="/ds/alter5-logo-white.svg" alt="Alter5">
+  </a>
   <div class="hdr-tag">Gestión de datos personales</div>
 </header>
 
@@ -82,7 +206,7 @@ input[type=email]:focus{outline:none;border-color:#13285B;box-shadow:0 0 0 3px r
     <div class="card">
       <h2>Solicitar enlace</h2>
       <p>El enlace caduca en 30 minutos y es de un solo uso.</p>
-      <div style="margin-top:1rem">
+      <div style="margin-top:16px">
         <label for="email">Email</label>
         <input type="email" id="email" autocomplete="email" placeholder="tu@dominio.com" required>
       </div>
@@ -116,7 +240,7 @@ input[type=email]:focus{outline:none;border-color:#13285B;box-shadow:0 0 0 3px r
     <div class="card">
       <h2>Candidatura</h2>
       <dl class="kv" id="kv-app"></dl>
-      <div class="btn-row" style="margin-top:1.25rem">
+      <div class="btn-row" style="margin-top:20px">
         <button class="btn btn-primary" id="btn-export" type="button">Descargar copia (JSON)</button>
       </div>
     </div>
@@ -161,7 +285,7 @@ input[type=email]:focus{outline:none;border-color:#13285B;box-shadow:0 0 0 3px r
     </div>
     <div class="card">
       <p>Solicita un enlace nuevo indicando tu email:</p>
-      <div style="margin-top:1rem">
+      <div style="margin-top:16px">
         <label for="email-retry">Email</label>
         <input type="email" id="email-retry" autocomplete="email" placeholder="tu@dominio.com" required>
       </div>
@@ -181,7 +305,7 @@ input[type=email]:focus{outline:none;border-color:#13285B;box-shadow:0 0 0 3px r
     </div>
     <div class="card">
       <p>Si más adelante deseas aplicar de nuevo, podrás hacerlo desde
-      <a href="/sw-architect">la página de la vacante</a>.</p>
+      <a href="/hoe">la página de la vacante</a>.</p>
     </div>
   </section>
 </main>

@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alter5 — Panel de Candidatos</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- DOMPurify — see admin.html header for rationale. -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.11/dist/purify.min.js" crossorigin="anonymous"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -110,7 +112,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 </div>
 
 <div class="main">
-  <p class="eyebrow">SW Architect / AI Head of Engineering</p>
+  <p class="eyebrow">Head of Engineering (AI & Infrastructure)</p>
   <h1 class="page-title">Panel de candidatos</h1>
   <p class="page-sub">Ranking y comparación de todos los candidatos entrevistados. Ordenados por puntuación global.</p>
 
@@ -140,17 +142,18 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 function loadStorage(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')??fallback;}catch(e){console.warn('localStorage corrupted:',key);localStorage.removeItem(key);return fallback;}}
 function saveStorage(key,data){try{localStorage.setItem(key,JSON.stringify(data));}catch(e){console.error('localStorage write failed:',e);}}
 function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
+// DOMPurify with explicit allowlist — see admin.html for rationale.
+const PURIFY_CONFIG={
+  ALLOWED_TAGS:['h3','h4','h5','h6','p','br','hr','ul','ol','li','strong','em','b','i','u','span','div','blockquote','code'],
+  ALLOWED_ATTR:['class'],
+  ALLOW_DATA_ATTR:false,
+  KEEP_CONTENT:true,
+};
 function sanitizeHTML(html){
-  const tmp=document.createElement('div');
-  tmp.innerHTML=html;
-  tmp.querySelectorAll('script,iframe,object,embed,link,style,form,input,textarea,select,button,meta,base').forEach(el=>el.remove());
-  tmp.querySelectorAll('*').forEach(el=>{
-    for(const attr of [...el.attributes]){
-      if(attr.name.startsWith('on'))el.removeAttribute(attr.name);
-      if(['src','href','action','formaction','data','background'].includes(attr.name)&&/^\s*javascript:/i.test(attr.value))el.removeAttribute(attr.name);
-    }
-  });
-  return tmp.innerHTML;
+  if(typeof DOMPurify==='undefined'){
+    const d=document.createElement('div');d.textContent=String(html||'');return d.innerHTML;
+  }
+  return DOMPurify.sanitize(String(html||''),PURIFY_CONFIG);
 }
 
 function getCandidates(){

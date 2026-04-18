@@ -1,7 +1,13 @@
 .vercel
-.env*.local
+.env
+.env.*
+!.env.local.example
 node_modules/
 test-results/
 .supabase-db-password.txt
 .supabase/
+*.pem
+*.key
+secrets/
+.tmp-*
 

@@ -3,15 +3,24 @@
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/dashboard", "destination": "/dashboard.html" },
     { "source": "/reports", "destination": "/reports.html" },
-    { "source": "/sw-architect", "destination": "/sw-architect.html" },
+    { "source": "/hoe", "destination": "/hoe.html" },
     { "source": "/apply/thanks", "destination": "/apply-thanks.html" },
     { "source": "/apply/verify-failed", "destination": "/apply-verify-failed.html" },
     { "source": "/apply/privacy", "destination": "/apply-privacy.html" },
     { "source": "/apply/upload", "destination": "/apply-upload.html" },
     { "source": "/interview", "destination": "/interview.html" },
-    { "source": "/privacy/my-data", "destination": "/privacy-my-data.html" },
-    { "source": "/", "destination": "/index.html" }
+    { "source": "/privacy/my-data", "destination": "/privacy-my-data.html" }
   ],
+  "redirects": [
+    { "source": "/", "destination": "/hoe", "permanent": true },
+    { "source": "/sw-architect", "destination": "/hoe", "permanent": true }
+  ],
+  "functions": {
+    "api/upload-cv.js": { "maxDuration": 60 },
+    "api/submit-interview.js": { "maxDuration": 60 },
+    "api/admin/reanalyze-interview.js": { "maxDuration": 60 },
+    "api/admin/manual-upload.js": { "maxDuration": 60 }
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -20,7 +29,16 @@
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "no-referrer" },
         { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
+        { "key": "Cross-Origin-Resource-Policy", "value": "same-origin" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://challenges.cloudflare.com https://*.supabase.co; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
       ]
     }
   ],
