@@ -21,7 +21,7 @@ module.exports.default = async function handler(req, res) {
     let query = supabaseAdmin
       .from('applications')
       .select(`
-        id, email, status, source, name, experience,
+        id, email, status, source, name, experience, headhunter_id,
         requested_human_review, consent_privacy, consent_ai_decision,
         apply_ip, utm_source, utm_medium, utm_campaign,
         created_at, verified_at, cv_uploaded_at, analyzed_at,
@@ -63,6 +63,19 @@ module.exports.default = async function handler(req, res) {
       .in('application_id', appIds)
       .order('uploaded_at', { ascending: false });
 
+    // Fetch headhunters referenced by this page so the list can show
+    // "Headhunter — {company}" inline (the detail modal already does its
+    // own join, but the list view didn't have the data).
+    const hhIds = [...new Set(apps.map(a => a.headhunter_id).filter(Boolean))];
+    const hhMap = {};
+    if (hhIds.length) {
+      const { data: hhRows } = await supabaseAdmin
+        .from('headhunters')
+        .select('id, name, company, email')
+        .in('id', hhIds);
+      for (const h of hhRows || []) hhMap[h.id] = h;
+    }
+
     const byId = (arr) => {
       const m = {};
       for (const r of arr || []) {
@@ -79,6 +92,7 @@ module.exports.default = async function handler(req, res) {
       latest_analysis: analysisMap[a.id] || null,
       latest_interview: interviewMap[a.id] || null,
       latest_cv: cvMap[a.id] || null,
+      headhunter: a.headhunter_id ? (hhMap[a.headhunter_id] || null) : null,
     }));
 
     res.setHeader('Cache-Control', 'no-store');

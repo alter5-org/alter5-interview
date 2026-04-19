@@ -327,10 +327,12 @@ function renderReviewRow(a){
   const score=an?`<strong style="font-family:var(--mono);font-size:1rem">${an.score}/10</strong>`:'—';
   const rec=an?`<span class="badge ${an.recommendation==='enviar'?'b-green':an.recommendation==='revisar'?'b-amber':'b-red'}">${an.recommendation}</span>`:'—';
   const hr=a.requested_human_review?'<span class="badge b-purple">sí</span>':'<span class="muted">no</span>';
+  const origin=a.headhunter?`<div style="margin-top:0.3rem"><span class="badge b-purple">Headhunter · ${esc(a.headhunter.company||a.headhunter.name||'')}</span></div>`:'';
   return `<tr>
     <td>
       <div style="font-weight:500">${esc(a.name||'Sin nombre')}</div>
       <div class="mono muted">${esc(a.email)}</div>
+      ${origin}
     </td>
     <td>${score}</td>
     <td>${rec}${an?`<div class="muted" style="margin-top:0.3rem;max-width:320px">${esc(an.summary||'')}</div>`:''}</td>
@@ -406,10 +408,21 @@ function renderAllRow(a){
     <td>${statusBadge(a.status)}</td>
     <td>${score}</td>
     <td>${ivScore}</td>
-    <td><span class="muted">${esc(a.source)}</span></td>
+    <td>${originCell(a)}</td>
     <td class="muted">${fmtDate(a.created_at)}</td>
     <td><button class="btn btn-ghost btn-sm" onclick="openDetail('${a.id}')">Ver →</button></td>
   </tr>`;
+}
+
+// Origin label for the list views. A headhunter-sourced application wins
+// over the raw `source` column — the column may still be 'public' if the
+// candidate first applied themselves and a partner uploaded a CV later.
+function originCell(a){
+  if (a.headhunter) {
+    const label = a.headhunter.company || a.headhunter.name || 'Headhunter';
+    return `<span class="badge b-purple" title="${esc(a.headhunter.name||'')} · ${esc(a.headhunter.email||'')}">Headhunter · ${esc(label)}</span>`;
+  }
+  return `<span class="muted">${esc(a.source)}</span>`;
 }
 
 // ───────────────────────────────────────────────────────────────────────────

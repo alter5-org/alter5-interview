@@ -4,6 +4,8 @@
 !.env.local.example
 node_modules/
 test-results/
+playwright-report/
+.claude/
 .supabase-db-password.txt
 .supabase/
 *.pem
