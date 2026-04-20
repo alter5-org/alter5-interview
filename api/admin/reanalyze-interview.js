@@ -5,6 +5,7 @@
 
 const { supabaseAdmin } = require('../../lib/supabase');
 const { analyzeInterview } = require('../../lib/interview-analysis');
+const { getPositionByApplication } = require('../../lib/positions');
 const { sanitizeHtml } = require('../../lib/sanitize-html');
 
 module.exports.default = async function handler(req, res) {
@@ -40,10 +41,12 @@ module.exports.default = async function handler(req, res) {
       return `[${a.question_key || ''}] ${a.question_type || ''}\nRespuesta: ${ans}\nTiempo: ${mm}:${ss}`;
     }).join('\n\n');
 
+    const position = await getPositionByApplication(iv.application_id);
     const result = await analyzeInterview({
       name: app?.name || '',
       experience: app?.experience || '',
       summaryText,
+      systemPrompt: position?.interview_system_prompt || null,
     });
     if (!result.ok) return res.status(502).json({ error: result.error });
 

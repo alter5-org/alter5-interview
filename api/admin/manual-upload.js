@@ -4,13 +4,16 @@
 // Behind Basic Auth via middleware.js. The actual pipeline lives in
 // lib/cv-upload.js so the headhunter portal can reuse it.
 //
-// Body: { email?, name?, experience?, fileBase64, filename, autoInvite?, source? }
+// Body: { email?, name?, experience?, fileBase64, filename, autoInvite?, source?, position_id? }
 //
 // `email` is optional — if omitted we extract it from the CV via the LLM.
 // `source` accepts the whitelist {'email_agent'} (Mastra HR agent ingest);
 // any other value falls back to 'admin_manual'.
+// `position_id` is optional; when omitted the CV is routed to the HoE
+// position so legacy bulk-upload flows keep working untouched.
 
 const { processCvUpload } = require('../../lib/cv-upload');
+const { supabaseAdmin } = require('../../lib/supabase');
 const { getClientIp, getUserAgent } = require('../../lib/validation');
 
 module.exports.config = {
@@ -18,12 +21,31 @@ module.exports.config = {
 };
 
 const ALLOWED_SOURCES = new Set(['email_agent']);
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 module.exports.default = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'method' });
 
-  const { email, name, experience, fileBase64, filename, autoInvite, source } = req.body || {};
+  const { email, name, experience, fileBase64, filename, autoInvite, source, position_id } = req.body || {};
   const resolvedSource = ALLOWED_SOURCES.has(source) ? source : 'admin_manual';
+
+  // Admin uploads can target any active (non-archived) position. No
+  // share_with_headhunters gate here — this endpoint is admin-only.
+  let resolvedPositionId = null;
+  if (position_id) {
+    if (!UUID_RE.test(position_id)) {
+      return res.status(400).json({ error: 'invalid_position' });
+    }
+    const { data: pos } = await supabaseAdmin
+      .from('positions')
+      .select('id, status, archived_at')
+      .eq('id', position_id)
+      .maybeSingle();
+    if (!pos || pos.archived_at || pos.status !== 'active') {
+      return res.status(400).json({ error: 'invalid_position' });
+    }
+    resolvedPositionId = pos.id;
+  }
 
   try {
     const result = await processCvUpload({
@@ -33,6 +55,7 @@ module.exports.default = async function handler(req, res) {
       prefilledEmail: email || null,
       prefilledName: name || null,
       prefilledExperience: experience || null,
+      positionId: resolvedPositionId,
       autoInvite: !!autoInvite,
       ip: getClientIp(req),
       userAgent: getUserAgent(req),

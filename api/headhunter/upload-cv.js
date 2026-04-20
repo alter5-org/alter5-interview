@@ -4,10 +4,15 @@
 // stamps the candidate row + event with the partner's id. The actual
 // processing is shared with the admin manual-upload (lib/cv-upload.js).
 //
-// Body: { fileBase64, filename, note?, autoInvite? }
+// Body: { fileBase64, filename, note?, autoInvite?, position_id? }
 //
 // `autoInvite` from a partner is intentionally accepted — they often have
 // already screened the candidate; admin still gets the event log to audit.
+//
+// `position_id` must reference a position with share_with_headhunters=true
+// AND status='active'. A partner can't upload a CV into a closed position
+// or into one we haven't explicitly shared with them. If not supplied we
+// fall back to the HoE position so legacy clients keep working.
 
 const { processCvUpload } = require('../../lib/cv-upload');
 const { getSession } = require('../../lib/headhunter-session');
@@ -17,6 +22,8 @@ const { getClientIp, getUserAgent } = require('../../lib/validation');
 module.exports.config = {
   api: { bodyParser: { sizeLimit: '8mb' } },
 };
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 module.exports.default = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'method' });
@@ -36,7 +43,26 @@ module.exports.default = async function handler(req, res) {
     return res.status(401).json({ error: 'unauthenticated' });
   }
 
-  const { fileBase64, filename, note, autoInvite } = req.body || {};
+  const { fileBase64, filename, note, autoInvite, position_id } = req.body || {};
+
+  // Validate position_id against the share+active gate. This is the real
+  // authorization boundary: partners-upload.html only *shows* shared
+  // positions in the dropdown, but we can't trust the client — recheck.
+  let resolvedPositionId = null;
+  if (position_id) {
+    if (!UUID_RE.test(position_id)) {
+      return res.status(400).json({ error: 'invalid_position' });
+    }
+    const { data: pos } = await supabaseAdmin
+      .from('positions')
+      .select('id, share_with_headhunters, status, archived_at')
+      .eq('id', position_id)
+      .maybeSingle();
+    if (!pos || pos.archived_at || pos.status !== 'active' || !pos.share_with_headhunters) {
+      return res.status(400).json({ error: 'invalid_position' });
+    }
+    resolvedPositionId = pos.id;
+  }
 
   // autoInvite from a partner bypasses the IA scoring → mass interview
   // invites without human review. Gate it behind an explicit admin opt-in
@@ -50,6 +76,7 @@ module.exports.default = async function handler(req, res) {
       filename,
       source: 'headhunter',
       headhunterId: hh.id,
+      positionId: resolvedPositionId,
       uploaderNote: note ? String(note) : null,
       autoInvite: effectiveAutoInvite,
       ip: getClientIp(req),

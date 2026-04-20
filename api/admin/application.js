@@ -46,6 +46,16 @@ module.exports.default = async function handler(req, res) {
       headhunter = hh || null;
     }
 
+    let position = null;
+    if (app.position_id) {
+      const { data: pos } = await supabaseAdmin
+        .from('positions')
+        .select('id, slug, title, subtitle, status')
+        .eq('id', app.position_id)
+        .maybeSingle();
+      position = pos || null;
+    }
+
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json({
       application: app,
@@ -55,6 +65,7 @@ module.exports.default = async function handler(req, res) {
       interview_answers: answers,
       events: events.data || [],
       headhunter,
+      position,
     });
   } catch (e) {
     console.error('[admin/application] error:', e.message);

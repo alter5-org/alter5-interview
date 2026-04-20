@@ -25,8 +25,10 @@ h1{font-weight:700;font-size:28px;color:var(--a5-blue);margin-bottom:8px;letter-
 .card{background:var(--a5-light-card);border:1px solid var(--a5-light-border);border-radius:var(--a5-radius-xl);padding:28px;box-shadow:var(--a5-shadow-md)}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:11px;font-weight:600;color:var(--a5-text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em}
-.field textarea{width:100%;padding:11px 14px;border:1px solid var(--a5-light-border);border-radius:var(--a5-radius-md);font-family:inherit;font-size:14px;outline:none;resize:vertical;min-height:72px}
-.field textarea:focus{border-color:var(--a5-teal);box-shadow:0 0 0 3px rgba(81,182,190,0.15)}
+.field textarea,.field select{width:100%;padding:11px 14px;border:1px solid var(--a5-light-border);border-radius:var(--a5-radius-md);font-family:inherit;font-size:14px;outline:none;background:#fff;color:var(--a5-slate)}
+.field textarea{resize:vertical;min-height:72px}
+.field textarea:focus,.field select:focus{border-color:var(--a5-teal);box-shadow:0 0 0 3px rgba(81,182,190,0.15)}
+.field-hint{font-size:11px;color:var(--a5-text-secondary);margin-top:4px;line-height:1.4}
 .toggle{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--a5-slate);margin-top:6px}
 .toggle input{accent-color:var(--a5-teal)}
 .drop{border:2px dashed var(--a5-light-border);border-radius:var(--a5-radius-lg);padding:32px 24px;text-align:center;cursor:pointer;transition:all .15s;background:#F8FAFC;margin-top:14px}
@@ -63,6 +65,13 @@ h1{font-weight:700;font-size:28px;color:var(--a5-blue);margin-bottom:8px;letter-
   <div class="card">
     <form id="upload-form">
       <div class="field">
+        <label for="up-position">Posición</label>
+        <select id="up-position" required>
+          <option value="">Cargando posiciones…</option>
+        </select>
+        <div class="field-hint">Todos los CVs de este lote se asignarán a esta posición.</div>
+      </div>
+      <div class="field">
         <label for="up-note">Nota para nuestro equipo (opcional)</label>
         <textarea id="up-note" maxlength="2000" placeholder="Ej: Candidato con experiencia en LLMs y AWS, valoración positiva de mi parte."></textarea>
       </div>
@@ -95,6 +104,34 @@ function esc(s){const d=document.createElement('div');d.textContent=s==null?'':S
   const data = await r.json();
   const hh = data.headhunter;
   $('#hh-who').innerHTML = `${esc(hh.company)} — <strong>${esc(hh.name)}</strong>`;
+})();
+
+// Populate the position dropdown with only positions the admin has
+// explicitly shared with headhunters (share_with_headhunters=true). The
+// server re-checks on upload so a tampered client can't escape this.
+(async () => {
+  const sel = $('#up-position');
+  try {
+    const r = await fetch('/api/positions?for_headhunters=1');
+    const data = await r.json();
+    const positions = data.positions || [];
+    if (!positions.length) {
+      sel.innerHTML = '<option value="">No hay posiciones disponibles</option>';
+      sel.disabled = true;
+      $('#up-submit').disabled = true;
+      toast('No hay posiciones abiertas para headhunters ahora mismo', true);
+      return;
+    }
+    const opts = ['<option value="">— Selecciona una posición —</option>'];
+    for (const p of positions) {
+      const label = p.subtitle ? `${p.title} · ${p.subtitle}` : p.title;
+      opts.push(`<option value="${esc(p.id)}">${esc(label)}</option>`);
+    }
+    sel.innerHTML = opts.join('');
+  } catch {
+    sel.innerHTML = '<option value="">Error cargando posiciones</option>';
+    sel.disabled = true;
+  }
 })();
 
 $('#logout-btn').addEventListener('click', async () => {
@@ -153,6 +190,8 @@ function renderRow(idx, file, state, detail) {
 $('#upload-form').addEventListener('submit', async e => {
   e.preventDefault();
   if (!buffers.length) { toast('Selecciona al menos un PDF', true); return; }
+  const positionId = $('#up-position').value;
+  if (!positionId) { toast('Selecciona la posición', true); return; }
   const note = $('#up-note').value.trim();
   const autoInvite = $('#up-auto').checked;
   const btn = $('#up-submit'); btn.disabled = true; btn.textContent = 'Procesando…';
@@ -166,12 +205,12 @@ $('#upload-form').addEventListener('submit', async e => {
       const fileBase64 = await fileToBase64(f);
       const r = await fetch('/api/headhunter/upload-cv', {
         method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({fileBase64, filename: f.name, note, autoInvite}),
+        body: JSON.stringify({fileBase64, filename: f.name, note, autoInvite, position_id: positionId}),
       });
       const data = await r.json();
       if (!r.ok) {
         errCount++;
-        const labels={email_not_found_in_cv:'Email no encontrado en el CV',analysis_failed:'No se pudo analizar el CV',invalid_pdf:'PDF no válido',file_too_large:'Fichero muy grande',unauthenticated:'Sesión expirada — vuelve a entrar'};
+        const labels={email_not_found_in_cv:'Email no encontrado en el CV',analysis_failed:'No se pudo analizar el CV',invalid_pdf:'PDF no válido',file_too_large:'Fichero muy grande',unauthenticated:'Sesión expirada — vuelve a entrar',invalid_position:'Posición inválida o ya no está disponible'};
         renderRow(i, f, 'error', '✗ ' + (labels[data.error]||data.error||'error'));
         if (data.error === 'unauthenticated') { setTimeout(()=>location.href='/partners',1500); break; }
       } else {
