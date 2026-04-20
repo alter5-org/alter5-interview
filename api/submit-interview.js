@@ -13,6 +13,7 @@ const { supabaseAdmin } = require('../lib/supabase');
 const { hashToken, isValidTokenFormat } = require('../lib/tokens');
 const { getClientIp, getUserAgent } = require('../lib/validation');
 const { analyzeInterview } = require('../lib/interview-analysis');
+const { getPositionByApplication } = require('../lib/positions');
 const { sanitizeHtml } = require('../lib/sanitize-html');
 
 module.exports.config = {
@@ -175,6 +176,11 @@ module.exports.default = async function handler(req, res) {
         return `[${block}] ${a.questionText || ''}\nRespuesta: ${ans}\nTiempo: ${mm}:${ss}${sigLine}`;
       }).join('\n\n');
 
+      // Load the position-specific grading prompt so the LLM evaluates the
+      // interview against THIS funnel's archetype definitions, not the HoE
+      // builder/strategist split.
+      const position = await getPositionByApplication(appId);
+
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 45000);
       const analysis = await analyzeInterview({
@@ -182,6 +188,7 @@ module.exports.default = async function handler(req, res) {
         experience: app.experience || '',
         summaryText,
         signal: controller.signal,
+        systemPrompt: position?.interview_system_prompt || null,
       });
       clearTimeout(timeoutId);
 

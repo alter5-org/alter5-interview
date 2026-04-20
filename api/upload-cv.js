@@ -23,6 +23,7 @@ const crypto = require('crypto');
 const { supabaseAdmin } = require('../lib/supabase');
 const { getSession, clearCookieHeader } = require('../lib/session');
 const { analyzeCv } = require('../lib/cv-analysis');
+const { getPositionByApplication } = require('../lib/positions');
 const { getClientIp, getUserAgent } = require('../lib/validation');
 
 module.exports.config = {
@@ -124,7 +125,14 @@ module.exports.default = async function handler(req, res) {
     });
 
     // 3. Analyze with Claude (reuses the base64 already in memory).
-    const analysis = await analyzeCv({ fileBase64, filename });
+    //    Load the position-specific prompt so the LLM judges the candidate
+    //    against THIS funnel's criteria, not a generic template.
+    const position = await getPositionByApplication(appId);
+    const analysis = await analyzeCv({
+      fileBase64,
+      filename,
+      systemPrompt: position?.cv_analysis_prompt || null,
+    });
     if (!analysis.ok) {
       console.error('[upload-cv] analysis error:', analysis.error);
       await supabaseAdmin.from('application_events').insert({
