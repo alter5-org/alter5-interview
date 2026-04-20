@@ -413,7 +413,7 @@ body{
 <header class="hdr">
   <a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5"><img src="/ds/alter5-logo-white.svg" alt="Alter5"></a>
   <div class="hdr-right">
-    <span class="hdr-meta">Head of Engineering (AI & Infrastructure)</span>
+    <span class="hdr-meta" id="hdr-meta">Entrevista técnica</span>
     <span class="hdr-badge" id="hdr-status">Entrevista</span>
     <span class="hdr-candidate" id="hdr-candidate" style="display:none"></span>
   </div>
@@ -450,7 +450,7 @@ body{
   <!-- INTRO -->
   <div class="screen" id="screen-intro">
     <p class="eyebrow">Proceso de selección · Alter5</p>
-    <h1 class="big-title">Entrevista técnica<br><em>Head of Engineering (AI &amp; Infrastructure)</em></h1>
+    <h1 class="big-title">Entrevista técnica<br><em id="intro-position">…</em></h1>
     <p class="intro-body">
       Hola <strong id="intro-name">…</strong>. Gracias por llegar hasta aquí. Esta entrevista estructurada
       nos ayuda a evaluar tu encaje de forma objetiva. Dedícale unos <strong>10-15 minutos</strong>
@@ -540,60 +540,14 @@ body{
 
 <script>
 // ───────────────────────────────────────────────────────────────────────────
-// Interview definition (ported from legacy index.html — same questions).
+// Interview definition.
+// Loaded at boot from /api/interview/config?token=… so each position can
+// define its own test. See api/interview/config.js for the schema.
 // ───────────────────────────────────────────────────────────────────────────
-const BLOCKS=[
-  {id:'compensation',label:'Compensación',icon:'◆',desc:'Alineamos expectativas económicas desde el inicio.'},
-  {id:'tech',label:'Arquitectura técnica',icon:'⬡',desc:'Evaluamos criterio técnico en backend, infraestructura y buenas prácticas.'},
-  {id:'ai',label:'IA aplicada',icon:'◈',desc:'Evaluamos uso real de IA: agentes, orquestación y programación agéntica.'},
-  {id:'leadership',label:'Liderazgo de equipo',icon:'◎',desc:'Evaluamos experiencia gestionando personas, no solo liderazgo técnico informal.'},
-  {id:'product',label:'Producto y negocio',icon:'◇',desc:'Evaluamos colaboración con negocio y traducción de necesidades en decisiones técnicas.'},
-  {id:'multiwork',label:'Compromiso y dedicación',icon:'◉',desc:'Evaluamos dedicación exclusiva y compromiso con el proyecto.'},
-  {id:'motivation',label:'Motivación',icon:'★',desc:'Nos ayuda a entender qué te mueve — no hay respuesta correcta.'},
-];
-
-// Questions redesigned 2026-04-18: all multiple-choice (test) format per
-// candidate preference — opens are too taxing and were often skipped or
-// answered generically. Each single-choice question has exactly one answer
-// that reflects the judgement of a seasoned Head of Engineering; the rest
-// are credible-but-wrong distractors. Final `motivation` block is NOT
-// scored (no `correct`, filtered in computeScores) — it's a preference
-// signal for the recruiter, not an evaluation.
-const QS=[
-  // ── TECH — 6 preguntas ──────────────────────────────────────────────────
-  {block:'tech',type:'single',w:3,text:'Tu equipo de 4-6 developers arranca un producto nuevo. ¿Qué pesa MÁS en la decisión "monolito modular vs. microservicios desde el día 1"?',hint:'',options:['El tamaño actual del equipo y la velocidad de iteración en los primeros 6 meses','La escalabilidad futura prevista: si habrá 20+ developers en 18 meses','La familiaridad del equipo con cada paradigma','Lo nítidos que estén los bounded contexts del dominio antes de escribir código'],correct:0,min:10,sus:60},
-  {block:'tech',type:'single',w:2,text:'Tienes 14 microservicios, cada uno con su propio pool de 5 conexiones a PostgreSQL RDS (70 conexiones simultáneas). Empiezas a ver timeouts intermitentes contra la BD. ¿Cuál es tu primer paso?',hint:'',options:['Aumentar max_connections en RDS al doble para absorber el pico','Introducir un connection pooler centralizado (PgBouncer o RDS Proxy) delante de RDS','Bajar las conexiones por servicio a 2 y añadir retry con backoff exponencial','Migrar a Aurora Serverless v2 para que max_connections escale solo'],correct:1,min:10,sus:60},
-  {block:'tech',type:'single',w:2,text:'Tu backend Node.js en App Runner tarda 8 s en arrancar en frío tras un pico. Ya tienes provisioned concurrency configurada pero el pico la desborda. ¿Qué investigas primero?',hint:'',options:['Reducir la imagen Docker con multi-stage build y base distroless','El coste real del arranque: handshake con RDS, SDKs de AWS, descarga de secretos, carga de configuración externa','Cambiar a ECS Fargate con capacity provider para tener instancias siempre calientes','Añadir un self-ping cada 30 s como warm-up'],correct:1,min:10,sus:60},
-  {block:'tech',type:'single',w:3,text:'Incidente P1 en producción. Tras 20 min de investigación no tienes una causa clara y el impacto sigue creciendo. ¿Qué es lo PRIMERO que haces?',hint:'',options:['Sigo investigando — no quiero tomar una acción que pueda empeorarlo sin entender la causa','Revierto al último deploy estable conocido; investigación a fondo después, con el sangrado cerrado','Escalo: llamo al siguiente nivel para tener más manos y perspectivas distintas','Comunico estado a stakeholders y clientes antes de cualquier acción técnica'],correct:1,min:10,sus:60},
-  {block:'tech',type:'single',w:2,text:'Heredas una plataforma AWS (Node + Postgres en App Runner) sin ninguna observabilidad. ¿Qué montas en las dos primeras semanas?',hint:'',options:['CloudWatch Logs + Alarms de CPU/memoria — suficiente para empezar','Sentry para errores + CloudWatch para métricas de infraestructura','Logging estructurado JSON, Sentry, métricas de negocio custom (Datadog/Grafana) y tracing distribuido (OpenTelemetry) en los endpoints críticos','Stack ELK self-hosted para tener control total del pipeline de logs'],correct:2,min:10,sus:60},
-  {block:'tech',type:'single',w:2,text:'Descubres credenciales de BD hardcodeadas en un script de migración que lleva 6 meses en el repo. ¿Cuál es tu primer paso?',hint:'',options:['Rotar las credenciales inmediatamente en RDS, después mover a Secrets Manager y purgar el histórico','Mover a variables de entorno y hacer un commit revirtiendo el script','Abrir un ticket en el backlog para el próximo sprint','Auditar el histórico de Git primero para detectar más secretos expuestos'],correct:0,min:10,sus:60},
-
-  // ── IA — 4 preguntas ────────────────────────────────────────────────────
-  {block:'ai',type:'single',w:3,text:'Pones en producción un agente que llama APIs internas (consulta BD, envía emails, crea tickets). ¿Qué guardrail es MÁS crítico para evitar daño operativo real?',hint:'',options:['Rate-limit por usuario y por tool para controlar el coste','Allowlist de tools + paso de confirmación humana para acciones con efectos secundarios (escrituras, emails, pagos)','Logging exhaustivo y trazas para auditoría post-hoc','Retries con backoff exponencial ante errores de tool'],correct:1,min:10,sus:60},
-  {block:'ai',type:'multi',w:2,text:'¿Con qué frameworks de orquestación de agentes has trabajado en proyectos reales puestos en producción?',hint:'Marca solo los que hayas operado con usuarios finales — no tutoriales ni pruebas de concepto.',options:['LangChain / LangGraph','Mastra','AutoGen / AG2','CrewAI','Vercel AI SDK','Semantic Kernel','Claude Agent SDK','He construido mi propia orquestación','Ninguno todavía'],min:5,sus:60},
-  {block:'ai',type:'single',w:2,text:'Un agente en producción responde con información fabricada sobre un cliente (datos que no existen en la BD). Los logs muestran que el tool-call correcto se invocó y devolvió "not_found". ¿Cuál es la causa más probable?',hint:'',options:['El prompt no obligaba al agente a priorizar el resultado del tool sobre su conocimiento previo — el modelo rellenó el hueco','El modelo está mal afinado para tu dominio y hay que cambiar de proveedor','Falta un retry loop que reintente el tool al recibir "not_found"','El contexto se truncó y el modelo no llegó a ver la respuesta del tool'],correct:0,min:10,sus:60},
-  {block:'ai',type:'single',w:2,text:'Llevas 2+ meses usando Claude Code/Cursor en tu flujo diario. ¿Dónde ves la mejora MÁS significativa?',hint:'',options:['Velocidad de escribir código rutinario (boilerplate, tests, CRUD)','Exploración de código ajeno y onboarding a repositorios nuevos','Abordar refactors de gran alcance que antes no hacías por coste-beneficio','Eliminar tareas "de fontanería" (CI, scripts, configuración) que antes aplazabas'],correct:2,min:10,sus:60},
-
-  // ── LIDERAZGO — 4 preguntas ────────────────────────────────────────────
-  {block:'leadership',type:'single',w:3,text:'Un senior de tu equipo escribe código excelente pero sus code reviews tardan y frenan al resto del equipo. Llevas 3 sprints detectando el patrón. ¿Qué haces PRIMERO?',hint:'',options:['Le quito los code reviews y los reasigno a otros seniors para desbloquear al equipo','1:1 directo: expongo el patrón con datos y le pregunto qué está pasando','Defino un SLA de review (<24 h) y lo muestro públicamente en el dashboard del equipo','Escalo a su manager o a RRHH para documentar el problema de rendimiento'],correct:1,min:10,sus:60},
-  {block:'leadership',type:'single',w:3,text:'Entras como Head of Engineering y heredas un equipo de 3 developers (1 senior, 2 mid) sin tech lead. El producto debe escalar y añadir agentes de IA en los próximos meses. ¿Cuál es tu PRIMER hire?',hint:'',options:['Otro mid-level backend para añadir capacidad de desarrollo','Un DevOps senior para profesionalizar la infraestructura','Un ML/AI engineer para liderar la capa de agentes','Un senior generalista / tech lead que eleve el estándar técnico y pueda mentorizar a los mid-level'],correct:3,min:10,sus:60},
-  {block:'leadership',type:'single',w:2,text:'¿Cómo garantizas productividad y alineación de un equipo de desarrollo 100% remoto repartido en 2-3 husos horarios?',hint:'',options:['Standup diario obligatorio por videollamada + entregables de granularidad diaria','Objetivos semanales escritos + revisión asíncrona de código + métrica de throughput por PR','Confianza total — mido solo por resultados trimestrales, sin cadencia fija','Objetivos semanales escritos, daily async en texto, PR review en <24 h y una call síncrona semanal'],correct:3,min:10,sus:60},
-  {block:'leadership',type:'single',w:2,text:'Tu equipo está escribiendo código x3 más rápido gracias a programación agéntica. ¿Qué cambia estructuralmente en cómo organizas el trabajo?',hint:'',options:['Nada estructural — mismo proceso, solo que caben más features en el sprint','Subo el listón de code review y añado más testing porque se genera más código','Rediseño el flujo: más tiempo en especificación y arquitectura antes de escribir, el code review pasa a ser el cuello de botella, y los sprints se miden en "problemas resueltos" y no en "tickets cerrados"','Reduzco el equipo a la mitad y mantengo el output — optimización de coste'],correct:2,min:10,sus:60},
-
-  // ── PRODUCTO — 2 preguntas ─────────────────────────────────────────────
-  {block:'product',type:'single',w:2,text:'Un stakeholder de negocio sin background técnico te pide una feature urgente. Su propuesta técnica no tiene sentido y bloquearía el roadmap. ¿Qué haces primero?',hint:'',options:['Le explico por qué no es viable y propongo una alternativa técnica','Entiendo primero el problema de negocio real que quiere resolver antes de evaluar si su solución es la correcta','Lo implemento como pide para no bloquear al negocio y lo refactorizo después','Lo escalo al Product Manager para que lo priorice y lo traduzca'],correct:1,min:10,sus:60},
-  {block:'product',type:'single',w:2,text:'Un cliente enterprise clave necesita una integración funcionando en 2 semanas o cancela el contrato. La solución técnicamente correcta tarda 6 semanas. Una solución "sucia" cabe en 2. ¿Qué haces?',hint:'',options:['Entrego la solución sucia en 2 semanas con deuda técnica explícita y plan de refactor a 3 meses','Entrego la sucia y el refactor lo vemos más adelante cuando haya tiempo','Rechazo el plazo — la deuda técnica causará problemas peores más adelante','Escalo al CEO/CTO para que decida, esto no es decisión mía'],correct:0,min:10,sus:60},
-
-  // ── COMPROMISO — 2 preguntas ───────────────────────────────────────────
-  {block:'multiwork',type:'single',w:3,text:'¿Tienes actualmente algún compromiso profesional activo que tendrías que compatibilizar con este rol?',hint:'Respuesta directa — el rol exige dedicación exclusiva.',options:['No, dedicación exclusiva desde el día 1','Tengo un compromiso menor que termina en menos de 30 días','Tengo compromisos activos pero creo que puedo compatibilizarlos','Prefiero no responder'],correct:0,min:5,sus:60},
-  {block:'multiwork',type:'single',w:2,text:'Detectas que uno de tus developers trabaja para otra empresa en paralelo sin haberlo declarado. ¿Cómo actúas?',hint:'',options:['Conversación directa, primera advertencia formal, y si reincide, despido','Despido inmediato — es una falta de confianza irrecuperable','Analizo primero si afecta a su rendimiento antes de tomar acción','Lo escalo a RRHH o dirección para que lo gestionen'],correct:0,min:8,sus:60},
-
-  // ── COMPENSACIÓN — 1 pregunta ──────────────────────────────────────────
-  {block:'compensation',type:'salary',w:1,text:'¿Cuál es tu expectativa de sueldo bruto anual?',hint:'La retribución variable se definirá en la oferta final. Escribe solo la cifra en euros — se formatea automáticamente.',min:3,sus:60},
-
-  // ── MOTIVACIÓN — 1 pregunta (informativa, no puntúa) ───────────────────
-  {block:'motivation',type:'single',w:1,text:'¿Qué es lo que MÁS te atrae de esta posición en Alter5?',hint:'Elige la que mejor refleje tu motivación principal. No hay respuesta correcta.',options:['Liderar la adopción de agentic engineering (x3 productividad) en un equipo real','La oportunidad técnica: arquitectura AWS + IA en un stack que crece rápido','El proyecto de negocio: construir la capa tecnológica de una fintech de banca de inversión','La autonomía: ser el responsable técnico principal de toda la plataforma','Las condiciones económicas y el nivel de responsabilidad del rol'],min:3,sus:60},
-];
+let BLOCKS=[];
+let QS=[];
+let positionTitle='';
+let positionSubtitle='';
 
 // ───────────────────────────────────────────────────────────────────────────
 // State
@@ -718,9 +672,30 @@ window.addEventListener('DOMContentLoaded',async()=>{
     candidateName=data.name||'candidato';
     candidateExp=data.experience||'';
     applicationId=data.applicationId;
+    // Fetch the interview test config (blocks + questions) for this position.
+    // Without this the rest of the UI has nothing to render.
+    const cfgRes=await fetch(`/api/interview/config?token=${encodeURIComponent(token)}`);
+    if(!cfgRes.ok){showBlocker('server');return;}
+    const cfg=await cfgRes.json().catch(()=>({}));
+    if(!Array.isArray(cfg.blocks)||!Array.isArray(cfg.questions)||cfg.questions.length===0){
+      showBlocker('server');return;
+    }
+    BLOCKS=cfg.blocks;
+    QS=cfg.questions;
+    positionTitle=cfg.position_title||'';
+    positionSubtitle=cfg.position_subtitle||'';
     document.getElementById('intro-name').textContent=candidateName||'';
     const cand=document.getElementById('hdr-candidate');
     if(candidateName){cand.textContent=candidateName;cand.style.display='block';}
+    // Surface the position label so the candidate sees what they're applying to.
+    const posLabel=positionSubtitle?`${positionTitle} · ${positionSubtitle}`:positionTitle;
+    if(posLabel){
+      const hdrMeta=document.getElementById('hdr-meta');
+      if(hdrMeta)hdrMeta.textContent=posLabel;
+      const introPos=document.getElementById('intro-position');
+      if(introPos)introPos.textContent=posLabel;
+      document.title=`Entrevista · ${positionTitle}`;
+    }
     showScreen('screen-intro');
   }catch(e){
     showBlocker('server');
