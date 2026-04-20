@@ -4,6 +4,7 @@
 // of applications with their latest analysis + interview. Supports filters:
 //   ?status=<application_status>
 //   ?source=public|admin_manual|legacy
+//   ?position_id=<uuid>
 //   ?q=<email substring>
 //   ?limit=<n>  (default 100, max 500)
 
@@ -15,13 +16,18 @@ module.exports.default = async function handler(req, res) {
   const limit = Math.min(500, Math.max(1, parseInt(req.query?.limit) || 100));
   const status = req.query?.status;
   const source = req.query?.source;
+  const positionId = req.query?.position_id;
   const q = req.query?.q;
+
+  // UUID sanity check — a malformed UUID would make the PG cast throw
+  // a 500 and surface scary error text in the logs for no reason.
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
   try {
     let query = supabaseAdmin
       .from('applications')
       .select(`
-        id, email, status, source, name, experience, headhunter_id,
+        id, email, status, source, name, experience, headhunter_id, position_id,
         requested_human_review, consent_privacy, consent_ai_decision,
         apply_ip, utm_source, utm_medium, utm_campaign,
         created_at, verified_at, cv_uploaded_at, analyzed_at,
@@ -33,6 +39,7 @@ module.exports.default = async function handler(req, res) {
 
     if (status) query = query.eq('status', status);
     if (source) query = query.eq('source', source);
+    if (positionId && UUID_RE.test(positionId)) query = query.eq('position_id', positionId);
     if (q) query = query.ilike('email', `%${String(q).slice(0, 80)}%`);
 
     const { data: apps, error } = await query;
@@ -76,6 +83,18 @@ module.exports.default = async function handler(req, res) {
       for (const h of hhRows || []) hhMap[h.id] = h;
     }
 
+    // Fetch positions referenced by this page so the list can render
+    // "Posición: {title}" inline without N extra lookups.
+    const posIds = [...new Set(apps.map(a => a.position_id).filter(Boolean))];
+    const posMap = {};
+    if (posIds.length) {
+      const { data: posRows } = await supabaseAdmin
+        .from('positions')
+        .select('id, slug, title, subtitle')
+        .in('id', posIds);
+      for (const p of posRows || []) posMap[p.id] = p;
+    }
+
     const byId = (arr) => {
       const m = {};
       for (const r of arr || []) {
@@ -93,6 +112,7 @@ module.exports.default = async function handler(req, res) {
       latest_interview: interviewMap[a.id] || null,
       latest_cv: cvMap[a.id] || null,
       headhunter: a.headhunter_id ? (hhMap[a.headhunter_id] || null) : null,
+      position: a.position_id ? (posMap[a.position_id] || null) : null,
     }));
 
     res.setHeader('Cache-Control', 'no-store');
