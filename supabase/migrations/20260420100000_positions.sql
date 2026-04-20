@@ -34,7 +34,22 @@ create table if not exists positions (
 
 create index if not exists idx_positions_status on positions (status) where archived_at is null;
 
-alter table positions enable row level security;
+-- RLS enable is not idempotent via plain ALTER — it errors if already
+-- enabled. Guard so re-applying the migration (CI reset, branch reruns)
+-- doesn't abort the transaction.
+-- Note: we currently expose `positions` only through the service-role
+-- client (supabaseAdmin), so there are deliberately no policies. If the
+-- anon client ever touches this table, policies will be needed.
+do $$
+begin
+  if not exists (
+    select 1 from pg_class c
+      join pg_namespace n on n.oid = c.relnamespace
+     where c.relname = 'positions' and n.nspname = 'public' and c.relrowsecurity
+  ) then
+    execute 'alter table positions enable row level security';
+  end if;
+end$$;
 
 -- Seed HoE row. ON CONFLICT DO NOTHING so re-running the migration in
 -- environments that already have it is a no-op.
@@ -192,9 +207,18 @@ update applications
 set position_id = (select id from positions where slug='hoe')
 where position_id is null;
 
--- Now enforce NOT NULL.
-alter table applications
-  alter column position_id set not null;
+-- Now enforce NOT NULL. Idempotent: skip if already NOT NULL, so
+-- re-applying the migration on a previously-patched DB doesn't error.
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns
+     where table_schema='public' and table_name='applications'
+       and column_name='position_id' and is_nullable='YES'
+  ) then
+    execute 'alter table applications alter column position_id set not null';
+  end if;
+end$$;
 
 -- Ensure auto-updated updated_at on edit.
 create or replace function positions_touch_updated_at()

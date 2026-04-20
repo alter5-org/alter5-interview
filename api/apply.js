@@ -83,24 +83,39 @@ module.exports.default = async function handler(req, res) {
     // 1. Lookup or create active application.
     const { data: existing, error: selErr } = await supabaseAdmin
       .from('applications')
-      .select('id, status, apply_count, created_at')
+      .select('id, status, apply_count, created_at, position_id')
       .eq('email', email)
       .is('deleted_at', null)
       .maybeSingle();
 
     if (selErr) throw selErr;
 
+    // Pre-CV statuses: a candidate re-applying from a different position's
+    // landing is legitimately switching — they haven't yet been evaluated
+    // against any specific role's prompt. Flip position_id to match the
+    // new intent. From cv_uploaded onwards we keep the original position
+    // because the analysis, interview prompts, and emails already
+    // referenced it; mutating mid-funnel would silently misattribute data.
+    const PRE_CV_STATES = new Set(['pending_verify', 'verified']);
+
     let applicationId;
     if (existing) {
       applicationId = existing.id;
+      const update = {
+        apply_count: (existing.apply_count || 1) + 1,
+        apply_ip: ip,
+        apply_user_agent: ua,
+        requested_human_review: !!requested_human_review,
+      };
+      if (
+        existing.position_id !== position.id &&
+        PRE_CV_STATES.has(existing.status)
+      ) {
+        update.position_id = position.id;
+      }
       await supabaseAdmin
         .from('applications')
-        .update({
-          apply_count: (existing.apply_count || 1) + 1,
-          apply_ip: ip,
-          apply_user_agent: ua,
-          requested_human_review: !!requested_human_review,
-        })
+        .update(update)
         .eq('id', applicationId);
     } else {
       const { data: inserted, error: insErr } = await supabaseAdmin

@@ -9,6 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/ds/tokens.css">
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
+<!-- DOMPurify sanitizes the admin-authored public_intro_html before it hits
+     innerHTML. Even though the write path is admin-only (Basic Auth), we
+     sanitize at render time so a leaked admin credential can't be used to
+     persist stored XSS. Pinned version, same as admin.html. -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.11/dist/purify.min.js" crossorigin="anonymous"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -323,10 +328,23 @@ body{
 
   const introHtmlEl = document.getElementById('intro-html');
   if (position.public_intro_html && position.public_intro_html.trim()) {
-    // Admin-authored HTML. Treated as trusted — admin basic-auth gate
-    // means only an authenticated superuser can set this field. If we
-    // ever expose the editor to a less-trusted role, sanitize here.
-    introHtmlEl.innerHTML = position.public_intro_html;
+    // Admin-authored HTML. Even with the admin basic-auth gate on the
+    // write path, we run it through DOMPurify at render time as
+    // defense-in-depth: a leaked admin credential can't be turned into
+    // persistent XSS against every visitor to the landing.
+    const PURIFY_CFG = {
+      ALLOWED_TAGS: ['h1','h2','h3','h4','h5','h6','p','br','hr','ul','ol','li','strong','em','b','i','u','span','div','blockquote','code','pre','a'],
+      ALLOWED_ATTR: ['class','href','target','rel'],
+      ALLOW_DATA_ATTR: false,
+      KEEP_CONTENT: true,
+    };
+    if (typeof DOMPurify === 'undefined') {
+      // CDN failed — render as plain text so a missing sanitizer never
+      // becomes an XSS sink.
+      introHtmlEl.textContent = position.public_intro_html;
+    } else {
+      introHtmlEl.innerHTML = DOMPurify.sanitize(position.public_intro_html, PURIFY_CFG);
+    }
   } else {
     // Empty intro → show the generic "how it works" steps so the page
     // still has enough context for a candidate to decide to apply.
