@@ -260,7 +260,13 @@ h1{font-family:var(--serif);font-size:1.9rem;color:var(--navy);margin-bottom:0.3
       <form id="upload-form">
         <div class="form-grid">
           <div class="field">
-            <label><input type="checkbox" id="mu-auto" style="margin-right:0.4rem">Invitar siempre (ignora score, aplica a todo el lote)</label>
+            <label for="mu-position">Posición (opcional)</label>
+            <select id="mu-position">
+              <option value="">Por defecto (HoE)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label style="margin-top:1.4rem"><input type="checkbox" id="mu-auto" style="margin-right:0.4rem">Invitar siempre (ignora score, aplica a todo el lote)</label>
           </div>
         </div>
         <label class="drop" id="mu-drop">
@@ -421,6 +427,7 @@ async function loadPositionsDropdown(){
     // stale id (position archived, wiped, etc) — clear silently
     localStorage.removeItem(POS_FILTER_KEY);
   }
+  refreshManualUploadPositionPicker();
 }
 
 document.getElementById('global-position-filter').addEventListener('change', e => {
@@ -783,9 +790,26 @@ function renderMuRow(idx,file,state,detail){
   row.innerHTML=`<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><strong>${esc(file.name)}</strong> · ${Math.round(file.size/1024)} KB</span><span style="color:${colors[state]||'inherit'}">${esc(detail||state)}</span>`;
 }
 
+// Populate the manual-upload position picker whenever the dropdown cache
+// changes. Admin can also leave it blank → server defaults to HoE.
+function refreshManualUploadPositionPicker(){
+  const sel=document.getElementById('mu-position');
+  if(!sel)return;
+  const prev=sel.value;
+  const opts=['<option value="">Por defecto (HoE)</option>'];
+  for(const p of (positionsCache||[])){
+    if(p.status!=='active')continue;
+    const label=p.subtitle?`${p.title} · ${p.subtitle}`:p.title;
+    opts.push(`<option value="${esc(p.id)}">${esc(label)}</option>`);
+  }
+  sel.innerHTML=opts.join('');
+  if(prev&&(positionsCache||[]).some(p=>p.id===prev))sel.value=prev;
+}
+
 document.getElementById('upload-form').addEventListener('submit',async e=>{
   e.preventDefault();
   const autoInvite=document.getElementById('mu-auto').checked;
+  const positionId=document.getElementById('mu-position').value||null;
   if(!muBuffers.length){toast('Selecciona al menos un PDF',true);return;}
   const btn=document.getElementById('mu-submit');
   btn.disabled=true;btn.textContent='Procesando…';
@@ -799,12 +823,12 @@ document.getElementById('upload-form').addEventListener('submit',async e=>{
       const fileBase64=await fileToBase64(f);
       const r=await fetch('/api/admin/manual-upload',{
         method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({fileBase64,filename:f.name,autoInvite}),
+        body:JSON.stringify({fileBase64,filename:f.name,autoInvite,position_id:positionId}),
       });
       const data=await r.json();
       if(!r.ok){
         errCount++;
-        const labels={email_not_found_in_cv:'Email no encontrado en el CV',analysis_failed:'No se pudo analizar el CV',invalid_pdf:'PDF no válido',file_too_large:'Fichero muy grande'};
+        const labels={email_not_found_in_cv:'Email no encontrado en el CV',analysis_failed:'No se pudo analizar el CV',invalid_pdf:'PDF no válido',file_too_large:'Fichero muy grande',invalid_position:'Posición inválida o archivada'};
         renderMuRow(i,f,'error','✗ '+(labels[data.error]||data.error||'error'));
       }else{
         okCount++;
@@ -970,6 +994,7 @@ async function loadPositions(){
     }
     sel.innerHTML=opts.join('');
     if(saved&&positionsCache.some(p=>p.id===saved))sel.value=saved;
+    refreshManualUploadPositionPicker();
   }catch(e){
     target.innerHTML='<div class="empty">Error: '+esc(e.message)+'</div>';
   }
