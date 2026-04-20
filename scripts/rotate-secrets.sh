@@ -34,8 +34,15 @@ remove_env() {
 }
 
 add_env() {
+  # Vercel CLI 51+ requires an explicit (possibly empty) third arg for
+  # the Preview target so it applies to ALL branches non-interactively.
+  # Production has no branch dimension, so the arg is only passed for preview.
   local name="$1" env="$2" value="$3"
-  printf '%s' "$value" | vercel env add "$name" "$env" --sensitive --force >/dev/null
+  if [ "$env" = "preview" ]; then
+    vercel env add "$name" preview "" --value "$value" --yes --sensitive >/dev/null
+  else
+    vercel env add "$name" "$env" --value "$value" --yes --sensitive >/dev/null
+  fi
   log "added $name ($env) as sensitive"
 }
 
