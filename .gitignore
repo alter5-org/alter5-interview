@@ -12,4 +12,5 @@ playwright-report/
 *.key
 secrets/
 .tmp-*
+.playwright-auth/
 
