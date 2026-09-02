@@ -16,7 +16,6 @@
     { "source": "/positions/:slug", "destination": "/positions.html" }
   ],
   "redirects": [
-    { "source": "/", "destination": "/hoe", "permanent": true },
     { "source": "/sw-architect", "destination": "/hoe", "permanent": true }
   ],
   "functions": {

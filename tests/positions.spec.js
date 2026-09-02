@@ -3,28 +3,30 @@ import { test, expect } from '@playwright/test';
 import { createHash } from 'crypto';
 import { readFileSync } from 'fs';
 
-// Load environment variables
-const envLocal = readFileSync('/Users/salvadorcarrillo/Desktop/Alter5_Interview-SWArchitect/alter5-interview/.env.local', 'utf-8')
-  .split('\n')
-  .reduce((acc, line) => {
-    const [key, ...value] = line.split('=');
-    if (key && value.length > 0) {
-      acc[key] = value.join('=').replace(/^"/, '').replace(/"$/, '');
-    }
-    return acc;
-  }, {});
+// Load environment variables from this checkout's .env.local / .env.preview
+// when present; process.env always wins (CI / explicit shell exports).
+import { existsSync } from 'fs';
+import path from 'path';
 
-const envPreview = readFileSync('/Users/salvadorcarrillo/Desktop/Alter5_Interview-SWArchitect/alter5-interview/.env.preview', 'utf-8')
-  .split('\n')
-  .reduce((acc, line) => {
-    const [key, ...value] = line.split('=');
-    if (key && value.length > 0) {
-      acc[key] = value.join('=').replace(/^"/, '').replace(/"$/, '');
-    }
-    return acc;
-  }, {});
+// Playwright is run from the repo root (npm test).
+const ROOT = process.cwd();
+function loadEnvFile(name) {
+  const file = path.join(ROOT, name);
+  if (!existsSync(file)) return {};
+  return readFileSync(file, 'utf-8')
+    .split('\n')
+    .reduce((acc, line) => {
+      const [key, ...value] = line.split('=');
+      if (key && value.length > 0) {
+        acc[key.trim()] = value.join('=').trim().replace(/^"/, '').replace(/"$/, '');
+      }
+      return acc;
+    }, {});
+}
+const envLocal = loadEnvFile('.env.local');
+const envPreview = loadEnvFile('.env.preview');
 
-const BYPASS_SECRET = process.env.VERCEL_AUTOMATION_BYPASS_SECRET || envLocal.VERCEL_AUTOMATION_BYPASS_SECRET;
+const BYPASS_SECRET = process.env.VERCEL_AUTOMATION_BYPASS_SECRET || envLocal.VERCEL_AUTOMATION_BYPASS_SECRET || '';
 const ADMIN_PASS = process.env.ADMIN_PASS || envPreview.ADMIN_PASS || 'test-admin-pass';
 
 // Configure bypass headers for all tests

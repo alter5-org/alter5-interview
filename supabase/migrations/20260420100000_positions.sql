@@ -7,12 +7,11 @@
 -- Infrastructure) becomes the first row and all existing applications are
 -- backfilled to it before we flip the column to NOT NULL.
 --
--- The seed prompts + blocks + questions below are copied VERBATIM from:
---   lib/cv-analysis.js        (SYSTEM_PROMPT)
---   lib/interview-analysis.js (SYSTEM_PROMPT)
---   interview.html            (BLOCKS, QS literals)
---
--- If you change any of those in code, keep this row in sync from /admin.
+-- The seed prompts + blocks + questions below were copied VERBATIM from the
+-- (since removed) hardcoded prompts in lib/cv-analysis.js,
+-- lib/interview-analysis.js and interview.html. The DB row is the only
+-- source of truth now; versioned copies live in docs/positions/<slug>/ and
+-- are pushed with scripts/push-position.js.
 
 create table if not exists positions (
   id uuid primary key default gen_random_uuid(),

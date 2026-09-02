@@ -11,8 +11,8 @@
 //
 // `position_id` must reference a position with share_with_headhunters=true
 // AND status='active'. A partner can't upload a CV into a closed position
-// or into one we haven't explicitly shared with them. If not supplied we
-// fall back to the HoE position so legacy clients keep working.
+// or into one we haven't explicitly shared with them. It is required —
+// there is no default position.
 
 const { processCvUpload } = require('../../lib/cv-upload');
 const { getSession } = require('../../lib/headhunter-session');
@@ -49,7 +49,10 @@ module.exports.default = async function handler(req, res) {
   // authorization boundary: partners-upload.html only *shows* shared
   // positions in the dropdown, but we can't trust the client — recheck.
   let resolvedPositionId = null;
-  if (position_id) {
+  if (!position_id) {
+    return res.status(400).json({ error: 'position_required' });
+  }
+  {
     if (!UUID_RE.test(position_id)) {
       return res.status(400).json({ error: 'invalid_position' });
     }

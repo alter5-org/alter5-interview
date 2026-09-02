@@ -45,14 +45,12 @@ module.exports.default = async function handler(req, res) {
     return res.status(400).json({ error: 'consent_required' });
   }
 
-  // Resolve target position. Defaults to 'hoe' so the legacy /hoe form and
-  // any bookmarked apply link without a slug keep working. Unknown / inactive
-  // slug is a hard 400 — we don't silently downgrade to HoE because a
-  // candidate arriving from a shared /positions/senior-backend link deserves
-  // to know the posting is closed.
-  const slugRaw = typeof position_slug === 'string' ? position_slug.trim().toLowerCase() : '';
-  const slug = slugRaw || 'hoe';
-  if (!SLUG_RE.test(slug)) {
+  // Resolve target position. Every landing (hoe.html, positions.html) sends
+  // its slug explicitly; a missing / unknown / inactive slug is a hard 400.
+  // No silent default — with several open positions a fallback would file
+  // the candidate under the wrong funnel without any error.
+  const slug = typeof position_slug === 'string' ? position_slug.trim().toLowerCase() : '';
+  if (!slug || !SLUG_RE.test(slug)) {
     return res.status(400).json({ error: 'invalid_position' });
   }
   const position = await getPositionBySlug(slug);
@@ -76,7 +74,7 @@ module.exports.default = async function handler(req, res) {
     return res.status(400).json({ error: 'turnstile_failed' });
   }
 
-  const baseUrl = process.env.APPLY_BASE_URL || 'https://careers.alter-5.com/hoe';
+  const baseUrl = process.env.APPLY_BASE_URL || 'https://careers.alter-5.com';
   const origin = new URL(baseUrl).origin;
 
   try {

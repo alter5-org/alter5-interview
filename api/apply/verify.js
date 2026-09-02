@@ -24,7 +24,7 @@ module.exports.default = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const baseUrl = process.env.APPLY_BASE_URL || 'https://careers.alter-5.com/hoe';
+  const baseUrl = process.env.APPLY_BASE_URL || 'https://careers.alter-5.com';
   const origin = new URL(baseUrl).origin;
 
   const token = String((req.query && req.query.token) || '').trim();

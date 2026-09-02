@@ -145,7 +145,7 @@ h1{font-family:var(--serif);font-size:1.9rem;color:var(--navy);margin-bottom:0.3
   <div class="hdr-nav">
     <a href="/admin" class="active">Admin</a>
     <a href="/reports">Reports</a>
-    <a href="/hoe" target="_blank">Landing ↗</a>
+    <a href="/" target="_blank">Landing ↗</a>
   </div>
 </header>
 
@@ -260,8 +260,8 @@ h1{font-family:var(--serif);font-size:1.9rem;color:var(--navy);margin-bottom:0.3
       <form id="upload-form">
         <div class="form-grid">
           <div class="field">
-            <label for="mu-position">Posición (opcional)</label>
-            <select id="mu-position">
+            <label for="mu-position">Posición</label>
+            <select id="mu-position" required>
               <option value="">Por defecto (HoE)</option>
             </select>
           </div>
@@ -326,8 +326,8 @@ h1{font-family:var(--serif);font-size:1.9rem;color:var(--navy);margin-bottom:0.3
         <input type="text" id="pm-subtitle" placeholder="Platform team">
       </div>
       <div>
-        <label for="pm-min-score">Score mínimo para invitar (1-10)</label>
-        <input type="number" id="pm-min-score" min="1" max="10" value="7">
+        <label for="pm-min-score">Score CV mínimo para pasar a revisión (1-10)</label>
+        <input type="number" id="pm-min-score" min="1" max="10" value="4" title="Por debajo de este score el CV se rechaza automáticamente">
       </div>
       <div>
         <label class="chk-row"><input type="checkbox" id="pm-share-hh"> Compartir con headhunters</label>
@@ -356,7 +356,7 @@ h1{font-family:var(--serif);font-size:1.9rem;color:var(--navy);margin-bottom:0.3
       <div class="span-all">
         <label for="pm-questions">Preguntas (JSON)</label>
         <textarea id="pm-questions" required placeholder='[{"block":"tech","type":"single","w":3,"text":"…","options":["A","B"],"correct":0,"min":15,"sus":5}]'></textarea>
-        <div class="hint"><span class="mono">type</span>: <span class="mono">single</span> (con <span class="mono">correct</span>), <span class="mono">multi</span> o <span class="mono">salary</span>. <span class="mono">w</span> ∈ 1-5.</div>
+        <div class="hint"><span class="mono">type</span>: <span class="mono">single</span> (con <span class="mono">correct</span>), <span class="mono">multi</span>, <span class="mono">salary</span> u <span class="mono">open</span> (texto libre, opcional <span class="mono">minChars</span>; el grader LLM la puntúa). <span class="mono">w</span> ∈ 1-5.</div>
       </div>
       <div class="span-all" style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap">
         <div>
@@ -835,6 +835,7 @@ document.getElementById('upload-form').addEventListener('submit',async e=>{
   e.preventDefault();
   const autoInvite=document.getElementById('mu-auto').checked;
   const positionId=document.getElementById('mu-position').value||null;
+  if(!positionId){toast('Selecciona la posición',true);return;}
   if(!muBuffers.length){toast('Selecciona al menos un PDF',true);return;}
   const btn=document.getElementById('mu-submit');
   btn.disabled=true;btn.textContent='Procesando…';
@@ -1065,7 +1066,7 @@ function openPositionEditor(id){
     slugInput.disabled=false;
     fillPositionForm({
       slug:'',title:'',subtitle:'',status:'active',
-      share_with_headhunters:false,min_score_to_invite:7,
+      share_with_headhunters:false,min_score_to_invite:4,
       public_intro_html:'',cv_analysis_prompt:'',interview_system_prompt:'',
       interview_blocks:[],interview_questions:[],
     });
@@ -1079,7 +1080,7 @@ function fillPositionForm(p){
   document.getElementById('pm-subtitle').value=p.subtitle||'';
   document.getElementById('pm-status').value=p.status||'active';
   document.getElementById('pm-share-hh').checked=!!p.share_with_headhunters;
-  document.getElementById('pm-min-score').value=p.min_score_to_invite||7;
+  document.getElementById('pm-min-score').value=p.min_score_to_invite||4;
   document.getElementById('pm-intro').value=p.public_intro_html||'';
   document.getElementById('pm-cv-prompt').value=p.cv_analysis_prompt||'';
   document.getElementById('pm-iv-prompt').value=p.interview_system_prompt||'';
@@ -1106,7 +1107,7 @@ function readPositionForm(){
     subtitle:document.getElementById('pm-subtitle').value.trim()||null,
     status:document.getElementById('pm-status').value,
     share_with_headhunters:document.getElementById('pm-share-hh').checked,
-    min_score_to_invite:parseInt(document.getElementById('pm-min-score').value)||7,
+    min_score_to_invite:parseInt(document.getElementById('pm-min-score').value)||4,
     public_intro_html:document.getElementById('pm-intro').value||null,
     cv_analysis_prompt:document.getElementById('pm-cv-prompt').value,
     interview_system_prompt:document.getElementById('pm-iv-prompt').value,

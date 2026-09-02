@@ -15,6 +15,7 @@ const { getClientIp, getUserAgent } = require('../lib/validation');
 const { analyzeInterview } = require('../lib/interview-analysis');
 const { getPositionByApplication } = require('../lib/positions');
 const { sanitizeHtml } = require('../lib/sanitize-html');
+const { computeScores, extractCaseScores } = require('../lib/interview-scoring');
 
 module.exports.config = {
   api: { bodyParser: { sizeLimit: '2mb' } },
@@ -67,7 +68,37 @@ module.exports.default = async function handler(req, res) {
     if (appErr) throw appErr;
     if (!app || app.deleted_at) return res.status(404).json({ error: 'application_not_found' });
 
-    // 2. Insert interview row.
+    // 2. Score server-side from the position's question bank. The client no
+    //    longer receives `correct`, so its globalScore/dimScores/verdict are
+    //    provisional at best; we log any discrepancy but never persist them.
+    const position = await getPositionByApplication(appId, { withInterview: true });
+    if (!position) {
+      await supabaseAdmin.from('application_events').insert({
+        application_id: appId,
+        event_type: 'interview_scoring_failed',
+        event_data: { error: 'position_not_found' },
+        actor: 'system',
+      });
+      return res.status(500).json({ error: 'position_not_found' });
+    }
+    const scoringAnswers = body.answers.slice(0, 100).map((a, i) => ({
+      idx: Number.isFinite(a.idx) ? a.idx : i,
+      text: typeof a.text === 'string' ? a.text.slice(0, 10000) : null,
+      options: Array.isArray(a.options) ? a.options.slice(0, 20).map(o => String(o).slice(0, 500)) : null,
+      skipped: !!a.skipped,
+      flag: ALLOWED_FLAGS.has(a.flag) ? a.flag : 'ok',
+    }));
+    let scored = computeScores({
+      blocks: position.interview_blocks || [],
+      questions: position.interview_questions || [],
+      answers: scoringAnswers,
+    });
+    if (Number.isFinite(body.globalScore) && Math.abs(body.globalScore - scored.globalScore) > 1) {
+      console.warn('[submit-interview] client/server score mismatch', {
+        appId, client: body.globalScore, server: scored.globalScore,
+      });
+    }
+
     const skippedCount = body.answers.filter(a => a.skipped).length;
     const answersCount = body.answers.length - skippedCount;
 
@@ -75,13 +106,13 @@ module.exports.default = async function handler(req, res) {
       .from('interviews')
       .insert({
         application_id: appId,
-        global_score: Number.isFinite(body.globalScore) ? Math.min(10, Math.max(0, body.globalScore)) : null,
-        dim_scores: body.dimScores || null,
-        flags: Number.isFinite(body.flags) ? Math.max(0, Math.floor(body.flags)) : 0,
+        global_score: scored.globalScore,
+        dim_scores: scored.dimScores,
+        flags: scored.flags,
         answers_count: answersCount,
         skipped_count: skippedCount,
         total_time_sec: Number.isFinite(body.totalTimeSec) ? Math.max(0, Math.floor(body.totalTimeSec)) : 0,
-        verdict: sanitizeStr(body.verdict, 200),
+        verdict: scored.verdict,
         salary: sanitizeStr(body.salary, 200),
         source: app.source || 'public',
         started_at: body.startedAt ? new Date(body.startedAt).toISOString() : null,
@@ -144,8 +175,9 @@ module.exports.default = async function handler(req, res) {
       event_type: 'interview_completed',
       event_data: {
         interview_id: interview.id,
-        global_score: body.globalScore,
-        flags: body.flags,
+        global_score: scored.globalScore,
+        client_global_score: Number.isFinite(body.globalScore) ? body.globalScore : null,
+        flags: scored.flags,
         answers_count: answersCount,
       },
       actor: 'candidate',
@@ -176,11 +208,8 @@ module.exports.default = async function handler(req, res) {
         return `[${block}] ${a.questionText || ''}\nRespuesta: ${ans}\nTiempo: ${mm}:${ss}${sigLine}`;
       }).join('\n\n');
 
-      // Load the position-specific grading prompt so the LLM evaluates the
-      // interview against THIS funnel's archetype definitions, not the HoE
-      // builder/strategist split.
-      const position = await getPositionByApplication(appId);
-
+      // The position-specific grading prompt (loaded above) makes the LLM
+      // evaluate the interview against THIS funnel's archetype definitions.
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 45000);
       const analysis = await analyzeInterview({
@@ -193,13 +222,32 @@ module.exports.default = async function handler(req, res) {
       clearTimeout(timeoutId);
 
       if (analysis.ok) {
-        // Sanitize at WRITE time so admin/reports HTML is always trusted
-        // when read. A prompt injection inside a candidate answer cannot
-        // smuggle <script> or onerror= past this allowlist.
-        const safeHtml = sanitizeHtml(analysis.html);
+        // The grader ends with `<!--SCORES {...}-->` for open questions.
+        // Pull it out, re-score with those case scores, then sanitize at
+        // WRITE time so admin/reports HTML is always trusted when read. A
+        // prompt injection inside a candidate answer cannot smuggle
+        // <script> or onerror= past this allowlist.
+        const { caseScores, html } = extractCaseScores(analysis.html);
+        const safeHtml = sanitizeHtml(html);
+        const update = { ai_analysis_html: safeHtml };
+        if (Object.keys(caseScores).length > 0) {
+          scored = computeScores({
+            blocks: position.interview_blocks || [],
+            questions: position.interview_questions || [],
+            answers: scoringAnswers,
+            caseScores,
+          });
+          Object.assign(update, {
+            case_scores: caseScores,
+            global_score: scored.globalScore,
+            dim_scores: scored.dimScores,
+            flags: scored.flags,
+            verdict: scored.verdict,
+          });
+        }
         await supabaseAdmin
           .from('interviews')
-          .update({ ai_analysis_html: safeHtml })
+          .update(update)
           .eq('id', interview.id);
       } else {
         await supabaseAdmin.from('application_events').insert({

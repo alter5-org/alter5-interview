@@ -58,7 +58,7 @@ async function create(req, res) {
     subtitle: payload.subtitle || null,
     status: payload.status || 'active',
     share_with_headhunters: !!payload.share_with_headhunters,
-    min_score_to_invite: payload.min_score_to_invite ?? 7,
+    min_score_to_invite: payload.min_score_to_invite ?? 4,
     public_intro_html: payload.public_intro_html || null,
     cv_analysis_prompt: payload.cv_analysis_prompt,
     interview_system_prompt: payload.interview_system_prompt,

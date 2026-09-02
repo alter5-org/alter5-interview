@@ -453,12 +453,13 @@ body{
     <h1 class="big-title">Entrevista técnica<br><em id="intro-position">…</em></h1>
     <p class="intro-body">
       Hola <strong id="intro-name">…</strong>. Gracias por llegar hasta aquí. Esta entrevista estructurada
-      nos ayuda a evaluar tu encaje de forma objetiva. Dedícale unos <strong>10-15 minutos</strong>
-      en un momento sin distracciones — son preguntas de opción múltiple que evalúan tu criterio.
+      nos ayuda a evaluar tu encaje de forma objetiva. Dedícale <strong id="intro-duration">unos 10-15 minutos</strong>
+      en un momento sin distracciones — son preguntas de opción múltiple<span id="intro-open-note"></span> que evalúan tu criterio.
     </p>
     <div class="info-box">
       <h3>Instrucciones</h3>
       <div class="info-row"><div class="dot"></div><span>Elige la opción que mejor refleje lo que harías tú en cada situación. No buscamos la respuesta "teóricamente" correcta — buscamos tu criterio real.</span></div>
+      <div class="info-row hidden" id="intro-open-row"><div class="dot"></div><span>En las preguntas de respuesta libre, sé concreto: nombra operaciones, cifras, partes y decisiones reales. Se evalúa el fondo, no la extensión.</span></div>
       <div class="info-row"><div class="dot"></div><span>El tiempo de cada respuesta se registra y detectamos patrones irregulares (pegados, cambios de pestaña, etc.).</span></div>
       <div class="info-row"><div class="dot"></div><span>Una vez empieces, completa la entrevista de una sola sesión. No podrás retomarla después.</span></div>
     </div>
@@ -682,6 +683,15 @@ window.addEventListener('DOMContentLoaded',async()=>{
     }
     BLOCKS=cfg.blocks;
     QS=cfg.questions;
+    // Intro copy adapts to the bank: open questions get a note + a longer
+    // time estimate so a 30-minute test isn't sold as a 15-minute one.
+    const openCount=QS.filter(q=>q.type==='open').length;
+    if(openCount>0){
+      document.getElementById('intro-open-note').textContent=` y ${openCount===1?'una pregunta':openCount+' preguntas'} de respuesta libre`;
+      document.getElementById('intro-open-row').classList.remove('hidden');
+    }
+    const estMin=Math.max(10,Math.round(QS.length*0.75+openCount*7));
+    document.getElementById('intro-duration').textContent=`unos ${estMin-5}-${estMin} minutos`;
     positionTitle=cfg.position_title||'';
     positionSubtitle=cfg.position_subtitle||'';
     document.getElementById('intro-name').textContent=candidateName||'';

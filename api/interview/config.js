@@ -9,12 +9,14 @@
 // - We validate the magic link but do NOT consume it here (that happens on
 //   submit). This way a candidate who reloads the page mid-interview keeps
 //   working.
-// - We return `correct` indices as before — the current UI shows acierto/error
-//   to the candidate and calculates score client-side. Moving scoring entirely
-//   server-side is a separate v2 concern.
+// - `correct` indices are stripped before the bank leaves the server. The
+//   browser still computes a provisional score for its payload, but the
+//   authoritative score is recomputed in api/submit-interview.js from the
+//   position's question bank (lib/interview-scoring.js).
 
 const { supabaseAdmin } = require('../../lib/supabase');
 const { hashToken, isValidTokenFormat } = require('../../lib/tokens');
+const { publicQuestions } = require('../../lib/interview-scoring');
 
 module.exports.default = async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'method' });
@@ -60,7 +62,7 @@ module.exports.default = async function handler(req, res) {
       position_title: pos.title,
       position_subtitle: pos.subtitle || '',
       blocks: pos.interview_blocks || [],
-      questions: pos.interview_questions || [],
+      questions: publicQuestions(pos.interview_questions || []),
     });
   } catch (e) {
     console.error('[interview/config] error:', e.message);

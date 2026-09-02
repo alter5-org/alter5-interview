@@ -23,7 +23,7 @@ const crypto = require('crypto');
 const { supabaseAdmin } = require('../lib/supabase');
 const { getSession, clearCookieHeader } = require('../lib/session');
 const { analyzeCv } = require('../lib/cv-analysis');
-const { getPositionByApplication } = require('../lib/positions');
+const { getPositionByApplication, routeCvScore, reviewThreshold } = require('../lib/positions');
 const { getClientIp, getUserAgent } = require('../lib/validation');
 
 module.exports.config = {
@@ -128,10 +128,21 @@ module.exports.default = async function handler(req, res) {
     //    Load the position-specific prompt so the LLM judges the candidate
     //    against THIS funnel's criteria, not a generic template.
     const position = await getPositionByApplication(appId);
+    if (!position) {
+      console.error('[upload-cv] position_not_found for application', appId);
+      await supabaseAdmin.from('application_events').insert({
+        application_id: appId,
+        event_type: 'cv_analysis_failed',
+        event_data: { error: 'position_not_found' },
+        actor: 'system',
+      });
+      return res.status(200).json({ ok: true, status: 'received' });
+    }
     const analysis = await analyzeCv({
       fileBase64,
       filename,
-      systemPrompt: position?.cv_analysis_prompt || null,
+      systemPrompt: position.cv_analysis_prompt,
+      reviewThreshold: reviewThreshold(position),
     });
     if (!analysis.ok) {
       console.error('[upload-cv] analysis error:', analysis.error);
@@ -170,9 +181,7 @@ module.exports.default = async function handler(req, res) {
     // 5. Route by score. High scorers now wait for admin approval instead of
     //    being auto-invited — admin reviews the score and sends the interview
     //    link manually from the admin panel (/api/admin/review-decision).
-    const nextStatus = analysis.score >= 4
-      ? 'analyzed_pending_review'
-      : 'analyzed_auto_rejected';
+    const nextStatus = routeCvScore(analysis.score, position);
     updateApp.status = nextStatus;
 
     await supabaseAdmin.from('applications').update(updateApp).eq('id', appId);
@@ -184,6 +193,8 @@ module.exports.default = async function handler(req, res) {
         score: analysis.score,
         recommendation: analysis.recommendation,
         routed_to: nextStatus,
+        threshold: reviewThreshold(position),
+        position_slug: position.slug,
         analysis_id: analysisRow.id,
       },
       actor: 'system',

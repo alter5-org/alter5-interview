@@ -8,7 +8,7 @@ module.exports.default = function handler(req, res) {
   res.setHeader('Cache-Control', 'public, max-age=60');
   return res.status(200).json({
     turnstile_site_key: process.env.TURNSTILE_SITE_KEY || '1x00000000000000000000AA',
-    apply_base_url: process.env.APPLY_BASE_URL || 'https://careers.alter-5.com/hoe',
+    apply_base_url: process.env.APPLY_BASE_URL || 'https://careers.alter-5.com',
     booking_url: process.env.INTERVIEW_BOOKING_URL || '',
   });
 };

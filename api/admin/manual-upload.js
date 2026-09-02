@@ -9,8 +9,10 @@
 // `email` is optional — if omitted we extract it from the CV via the LLM.
 // `source` accepts the whitelist {'email_agent'} (Mastra HR agent ingest);
 // any other value falls back to 'admin_manual'.
-// `position_id` is optional; when omitted the CV is routed to the HoE
-// position so legacy bulk-upload flows keep working untouched.
+// `position_id` is required for admin uploads. The email agent does not
+// know about positions, so for source='email_agent' the target comes from
+// EMAIL_AGENT_DEFAULT_POSITION_SLUG (env); if that is unset the upload is
+// rejected with 400 position_required — never silently routed to HoE.
 
 const { processCvUpload } = require('../../lib/cv-upload');
 const { supabaseAdmin } = require('../../lib/supabase');
@@ -47,6 +49,19 @@ module.exports.default = async function handler(req, res) {
     resolvedPositionId = pos.id;
   }
 
+  let resolvedPositionSlug = null;
+  if (!resolvedPositionId) {
+    if (resolvedSource === 'email_agent') {
+      resolvedPositionSlug = (process.env.EMAIL_AGENT_DEFAULT_POSITION_SLUG || '').trim() || null;
+      if (!resolvedPositionSlug) {
+        console.error('[admin/manual-upload] email_agent upload without position and EMAIL_AGENT_DEFAULT_POSITION_SLUG unset');
+        return res.status(400).json({ error: 'position_required' });
+      }
+    } else {
+      return res.status(400).json({ error: 'position_required' });
+    }
+  }
+
   try {
     const result = await processCvUpload({
       fileBase64,
@@ -56,6 +71,7 @@ module.exports.default = async function handler(req, res) {
       prefilledName: name || null,
       prefilledExperience: experience || null,
       positionId: resolvedPositionId,
+      positionSlug: resolvedPositionSlug,
       autoInvite: !!autoInvite,
       ip: getClientIp(req),
       userAgent: getUserAgent(req),

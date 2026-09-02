@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alter5 — Posiciones abiertas</title>
+<meta name="description" content="Únete a Alter5. Posiciones abiertas y proceso de selección asíncrono: sube tu CV y, si encajas, te invitamos a una entrevista online.">
+<link rel="icon" type="image/svg+xml" href="/ds/alter5-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ds/tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--a5-font-landing);
+  background:#fafbfc;
+  color:var(--a5-text-primary);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  line-height:var(--a5-leading-normal);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.hdr{
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--a5-light-border);
+  padding:14px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.hdr-logo{display:inline-flex;align-items:center}
+.hdr-logo img{height:28px;width:auto;display:block}
+.hdr-badge{
+  background:var(--a5-teal-light);
+  color:var(--a5-teal-dark);
+  padding:6px 12px;
+  border-radius:var(--a5-radius-full);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;font-weight:500;
+  letter-spacing:0.06em;text-transform:uppercase;
+}
+.main{flex:1;max-width:760px;width:100%;margin:0 auto;padding:64px 24px 40px}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--a5-teal-dark);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  font-weight:500;
+}
+.big-title{
+  font-weight:700;
+  font-size:44px;
+  color:var(--a5-blue);
+  line-height:1.05;
+  letter-spacing:-0.025em;
+  margin-bottom:18px;
+  text-wrap:balance;
+}
+.subtitle{
+  font-size:17px;
+  color:var(--a5-slate);
+  line-height:1.65;
+  margin-bottom:36px;
+  max-width:640px;
+  text-wrap:pretty;
+}
+.list{display:grid;gap:14px}
+.card{
+  display:block;
+  background:var(--a5-light-card);
+  border:1px solid var(--a5-light-border);
+  border-radius:var(--a5-radius-lg);
+  padding:22px 24px;
+  text-decoration:none;
+  color:inherit;
+  position:relative;overflow:hidden;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;
+}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--a5-teal)}
+.card:hover{transform:translateY(-1px);box-shadow:var(--a5-shadow-md);border-color:var(--a5-teal)}
+.card-title{font-size:20px;font-weight:600;color:var(--a5-blue);letter-spacing:-0.01em;margin-bottom:4px}
+.card-sub{font-size:14px;color:var(--a5-slate)}
+.card-meta{
+  margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--a5-teal-dark);
+  letter-spacing:0.08em;text-transform:uppercase;
+}
+.empty,.loading{
+  background:var(--a5-light-card);
+  border:1px solid var(--a5-light-border);
+  border-radius:var(--a5-radius-lg);
+  padding:28px;
+  color:var(--a5-slate);
+  line-height:1.6;
+}
+.hidden{display:none}
+.ftr{text-align:center;padding:32px 16px;font-size:12px;color:var(--a5-text-muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
+.ftr a{color:var(--a5-text-muted);text-decoration:underline;text-underline-offset:2px;margin:0 8px}
+.ftr a:hover{color:var(--a5-blue)}
+@media (max-width:640px){
+  .hdr{padding:12px 18px}
+  .main{padding:40px 18px 32px}
+  .big-title{font-size:34px}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5">
+    <img src="/ds/alter5-logo-dark.svg" alt="Alter5">
+  </a>
+  <div class="hdr-badge" id="badge">Posiciones abiertas</div>
+</header>
+
+<main class="main">
+  <div class="eyebrow">Trabaja en Alter5 · Remoto desde España</div>
+  <h1 class="big-title">Posiciones abiertas</h1>
+  <p class="subtitle">
+    Alter5 es una fintech que digitaliza y automatiza la inversión institucional en deuda y capital.
+    Elige la posición que encaja contigo: el proceso es asíncrono — subes tu CV y, si encajas,
+    te invitamos a una entrevista online.
+  </p>
+
+  <div class="loading" id="loading">Cargando posiciones…</div>
+  <div class="empty hidden" id="empty">
+    Ahora mismo no hay posiciones abiertas. Si quieres que te tengamos en cuenta para futuras
+    oportunidades, escríbenos a <a href="mailto:careers@alter-5.com">careers@alter-5.com</a>.
+  </div>
+  <div class="list hidden" id="list"></div>
+</main>
+
+<footer class="ftr">
+  Alter5 Financial Technologies, S.L. · Madrid ·
+  <a href="https://www.alter5.com/es/privacy" target="_blank" rel="noopener">Privacidad</a>
+  <a href="https://www.alter5.com/es/legal" target="_blank" rel="noopener">Aviso legal</a>
+  <a href="/privacy/my-data">Mis datos</a>
+</footer>
+
+<script>
+(async function () {
+  const loading = document.getElementById('loading');
+  const empty = document.getElementById('empty');
+  const list = document.getElementById('list');
+  const badge = document.getElementById('badge');
+  const SLUG_RE = /^[a-z0-9][a-z0-9\-]{1,40}$/;
+
+  let positions = [];
+  try {
+    const r = await fetch('/api/positions', { cache: 'no-store' });
+    const data = await r.json();
+    if (r.ok && data.ok && Array.isArray(data.positions)) positions = data.positions;
+  } catch { /* fall through to empty state */ }
+
+  positions = positions.filter(p => p && SLUG_RE.test(String(p.slug || '')));
+  loading.classList.add('hidden');
+
+  if (!positions.length) {
+    empty.classList.remove('hidden');
+    return;
+  }
+
+  badge.textContent = 'Ofertas activas · ' + positions.length;
+  for (const p of positions) {
+    // Legacy HoE keeps its dedicated landing; everything else uses the
+    // generic /positions/<slug> page. Build with DOM APIs (no innerHTML)
+    // so title/subtitle from the API can never become markup.
+    const a = document.createElement('a');
+    a.className = 'card';
+    a.href = p.slug === 'hoe' ? '/hoe' : '/positions/' + encodeURIComponent(p.slug);
+    const t = document.createElement('div');
+    t.className = 'card-title';
+    t.textContent = p.title || p.slug;
+    a.appendChild(t);
+    if (p.subtitle) {
+      const s = document.createElement('div');
+      s.className = 'card-sub';
+      s.textContent = p.subtitle;
+      a.appendChild(s);
+    }
+    const m = document.createElement('div');
+    m.className = 'card-meta';
+    m.textContent = 'Ver posición y aplicar →';
+    a.appendChild(m);
+    list.appendChild(a);
+  }
+  list.classList.remove('hidden');
+})();
+</script>
+</body>
+</html>
