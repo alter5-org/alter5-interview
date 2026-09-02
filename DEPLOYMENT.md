@@ -46,7 +46,8 @@ Production and Preview:
 | `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile (server) |
 | `CRON_SECRET` | `openssl rand -hex 32` — guards `/api/cron/*` |
 | `INTERVIEW_BASE_URL` | `https://careers.alter-5.com` |
-| `APPLY_BASE_URL` | `https://careers.alter-5.com/hoe` |
+| `APPLY_BASE_URL` | `https://careers.alter-5.com` (only the origin is used) |
+| `EMAIL_AGENT_DEFAULT_POSITION_SLUG` | Position slug for CVs ingested by the Mastra email agent (`source=email_agent`). Unset → those uploads get `400 position_required`. |
 | `INTERVIEW_BOOKING_URL` | Google Calendar Appointment URL (Salva) |
 
 ## 3. Resend

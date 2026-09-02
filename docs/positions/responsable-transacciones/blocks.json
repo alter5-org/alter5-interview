@@ -1,0 +1,11 @@
+[
+  {"id":"compensation","label":"Compensación","icon":"◆","desc":"Alineamos expectativas económicas desde el inicio."},
+  {"id":"ejecucion","label":"Ejecución de transacciones","icon":"⬡","desc":"Evaluamos cómo llevas una operación desde el mandato hasta el cierre: hitos, decisiones y ritmo."},
+  {"id":"partes","label":"Gestión de partes y negociación","icon":"◎","desc":"Evaluamos cómo coordinas promotor, inversor y asesores cuando las posiciones no coinciden."},
+  {"id":"documentacion","label":"Documentación, DD y closing","icon":"◇","desc":"Evaluamos control de due diligence, condiciones precedentes y recta final del cierre."},
+  {"id":"analisis","label":"Análisis y modelización","icon":"◈","desc":"Evaluamos criterio con los números: sizing, sensibilidades y cómo se presentan a un comité."},
+  {"id":"caso","label":"Mini-caso de ejecución","icon":"▣","desc":"Un caso real de proceso. Nos interesa tu plan concreto, no la teoría."},
+  {"id":"trackrecord","label":"Track record","icon":"▤","desc":"Operaciones que has ejecutado tú, con tu rol exacto."},
+  {"id":"multiwork","label":"Compromiso y dedicación","icon":"◉","desc":"Evaluamos dedicación exclusiva y gestión de conflictos de interés."},
+  {"id":"motivation","label":"Motivación","icon":"★","desc":"Nos ayuda a entender qué te mueve — no hay respuesta correcta."}
+]

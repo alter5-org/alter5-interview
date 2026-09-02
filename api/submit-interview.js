@@ -187,7 +187,7 @@ module.exports.default = async function handler(req, res) {
 
     // 5. Best-effort inline AI analysis. If it fails or times out, admin can rerun later.
     try {
-      const summaryText = body.answers.map(a => {
+      const summaryText = body.answers.map((a, i) => {
         const block = a.blockLabel || a.key || 'General';
         let ans = a.skipped ? 'Omitida' : (a.text || (Array.isArray(a.options) ? a.options.join(', ') : '')) || 'Sin respuesta';
         const mm = Math.floor((a.time || 0) / 60);
@@ -205,7 +205,10 @@ module.exports.default = async function handler(req, res) {
         if (a.tabSwitches > 0) sig.push(`cambió pestaña ${a.tabSwitches}x`);
         if (a.burstCount > 10) sig.push(`escritura en ráfaga (${a.burstCount})`);
         const sigLine = sig.length ? `\nSeñales: ${sig.join(' · ')}` : '';
-        return `[${block}] ${a.questionText || ''}\nRespuesta: ${ans}\nTiempo: ${mm}:${ss}${sigLine}`;
+        // `#idx` lets the grader address open questions in its SCORES trailer.
+        const idx = Number.isFinite(a.idx) ? a.idx : i;
+        const kind = a.type === 'open' ? ' (respuesta libre)' : '';
+        return `#${idx} [${block}]${kind} ${a.questionText || ''}\nRespuesta: ${ans}\nTiempo: ${mm}:${ss}${sigLine}`;
       }).join('\n\n');
 
       // The position-specific grading prompt (loaded above) makes the LLM

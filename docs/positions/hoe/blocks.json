@@ -1,0 +1,44 @@
+[
+  {
+    "id": "compensation",
+    "label": "Compensación",
+    "icon": "◆",
+    "desc": "Alineamos expectativas económicas desde el inicio."
+  },
+  {
+    "id": "tech",
+    "label": "Arquitectura técnica",
+    "icon": "⬡",
+    "desc": "Evaluamos criterio técnico en backend, infraestructura y buenas prácticas."
+  },
+  {
+    "id": "ai",
+    "label": "IA aplicada",
+    "icon": "◈",
+    "desc": "Evaluamos uso real de IA: agentes, orquestación y programación agéntica."
+  },
+  {
+    "id": "leadership",
+    "label": "Liderazgo de equipo",
+    "icon": "◎",
+    "desc": "Evaluamos experiencia gestionando personas, no solo liderazgo técnico informal."
+  },
+  {
+    "id": "product",
+    "label": "Producto y negocio",
+    "icon": "◇",
+    "desc": "Evaluamos colaboración con negocio y traducción de necesidades en decisiones técnicas."
+  },
+  {
+    "id": "multiwork",
+    "label": "Compromiso y dedicación",
+    "icon": "◉",
+    "desc": "Evaluamos dedicación exclusiva y compromiso con el proyecto."
+  },
+  {
+    "id": "motivation",
+    "label": "Motivación",
+    "icon": "★",
+    "desc": "Nos ayuda a entender qué te mueve — no hay respuesta correcta."
+  }
+]

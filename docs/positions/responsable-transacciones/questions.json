@@ -1,0 +1,201 @@
+[
+  {
+    "block": "ejecucion", "type": "single", "w": 3,
+    "text": "Llevas tres semanas hablando con un fondo de deuda sobre una operación de 20 M€ para un promotor. Hay buena química y un \"nos interesa\" verbal. ¿Qué hito marca que el proceso ha pasado de conversación comercial a ejecución real?",
+    "hint": "",
+    "options": [
+      "El fondo confirma interés por email y pide el teaser ampliado",
+      "NDA firmado, acceso al data room abierto y calendario de proceso acordado con fechas",
+      "El comité de inversión del fondo aprueba internamente un IC memo preliminar",
+      "El promotor firma el mandato con Alter5 y se define la comisión de éxito"
+    ],
+    "correct": 1, "min": 10, "sus": 90
+  },
+  {
+    "block": "ejecucion", "type": "single", "w": 3,
+    "text": "48 horas antes del closing, el inversor pide incluir una condición precedente nueva: un certificado de estar al corriente con la Seguridad Social del promotor con fecha del día del cierre. El promotor está nervioso. ¿Qué haces primero?",
+    "hint": "",
+    "options": [
+      "Aceptarla sin discusión: es un documento menor y no merece la pena retrasar el cierre",
+      "Rechazarla: las condiciones precedentes quedaron cerradas en el term sheet",
+      "Evaluar el impacto real (¿se obtiene en 48 h? ¿qué riesgo cubre?), alinear promotor y abogados, y proponer una redacción acotada o un compromiso post-closing con plazo",
+      "Escalarlo al CEO para que lo resuelva directamente con el inversor"
+    ],
+    "correct": 2, "min": 10, "sus": 90
+  },
+  {
+    "block": "ejecucion", "type": "single", "w": 3,
+    "text": "Estás a mitad de la due diligence de una operación. ¿Cuál de estas señales indica que el proceso se te está yendo de las manos?",
+    "hint": "",
+    "options": [
+      "El inversor ha enviado 140 preguntas en la Q&A list",
+      "Las respuestas llegan tarde, se contradicen entre sí y nadie del lado del promotor tiene asignada cada pregunta",
+      "El asesor técnico del inversor pide una segunda visita a planta",
+      "El data room ya supera los 800 documentos"
+    ],
+    "correct": 1, "min": 10, "sus": 90
+  },
+  {
+    "block": "ejecucion", "type": "single", "w": 3,
+    "text": "Recibes el primer borrador del contrato de financiación de los abogados del inversor. Tienes dos horas antes de la call con el promotor. ¿En qué te concentras primero?",
+    "hint": "",
+    "options": [
+      "Condiciones precedentes, manifestaciones y garantías, eventos de incumplimiento y mecánica de disposición",
+      "Ley aplicable, jurisdicción y cláusula de notificaciones",
+      "Que los anexos numéricos cuadren con la última versión del modelo",
+      "Que el índice cubra todas las secciones estándar de un contrato LMA"
+    ],
+    "correct": 0, "min": 10, "sus": 90
+  },
+  {
+    "block": "ejecucion", "type": "single", "w": 3,
+    "text": "Es el día del closing. Falta un certificado societario menor (el acuerdo del consejo del promotor autorizando la firma está aprobado pero no elevado a público). Todo lo demás está listo y los fondos del inversor están en la cuenta escrow. ¿Cuál es la respuesta profesional?",
+    "hint": "",
+    "options": [
+      "Cerrar y traer el certificado la semana siguiente, sin más formalidad",
+      "Proponer un waiver condicionado o un compromiso post-closing con plazo, aceptado por escrito por las partes y reflejado en el closing checklist",
+      "Posponer el closing hasta tener el documento: el proceso debe ser impecable",
+      "Pedir al notario que deje constancia verbal y seguir adelante"
+    ],
+    "correct": 1, "min": 10, "sus": 90
+  },
+  {
+    "block": "partes", "type": "single", "w": 3,
+    "text": "El promotor quiere un DSCR mínimo de 1,15x y el inversor exige 1,30x. Llevan dos semanas atascados y el tono se está deteriorando. ¿Cuál es tu papel?",
+    "hint": "",
+    "options": [
+      "Defender la posición del promotor: es tu cliente y quien paga tu comisión",
+      "Cuantificar el impacto de cada escenario en el importe de deuda y en las distribuciones, traducir la posición de cada parte y proponer una estructura cerrable (p. ej. 1,20x con cash sweep o DSRA ampliada)",
+      "Dejar que los despachos lo resuelvan en la siguiente vuelta de borradores",
+      "Escalarlo al CEO de Alter5 para que hable con el fondo"
+    ],
+    "correct": 1, "min": 10, "sus": 90
+  },
+  {
+    "block": "partes", "type": "single", "w": 3,
+    "text": "El inversor lleva 10 días sin responder a la última versión del term sheet. Hasta ahora contestaba en 24 horas. ¿Qué haces?",
+    "hint": "",
+    "options": [
+      "Esperar: presionar puede transmitir desesperación y debilitar la negociación",
+      "Llamar directamente al responsable del deal en el inversor para entender qué ha cambiado (comité, prioridades, dudas) y, en paralelo, calentar alternativas sin romper la exclusividad pactada",
+      "Enviar un email formal con un plazo de respuesta de 48 horas",
+      "Avisar al promotor de que la operación probablemente se ha caído y empezar de cero"
+    ],
+    "correct": 1, "min": 10, "sus": 90
+  },
+  {
+    "block": "partes", "type": "single", "w": 3,
+    "text": "Descubres por un documento del data room que el promotor tiene un litigio abierto con un contratista que no te había mencionado y que no aparece en la Q&A. ¿Qué haces?",
+    "hint": "",
+    "options": [
+      "Hablar con el promotor de inmediato, entender el alcance, y acordar cómo y cuándo se comunica al inversor, antes de que lo descubra él",
+      "Retirar el documento del data room mientras se aclara con el promotor",
+      "Esperar a que el inversor pregunte: revelarlo no es tu obligación",
+      "Informar al inversor directamente sin pasar por el promotor"
+    ],
+    "correct": 0, "min": 10, "sus": 90
+  },
+  {
+    "block": "documentacion", "type": "single", "w": 2,
+    "text": "Estáis a tres semanas del cierre con 40 documentos abiertos entre condiciones precedentes, entregables societarios y opiniones legales. ¿Cómo organizas la recta final?",
+    "hint": "",
+    "options": [
+      "Un closing checklist único compartido con owner, estado y fecha por documento, revisión dos veces por semana con todas las partes y escalado de los bloqueados",
+      "Delegar el seguimiento en el despacho de abogados: es su especialidad",
+      "Un email diario a todas las partes con la lista completa de pendientes",
+      "Priorizar solo las condiciones económicas; el resto se resuelve en la notaría"
+    ],
+    "correct": 0, "min": 10, "sus": 90
+  },
+  {
+    "block": "documentacion", "type": "single", "w": 2,
+    "text": "El despacho del promotor tarda una semana en cada vuelta de comentarios al contrato y el calendario no aguanta. ¿Qué haces?",
+    "hint": "",
+    "options": [
+      "Consolidar una lista de puntos abiertos con la posición de cada parte y convocar sesiones de negociación conjuntas en lugar de vueltas por escrito",
+      "Sugerir al promotor que cambie de despacho",
+      "Redactar tú las cláusulas pendientes y enviarlas a ambos despachos",
+      "Ampliar el calendario y comunicárselo al inversor cuanto antes"
+    ],
+    "correct": 0, "min": 10, "sus": 90
+  },
+  {
+    "block": "analisis", "type": "single", "w": 2,
+    "text": "El promotor te dice que su parque \"aguanta\" 30 M€ de deuda porque genera 5 M€ de EBITDA y \"el múltiplo es 6x\". ¿Qué le respondes?",
+    "hint": "",
+    "options": [
+      "Correcto: 6x EBITDA es el estándar en infraestructuras",
+      "En financiación de proyecto el importe se dimensiona por capacidad de servicio de la deuda (CFADS y DSCR objetivo a lo largo del plazo), no por múltiplo de EBITDA; hay que ver el perfil de caja año a año",
+      "Depende de la valoración que dé el inversor al equity",
+      "30 M€ es mucho; por prudencia propondría 20 M€"
+    ],
+    "correct": 1, "min": 10, "sus": 90
+  },
+  {
+    "block": "analisis", "type": "single", "w": 2,
+    "text": "Presentas al comité del inversor las sensibilidades del modelo. ¿Cuál es la forma más útil?",
+    "hint": "",
+    "options": [
+      "Impacto en DSCR mínimo y en TIR del equity de cada variable por separado, señalando cuál rompe covenants primero, más un caso combinado de downside",
+      "Tres escenarios (base, optimista, pesimista) con la TIR de cada uno",
+      "La TIR del caso base con un rango de ±2 puntos",
+      "Solo el caso P90, que es el que usan los bancos"
+    ],
+    "correct": 0, "min": 10, "sus": 90
+  },
+  {
+    "block": "caso", "type": "open", "w": 5,
+    "text": "Un promotor de renovables busca 25 M€ de deuda de un inversor institucional para refinanciar un portfolio en operación. Situación hoy: term sheet no vinculante firmado; due diligence legal y técnica abiertas; data room incompleto (faltan contratos de O&M y licencias de dos plantas); el despacho del promotor va lento; el inversor quiere cerrar en 4 semanas porque cierra su fondo. Describe tu plan de ejecución hasta el closing: hitos y calendario, quién hace qué en cada parte, cómo desbloqueas la DD y el data room, qué negocias y qué escalas, y qué riesgos ves de que no se cierre.",
+    "hint": "Sé concreto: semanas, entregables, quién hace qué. No hace falta que sea largo; hace falta que sea ejecutable.",
+    "minChars": 500, "min": 120, "sus": 1500
+  },
+  {
+    "block": "trackrecord", "type": "open", "w": 3,
+    "text": "Resume dos operaciones que hayas ejecutado de principio a fin: tipo (deuda, equity o M&A), importe aproximado, partes, tu rol exacto, cuál fue la fase crítica y cómo terminó. Si alguna no cerró, cuéntalo también: nos interesa saber por qué.",
+    "hint": "Nombres de contrapartes no son necesarios; sí lo son las cifras, las fases y tu papel real.",
+    "minChars": 250, "min": 60, "sus": 900
+  },
+  {
+    "block": "multiwork", "type": "single", "w": 3,
+    "text": "¿Tienes actualmente algún compromiso profesional activo que tendrías que compatibilizar con este rol?",
+    "hint": "Respuesta directa — el rol exige dedicación exclusiva.",
+    "options": [
+      "No, dedicación exclusiva desde el día 1",
+      "Tengo un compromiso menor que termina en menos de 30 días",
+      "Tengo compromisos activos pero creo que puedo compatibilizarlos",
+      "Prefiero no responder"
+    ],
+    "correct": 0, "min": 5, "sus": 60
+  },
+  {
+    "block": "multiwork", "type": "single", "w": 2,
+    "text": "Descubres que un compañero del equipo de transacciones está asesorando por su cuenta a un promotor sin haberlo declarado. ¿Cómo actúas?",
+    "hint": "",
+    "options": [
+      "Hablo con él directamente y le pido que lo declare a dirección; si no lo hace, lo comunico yo: es un conflicto de interés que afecta a la firma",
+      "No es asunto mío mientras no afecte a nuestras operaciones",
+      "Lo comunico a dirección directamente sin hablar antes con él",
+      "Le pido que me incluya en ese asesoramiento"
+    ],
+    "correct": 0, "min": 8, "sus": 60
+  },
+  {
+    "block": "compensation", "type": "salary", "w": 1,
+    "text": "¿Cuál es tu expectativa de sueldo bruto anual fijo?",
+    "hint": "La retribución variable ligada a operaciones cerradas se definirá en la oferta final. Escribe solo la cifra en euros — se formatea automáticamente.",
+    "min": 3, "sus": 60
+  },
+  {
+    "block": "motivation", "type": "single", "w": 1,
+    "text": "¿Qué es lo que MÁS te atrae de esta posición en Alter5?",
+    "hint": "Elige la que mejor refleje tu motivación principal. No hay respuesta correcta.",
+    "options": [
+      "Cerrar operaciones con autonomía real, de principio a fin",
+      "Trabajar de tú a tú con inversores institucionales y promotores",
+      "El proyecto: construir la capa de ejecución de una plataforma de inversión digital",
+      "Ampliar mi caja de herramientas en financiación estructurada",
+      "Las condiciones económicas y el nivel de responsabilidad del rol"
+    ],
+    "min": 3, "sus": 60
+  }
+]

@@ -35,15 +35,21 @@ module.exports.default = async function handler(req, res) {
       .eq('interview_id', interviewId)
       .order('question_idx');
 
+    const position = await getPositionByApplication(iv.application_id, { withInterview: true });
+    if (!position) return res.status(500).json({ error: 'position_not_found' });
+
+    // Rebuild the same transcript shape submit-interview sends (question
+    // text + `#idx` so the grader can fill its SCORES trailer).
+    const bank = position.interview_questions || [];
+    const blockLabel = Object.fromEntries((position.interview_blocks || []).map(b => [b.id, b.label]));
     const summaryText = (answers || []).map(a => {
+      const q = bank[a.question_idx] || {};
       const ans = a.answer_text || (Array.isArray(a.answer_options) ? a.answer_options.join(', ') : '') || 'Sin respuesta';
       const mm = Math.floor((a.time_sec || 0) / 60);
       const ss = String((a.time_sec || 0) % 60).padStart(2, '0');
-      return `[${a.question_key || ''}] ${a.question_type || ''}\nRespuesta: ${ans}\nTiempo: ${mm}:${ss}`;
+      const kind = (q.type || a.question_type) === 'open' ? ' (respuesta libre)' : '';
+      return `#${a.question_idx} [${blockLabel[a.question_key] || a.question_key || ''}]${kind} ${q.text || ''}\nRespuesta: ${ans}\nTiempo: ${mm}:${ss}`;
     }).join('\n\n');
-
-    const position = await getPositionByApplication(iv.application_id, { withInterview: true });
-    if (!position) return res.status(500).json({ error: 'position_not_found' });
     const result = await analyzeInterview({
       name: app?.name || '',
       experience: app?.experience || '',
