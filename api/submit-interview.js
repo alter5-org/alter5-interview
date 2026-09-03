@@ -241,7 +241,6 @@ module.exports.default = async function handler(req, res) {
             caseScores,
           });
           Object.assign(update, {
-            case_scores: caseScores,
             global_score: scored.globalScore,
             dim_scores: scored.dimScores,
             flags: scored.flags,
@@ -252,6 +251,21 @@ module.exports.default = async function handler(req, res) {
           .from('interviews')
           .update(update)
           .eq('id', interview.id);
+        if (Object.keys(caseScores).length > 0) {
+          // Per-question LLM scores for the open answers live in the audit
+          // log (jsonb event_data) — no schema change needed.
+          await supabaseAdmin.from('application_events').insert({
+            application_id: appId,
+            event_type: 'interview_case_scored',
+            event_data: {
+              interview_id: interview.id,
+              case_scores: caseScores,
+              global_score: scored.globalScore,
+              dim_scores: scored.dimScores,
+            },
+            actor: 'system',
+          });
+        }
       } else {
         await supabaseAdmin.from('application_events').insert({
           application_id: appId,

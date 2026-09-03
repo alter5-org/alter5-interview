@@ -8,7 +8,8 @@ Fuente de verdad del banco: `questions.json` (se sube con
 **Formato general:**
 - 18 ítems · 30-35 min estimados
 - 14 de opción única (puntúan) + 2 de respuesta libre (puntúa el grader LLM,
-  0-10 cada una vía `<!--SCORES-->`) + 1 salario + 1 motivación (no puntúan)
+  0-10 cada una vía `<!--SCORES-->`, guardadas como evento
+  `interview_case_scored`) + 1 salario + 1 motivación (no puntúan)
 - Scoring server-side (`lib/interview-scoring.js`): acierto `w×3`, fallo
   `w×1`, abierta `w×3×score/10`. Bloques `compensation` y `motivation`
   excluidos. `multiwork` marca flag de dedicación.

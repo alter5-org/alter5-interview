@@ -21,7 +21,8 @@ Reglas que el código asume:
 - Bloques `compensation` y `motivation` no puntúan; `multiwork` marca el flag de dedicación.
 - `single` fuera de `motivation` necesita `correct`. `open` admite `minChars` (0-10000).
 - `min_score_to_invite` = score de CV mínimo para pasar a la cola de revisión; por debajo, rechazo automático.
-- El navegador nunca recibe `correct`; el scoring es server-side (`lib/interview-scoring.js`).
+- El navegador nunca recibe `correct`; el scoring es server-side (`lib/interview-scoring.js`). Las notas del grader para las abiertas se guardan como evento `interview_case_scored` en `application_events`.
+- Deuda: el default de columna de `positions.min_score_to_invite` sigue en 7 (el código y la admin API usan 4). Si algún día se crea una fila por SQL directo, poner 4 a mano.
 
 ## Subir a la plataforma
 

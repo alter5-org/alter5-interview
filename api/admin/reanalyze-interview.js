@@ -79,13 +79,25 @@ module.exports.default = async function handler(req, res) {
       .from('interviews')
       .update({
         ai_analysis_html: safeHtml,
-        case_scores: caseScores,
         global_score: scored.globalScore,
         dim_scores: scored.dimScores,
         flags: scored.flags,
         verdict: scored.verdict,
       })
       .eq('id', interviewId);
+
+    await supabaseAdmin.from('application_events').insert({
+      application_id: iv.application_id,
+      event_type: 'interview_case_scored',
+      event_data: {
+        interview_id: interviewId,
+        case_scores: caseScores,
+        global_score: scored.globalScore,
+        dim_scores: scored.dimScores,
+        reanalysis: true,
+      },
+      actor: 'admin',
+    });
 
     return res.status(200).json({ ok: true, html: safeHtml });
   } catch (e) {
