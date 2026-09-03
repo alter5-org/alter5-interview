@@ -737,6 +737,9 @@ function renderDetail(d){
   if(a.status==='interview_completed'){
     actions.push(`<button class="btn btn-danger btn-sm" onclick="decide('${a.id}','reject');closeModal();">Descartar tras entrevista (email de rechazo)</button>`);
   }
+  if(['cv_uploaded','analyzed_pending_review','analyzed_auto_rejected'].includes(a.status)){
+    actions.push(`<button class="btn btn-ghost btn-sm" onclick="reanalyzeCv('${a.id}')">${a.status==='cv_uploaded'?'Relanzar análisis de CV (atascado)':'Relanzar análisis de CV'}</button>`);
+  }
   if(actions.length)blocks.push(`<div class="modal-sec"><h3>Acciones</h3><div style="display:flex;gap:0.5rem;flex-wrap:wrap">${actions.join('')}</div></div>`);
 
   if(d.events&&d.events.length>0){
@@ -756,6 +759,17 @@ async function downloadCv(cvId){
     const data=await r.json();
     if(!r.ok)throw new Error(data.error);
     window.open(data.url,'_blank','noopener');
+  }catch(e){toast('Error: '+e.message,true);}
+}
+
+async function reanalyzeCv(applicationId){
+  toast('Relanzando análisis de CV…');
+  try{
+    const r=await fetch('/api/admin/reanalyze-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({applicationId})});
+    const data=await r.json();
+    if(!r.ok)throw new Error(data.error);
+    toast(`CV puntuado ${data.score}/10 → ${data.status}`);
+    closeModal();loadReview();loadAll();
   }catch(e){toast('Error: '+e.message,true);}
 }
 

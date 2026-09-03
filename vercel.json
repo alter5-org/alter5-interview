@@ -22,6 +22,7 @@
     "api/upload-cv.js": { "maxDuration": 60 },
     "api/submit-interview.js": { "maxDuration": 60 },
     "api/admin/reanalyze-interview.js": { "maxDuration": 60 },
+    "api/admin/reanalyze-cv.js": { "maxDuration": 60 },
     "api/admin/manual-upload.js": { "maxDuration": 60 },
     "api/headhunter/upload-cv.js": { "maxDuration": 60 }
   },
