@@ -297,7 +297,8 @@ body{
 
   // Slug from /positions/<slug>. The vercel rewrite routes both shapes here.
   const parts = window.location.pathname.split('/').filter(Boolean);
-  const slug = parts[parts.length - 1];
+  // Tolerate links pasted with trailing punctuation ("…/slug.") or capitals.
+  const slug = (parts[parts.length - 1] || '').toLowerCase().replace(/[^a-z0-9-]+$/, '');
   if (!slug || slug === 'positions' || !/^[a-z0-9][a-z0-9\-]{1,40}$/.test(slug)) {
     loading.classList.add('hidden');
     notFound.classList.remove('hidden');
