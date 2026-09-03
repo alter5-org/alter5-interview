@@ -214,7 +214,9 @@ module.exports.default = async function handler(req, res) {
       // The position-specific grading prompt (loaded above) makes the LLM
       // evaluate the interview against THIS funnel's archetype definitions.
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 45000);
+      // Function maxDuration is 60 s (vercel.json); DB work before this point
+      // takes a few seconds, so 50 s is the practical ceiling for the grade.
+      const timeoutId = setTimeout(() => controller.abort(), 50000);
       const analysis = await analyzeInterview({
         name: app.name || '',
         experience: app.experience || '',

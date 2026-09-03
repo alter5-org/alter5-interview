@@ -37,7 +37,8 @@ Production and Preview:
 | `SUPABASE_URL` | `https://srplzxewceuamubcbnzc.supabase.co` |
 | `SUPABASE_ANON_KEY` | from Supabase → Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | ⚠ server-only, bypasses RLS |
-| `ANTHROPIC_API_KEY` | Claude Sonnet 4 key |
+| `ANTHROPIC_API_KEY` | Anthropic API key |
+| `ANTHROPIC_MODEL` | Optional. Model for CV + interview analysis (default `claude-opus-5`). Change here when a model is retired — no code change needed. |
 | `RESEND_API_KEY` | Resend (domain `alter-5.com` must be verified) |
 | `ADMIN_USER` | Basic Auth user (e.g. `admin`) |
 | `ADMIN_PASS` | strong random — `openssl rand -base64 32` |
