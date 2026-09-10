@@ -6,7 +6,7 @@ Fuente de verdad del banco: `questions.json` (se sube con
 `scripts/push-position.js growth-marketing-manager`).
 
 **Formato general:**
-- 16 ítems · 30-35 min estimados
+- 16 ítems · prueba breve (sin duración publicada; los supuestos son cortos)
 - 10 de opción única (puntúan, w2) + 3 de respuesta libre (puntúa el grader
   LLM, 0-10 cada una vía `<!--SCORES-->`, guardadas como evento
   `interview_case_scored`) + 1 compromiso (w2) + 1 salario + 1 motivación (no
@@ -111,7 +111,7 @@ automatiza; el freelance ignora la responsabilidad del puesto.
 
 Datos de partida comunes: 6.000 € para seis semanas, tiempo completo más 4 h
 de producto y 2 h de originación semanales, 1.200 contactos con
-consentimiento, LinkedIn con 3.000 seguidores, HubSpot con GA4 y GTM.
+consentimiento, LinkedIn con 3.000 seguidores, CRM y analítica web configurados.
 Objetivo: reuniones cualificadas con empresas que necesitan 1-10 M€.
 
 - **#10 Plan de seis semanas.** Rúbrica en `interview-prompt.md`: 30 %

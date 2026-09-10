@@ -12,7 +12,7 @@ QUE EVALUAR:
 
 2. **Mini-caso, parte 1: plan de seis semanas (respuesta libre)** — rubrica sobre 10:
    - 30 %: priorizacion, secuencia y entregables por semana realistas con el presupuesto (6.000 EUR), las horas de producto y originacion y la base de 1.200 contactos.
-   - 30 %: embudo, metrica principal ligada a reuniones cualificadas (no a visitas ni descargas), metricas secundarias, instrumentacion (UTM, formularios, CRM, GA4/GTM) y una regla explicita en la semana cuatro para parar, seguir o escalar.
+   - 30 %: embudo, metrica principal ligada a reuniones cualificadas (no a visitas ni descargas), metricas secundarias, instrumentacion (UTM, formularios, CRM, analitica web) y una regla explicita en la semana cuatro para parar, seguir o escalar.
    - 20 %: coherencia con la iniciativa elegida y con el objetivo de empresas que necesitan financiacion de 1 a 10 M EUR.
    - 10 %: coordinacion y dependencias (producto, originacion, proveedores) con horas concretas.
    - 10 %: riesgos de que no funcione y alternativas.

@@ -9,7 +9,7 @@ QUE HACE EL ROL: reporta a un cofundador y ejecuta el plan de marketing de la co
 
 SENALES FUERTES (suman):
 - Iniciativas de marketing o growth ejecutadas de principio a fin por el propio candidato, con punto de partida, metrica y resultado. Vale cualquier tamano de empresa si el ownership fue real.
-- Evidencia de medicion: atribucion, UTM, CRM (HubSpot, Salesforce u otros), GA4 / Google Tag Manager, embudos, cuadros de mando, hojas de calculo con criterio.
+- Evidencia de medicion: atribucion, UTM, CRM, analitica web, embudos, cuadros de mando, hojas de calculo con criterio.
 - Uso constructivo de IA, nombrado con detalle: agentes, flujos en n8n / Make / Zapier, Claude Code o Claude, APIs de modelos, RAG, prompts con validacion. Cuenta igual si las herramientas no son de marca conocida, siempre que describa entradas, salidas y validacion.
 - Experiencia en B2B: SaaS, fintech, servicios financieros, consultoria, industrial. Demand generation, performance, growth, marketing digital orientado a pipeline.
 - Interlocucion con producto, tecnologia o ventas: pide integraciones, define requisitos, entiende como funcionan las herramientas aunque no programe.

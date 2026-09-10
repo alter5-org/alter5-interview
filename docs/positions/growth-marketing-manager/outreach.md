@@ -50,7 +50,7 @@ Marketing Manager, Digital Marketing Manager, Marketing Manager B2B.
 > plan de acciones, Madrid híbrido. ¿Te apetece comentarlo 15 minutos?
 
 Seguimiento (día +4): enlace directo a la landing y mención de que el proceso
-es asíncrono (CV + test de 30-35 minutos, respuesta en horas). Como
+es asíncrono (CV + test breve en línea, respuesta en horas). Como
 alternativa, CV y media página a `info@alter-5.com` para quien prefiera
 email; se sube desde `/admin`.
 
