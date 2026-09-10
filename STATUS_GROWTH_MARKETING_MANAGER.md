@@ -1,6 +1,6 @@
 # Growth & Marketing Manager B2B — punto de situación (2026-09-10)
 
-**Producción:** https://careers.alter-5.com · `main` en `5265bd5` desplegado a mano con `vercel deploy --prod --yes` (2026-09-10, tarde): estimación de duración por tipo de pregunta en `interview.html` y cabeceras sin "Remoto desde España".
+**Producción:** https://careers.alter-5.com · `main` en `b8ed7fe` desplegado a mano con `vercel deploy --prod --yes` (2026-09-10, tarde): estimación de duración por tipo de pregunta en `interview.html` y cabeceras sin "Remoto desde España".
 **Posición:** `growth-marketing-manager` (id `767edaf5-55a2-4d42-9d85-ad05a0a31676`), título público "Growth & Marketing Manager B2B | IA y automatización", `min_score_to_invite = 5`, compartida con headhunters.
 **Landing:** https://careers.alter-5.com/positions/growth-marketing-manager · Índice: https://careers.alter-5.com/
 **Fuente de la JD:** `~/Downloads/Alter5_JD_Growth_Marketing_Manager.pdf.pdf` (2026-09-10).
@@ -28,9 +28,11 @@ Searches 15103 (growth nice-to-have), 15104 (analytics nice-to-have), 15106 (gro
 
 ## Qué NO está hecho / deuda
 
-- **Verificación de Miguel Solana** (correo enviado 2026-09-10 con landing + QUESTIONS.md). Lanzamiento de sourcing tras su OK.
+- URL compartida: la canónica carga sin redirección; `http://` redirige a `https` (1 salto); con barra final redirige a la canónica desde `b8ed7fe` (antes 404). `<title>` y ausencia de `og:` hacen que la previsualización en WhatsApp/LinkedIn muestre "Alter5 — Posiciones abiertas" en vez del título del puesto: mejora pendiente.
 
-- Smoke de punta a punta: candidato sintético `SMOKE TEST GMM` (app `b623fbbe-a338-48cd-9153-77f497a24579`, CV 8/10) con enlace de test emitido para Salvador; falta completar el test y revisar informe + evento `interview_case_scored` (`<!--SCORES {"1": n}-->`).
+- **OK de Miguel Solana** al contenido (correo con landing + QUESTIONS.md; ya completó el test como candidato de prueba: 8/10 verde, IA 58 %, negocio 100 %, medición 80 %). Lanzamiento de sourcing tras su OK.
+
+- Smoke de punta a punta **hecho**: dos candidatos de prueba completaron el test v2 (Salvador, app `b623fbbe…`, 8/10 verde; Miguel, app `2161866e…`, 8/10 verde), con evento `interview_case_scored` y sin flags. Descartar ambos desde `/admin`. Hay además una candidatura `verified` sin CV de salvador.carrillo@alter-5.com (prueba del apply desde la landing).
 - Playwright `positions-v2.spec.js` con `POSITION_SLUGS=hoe,responsable-transacciones,growth-marketing-manager`.
 - Pills de bloque sin color en `interview.html` para `medicion`, `ia`, `caso`, `trackrecord` (cosmético, heredado; RT tampoco los tiene). Arreglarlo requiere deploy manual (`vercel deploy --prod --yes`; integración GitHub→Vercel rota desde el 20-abr).
 - Scoring global fallo = w×1 (Astra propone 0). Deuda de plataforma, no de esta posición.
