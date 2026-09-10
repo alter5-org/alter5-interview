@@ -1,162 +1,95 @@
 # Test — Growth & Marketing Manager B2B (IA y automatización)
 
-Documento de referencia interno. Describe cada pregunta, la opción correcta,
-el **objetivo** (qué discrimina) y por qué los distractores son creíbles.
-Fuente de verdad del banco: `questions.json` (se sube con
-`scripts/push-position.js growth-marketing-manager`).
+Documento de referencia interno. Fuente de verdad del banco: `questions.json`
+(se sube con `scripts/push-position.js growth-marketing-manager`).
 
-**Formato general:**
-- 16 ítems · prueba breve (sin duración publicada; los supuestos son cortos)
-- 10 de opción única (puntúan, w2) + 3 de respuesta libre (puntúa el grader
-  LLM, 0-10 cada una vía `<!--SCORES-->`, guardadas como evento
-  `interview_case_scored`) + 1 compromiso (w2) + 1 salario + 1 motivación (no
-  puntúan)
-- Scoring server-side (`lib/interview-scoring.js`): acierto `w×3`, fallo
-  `w×1`, abierta `w×3×score/10`. Bloques `compensation` y `motivation`
-  excluidos. `multiwork` marca flag de dedicación.
-- Pesos efectivos (máximo por bloque = suma de w×3): Ejecución 18 · Medición
-  24 · IA 18 · Caso 30 (dos abiertas w5) · Trayectoria 9 · Compromiso 6.
-  Total 105: caso 29 %, supuestos 57 %, trayectoria 9 %.
-- Diseño revisado con GPT 6 Astra (2026-09-10). Cambios adoptados de esa
-  revisión: retirar tres ítems de deseabilidad obvia (iniciativa sin owner,
-  informe sin distribución, contenido IA de relleno) y sustituirlos por
-  situaciones con números; subir el peso del mini-caso partiéndolo en dos
-  abiertas; trayectoria de una sola iniciativa con contribución propia;
-  filtro de CV con "evidencia insuficiente" en vez de descarte por palabras
-  clave. Rechazado: cambiar el scoring global (fallo = 0) porque afecta a
-  HoE y RT; queda como deuda de plataforma.
-- Decisiones del fundador: título "Growth & Marketing Manager B2B | IA y
-  automatización"; desde 1 año sin tope; banda 35-40k + 15 % variable + plan
-  de acciones; régimen anti-IA igual que RT; landing declara filtro con IA y
-  revisión humana de descartes.
+**Formato general (v2, 2026-09-10):**
+- 12 ítems · objetivo 3-5 minutos reales. Decisión del fundador tras probar la
+  v1 (16 ítems con mini-caso largo): la prueba debe ser corta y centrarse en
+  automatización, atribución con datos propios y herramientas reales (Claude
+  Code, GitHub, n8n, agentes), con 3 preguntas de negocio como máximo.
+- 2 selección múltiple (declaración de herramientas y de cuadros de mando
+  montados) + 1 respuesta libre corta (flujo de IA propio, 120 caracteres
+  mínimo) + 6 opción única + compromiso + salario + motivación.
+- Scoring server-side (`lib/interview-scoring.js`): single acierto `w×3`,
+  fallo `w×1`; multi ≥2 opciones `w×3`, 1 opción `w×2`; abierta
+  `w×3×score/10` (grader vía `<!--SCORES {"1": n}-->`). `compensation` y
+  `motivation` no puntúan; `multiwork` marca flag.
+- Pesos efectivos (máximo por bloque): IA 33 (48 %) · Atribución 15 (22 %) ·
+  Negocio 18 (26 %) · Compromiso 3. Total 69.
+- Duración mostrada: `interview.html` estima por tipo (0,4 min single, 0,6
+  multi, 1,5 abierta, mínimo 5, rango de 2) → "unos 4-6 minutos" con este banco. La
+  fórmula anterior (`máx(10, ítems×0,75 + abiertas×7)`) decía 11-16.
+- Las dos preguntas múltiples son autodeclaraciones: el grader las contrasta
+  con la respuesta libre y propone preguntas de entrevista que pidan un
+  ejemplo verificable por herramienta marcada.
 
 ---
 
-## Bloque 1 · Ejecución del plan (3 × w2)
+## Bloque IA y automatización (#0-#3)
 
-### #0 · Primera semana, ocho iniciativas
-✅ Acordar dos o tres en marcha con objetivo, métrica y fecha; el resto en
-cola explícita con criterio de entrada.
-**Objetivo:** capacidad de priorizar y de negociar alcance con el cofundador.
-Abrir las ocho es deseabilidad de "hacerlo todo"; empezar por marca elige lo
-visible sobre lo medible; pedir refuerzo antes de arrancar es no asumir el rol.
+### #0 · Herramientas usadas para construir (multi · w3)
+Claude Code · GitHub · n8n/Make/Zapier · APIs de modelos · Agentes/MCP/RAG ·
+Cursor/Copilot · Scripts Python/JS. Sin opciones negativas: marcar dos o más
+da el máximo; la verificación es la #1 y la entrevista.
 
-### #1 · Proveedor con dos semanas de retraso, publicación en diez días
-✅ Recortar a versión publicable, entregables diarios para lo que falta, fecha
-nueva comunicada con plan.
-**Objetivo:** gestionar alcance y expectativas bajo restricción. Presionar sin
-cambiar alcance no resuelve; retrasar en silencio rompe la confianza del
-cofundador; cambiar de proveedor a diez días es inviable.
+### #1 · Flujo de IA propio (open · w4 · minChars 120)
+Entrada, herramienta, salida, validación, ahorro. Rúbrica en
+`interview-prompt.md`: 30 % entrada/herramienta/salida · 30 % validación ·
+20 % fallo y detección · 20 % beneficio y autoría. "Uso ChatGPT para correos"
+≤3; flujo con validación y ahorro ≥8. No se premian marcas.
 
-### #2 · Informe terminado, cero presupuesto, 1.200 contactos
-✅ Segmentar, secuencia con landing tras formulario y UTM, tres piezas en
-LinkedIn, lista semanal a originación.
-**Objetivo:** distribución instrumentada que termina en reuniones. Publicar y
-esperar no genera pipeline; el correo único adjunto no mide ni segmenta; la
-nota de prensa busca alcance, no reuniones cualificadas.
+### #2 · Agente selecciona 200 empresas, 6 de 20 erróneas (single · w2)
+✅ Bloquear, clasificar errores, corregir, validar otra muestra. Regenerar sin
+verificar, retirar seis (extrapola un 30 % de error) y revisar a mano las 200
+sin arreglar el flujo son los distractores. (GPT 6 Astra)
 
-## Bloque 2 · Medición y atribución (4 × w2)
+### #3 · Flujo del informe semanal roto un viernes (single · w2)
+✅ Localizar, sacar el informe con parche o a mano, añadir alerta y validación.
+Esperar a tecnología, rehacer en otra herramienta y volver al manual son
+distractores creíbles.
 
-### #3 · Campaña A vs campaña B (GPT 6 Astra)
-✅ Aumentar B de forma limitada y seguir midiendo avance y valor.
-**Objetivo:** economía del embudo. B tiene menor coste por oportunidad (500 €
-frente a 1.000 €). Escalar A seduce por coste por lead; triplicar B extrapola
-seis oportunidades sin cierres; congelar paraliza el aprendizaje.
+## Bloque Atribución y cuadros de mando (#4-#5)
 
-### #4 · Informe → evento de partner → solicitud directa (GPT 6 Astra)
-✅ Registrar origen y contactos influyentes con regla fija y documentada, sin
-afirmar causalidad.
-**Objetivo:** honestidad en la atribución. Último clic y primer contacto son
-modelos habituales pero incompletos; el reparto a tercios parece equilibrado
-pero inventa precisión causal.
+### #4 · Qué has montado tú (multi · w3)
+UTM + origen obligatorio · cuadro de embudo automático · atribución
+multi-toque documentada · eventos de conversión propios · informe periódico
+automatizado · coste por oportunidad por canal. Autodeclaración contrastada
+en entrevista.
 
-### #5 · Métrica principal del observatorio
-✅ Registros de empresas que encajan con el criterio de originación;
-descargas y visitas como secundarias.
-**Objetivo:** distinguir métrica de negocio de métrica de vanidad. Descargas
-es el distractor creíble: es un indicador temprano útil, pero no discrimina
-la calidad del lead.
+### #5 · Informe → evento → solicitud directa (single · w2)
+✅ Registrar origen e influencias con regla fija, sin afirmar causalidad.
+Último clic, primer contacto y reparto a tercios son los distractores. (GPT 6
+Astra)
 
-### #6 · UTM inconsistentes y 40 % de origen vacío, cuadro esta semana
-✅ Convención de UTM y origen obligatorio desde hoy, reconstruir lo que
-permitan reglas, entregar con "origen desconocido" explícito y su porcentaje.
-**Objetivo:** entregar con datos imperfectos sin mentir. Retrasar hasta
-limpiar todo incumple; rellenar como directo falsea el cuadro; dejar el CRM
-fuera esconde el 40 %.
+## Bloque Decisiones de negocio (#6-#8)
 
-## Bloque 3 · Agentes IA y automatización (3 × w2)
+### #6 · Campaña A vs B (single · w2)
+✅ Aumentar B de forma limitada y seguir midiendo (coste por oportunidad 500 €
+vs 1.000 €). Escalar A por coste por lead, triplicar B, congelar. (GPT 6
+Astra)
 
-### #7 · Agente selecciona 200 empresas, 6 de 20 erróneas (GPT 6 Astra)
-✅ Bloquear la activación, clasificar errores, corregir y validar otra muestra.
-**Objetivo:** control operativo de una automatización. Regenerar sin
-verificar confía en una corrección no probada; retirar seis extrapola
-indebidamente la muestra (30 % de error); revisar a mano las 200 resuelve el
-lote pero conserva el fallo.
+### #7 · Ocho iniciativas, primera semana (single · w2)
+✅ Dos o tres en marcha con objetivo, métrica y fecha; el resto en cola.
+Abrir las ocho, empezar por marca, pedir refuerzo.
 
-### #8 · Flujo del informe semanal roto un viernes
-✅ Localizar el paso, sacar el informe de esta semana con parche o a mano, y
-añadir alerta y validación de salida.
-**Objetivo:** cumplir el compromiso y evitar el fallo silencioso. Esperar a
-tecnología es no asumir el flujo; reconstruir en otra herramienta es
-sobrerreacción; volver al manual permanente renuncia a la automatización.
+### #8 · Informe terminado, cero presupuesto (single · w2)
+✅ Segmentar, secuencia con landing y UTM, tres piezas en LinkedIn, lista
+semanal a originación. Publicar y esperar, correo único adjunto, nota de
+prensa.
 
-### #9 · Boletín mensual automatizado con IA
-✅ Datos estructurados de entrada, plantilla fija, redacción citando datos,
-revisión humana antes del envío, apertura y clic por edición.
-**Objetivo:** diseño de un flujo con validación. El prompt abierto con envío
-automático es el riesgo real; escribir a mano con IA de corrector no
-automatiza; el freelance ignora la responsabilidad del puesto.
-
-## Bloque 4 · Mini-caso (#10 y #11 · open · w5 · minChars 500 / 300)
-
-Datos de partida comunes: 6.000 € para seis semanas, tiempo completo más 4 h
-de producto y 2 h de originación semanales, 1.200 contactos con
-consentimiento, LinkedIn con 3.000 seguidores, CRM y analítica web configurados.
-Objetivo: reuniones cualificadas con empresas que necesitan 1-10 M€.
-
-- **#10 Plan de seis semanas.** Rúbrica en `interview-prompt.md`: 30 %
-  priorización, secuencia y entregables · 30 % embudo, métrica principal,
-  instrumentación y regla de decisión en semana 4 · 20 % coherencia con la
-  iniciativa y el objetivo · 10 % coordinación y dependencias · 10 % riesgos
-  y alternativas. Genérico ≤3; ejecutable con semanas, métrica correcta y
-  regla ≥8.
-- **#11 Automatización con IA.** Rúbrica: 30 % entradas, herramientas y
-  salida · 30 % validación antes de llegar al cliente u originación · 20 %
-  modos de fallo y detección · 20 % beneficio cuantificado. "Usaría ChatGPT
-  para los correos" ≤3; flujo con validación, fallo y ahorro ≥8. No se
-  premian marcas de herramientas.
-**Objetivo:** la señal real del test. Es lo que hará el primer trimestre.
-Sustituye a la "respuesta de media página" de la JD original.
-
-## Bloque 5 · Trayectoria (#12 · open · w3 · minChars 250)
-
-Una iniciativa ejecutada por el candidato: punto de partida, periodo,
-contribución propia frente a la del equipo, qué midió y resultado. Se aceptan
-rangos y datos anonimizados. **Objetivo:** separar "participé" de "lo hice y
-lo medí". Base para la segunda entrevista.
-
-## Bloque 6 · Compromiso y dedicación (#13 · single · w2)
-
-Heredada de HoE / RT. ✅ Dedicación exclusiva desde el día 1. Peso reducido a
-w2 porque el rol no tiene acceso a operaciones; la pregunta de conflicto de
-interés de RT no aplica.
-
-## Bloque 7 · Compensación (#14 · salary · no puntúa)
-Fijo bruto anual. La pista muestra la banda publicada (35-40k + 15 % variable
-+ plan de acciones) para que la respuesta sea comparable.
-
-## Bloque 8 · Motivación (#15 · single sin correct · no puntúa)
-Cinco ejes. "Condiciones económicas y plan de acciones" en solitario se
-destaca en el informe; "ejecutar de principio a fin", "medir y demostrar" y
-"construir automatizaciones sobre un caso real" alinean con el puesto.
+## Compromiso (#9 · single · w1) · Compensación (#10 · salary) · Motivación (#11)
+Heredados. Motivación añade la opción "empresa nativa de IA".
 
 ---
 
 ## Anti-cheating
+Igual que HoE y RT: tiempos por pregunta (`min`/`sus`), pegados, cambios de
+pestaña, ráfagas, copy/click derecho/atajos bloqueados. La abierta usa `sus`
+420 s. El navegador no recibe `correct`.
 
-Igual que HoE y RT (decisión del fundador 2026-09-10): tiempo por pregunta
-(`min`/`sus`), pegados, cambios de pestaña, ráfagas de tecleo, copy/click
-derecho/atajos/drag bloqueados. Las abiertas usan `sus` amplio (1500 / 1200 /
-900 s). El grader recibe las señales y las cita en "Señales de alerta"; para
-las abiertas se le pide además una pregunta de segunda entrevista que obligue
-a reconstruir el razonamiento sin apoyo. El navegador **no recibe** `correct`.
+## Historial
+- v1 (2026-09-10, mañana): 16 ítems con mini-caso en dos abiertas w5; diseño
+  revisado con GPT 6 Astra. Retirada el mismo día por duración.
+- v2 (2026-09-10, tarde): 12 ítems cortos, foco en herramientas de IA y
+  atribución propia.

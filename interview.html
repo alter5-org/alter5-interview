@@ -690,8 +690,10 @@ window.addEventListener('DOMContentLoaded',async()=>{
       document.getElementById('intro-open-note').textContent=` y ${openCount===1?'una pregunta':openCount+' preguntas'} de respuesta libre`;
       document.getElementById('intro-open-row').classList.remove('hidden');
     }
-    const estMin=Math.max(10,Math.round(QS.length*0.75+openCount*7));
-    document.getElementById('intro-duration').textContent=`unos ${estMin-5}-${estMin} minutos`;
+    // Estimate by item type: ~25 s per single/salary, ~35 s per multi,
+    // ~90 s per open. Floor at 5 minutes; shown as a 2-minute range.
+    const estMin=Math.max(5,Math.round(QS.reduce((m,q)=>m+(q.type==='open'?1.5:q.type==='multi'?0.6:0.4),0)));
+    document.getElementById('intro-duration').textContent=`unos ${estMin-2}-${estMin} minutos`;
     positionTitle=cfg.position_title||'';
     positionSubtitle=cfg.position_subtitle||'';
     document.getElementById('intro-name').textContent=candidateName||'';

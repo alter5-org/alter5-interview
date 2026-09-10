@@ -22,14 +22,14 @@ Searches 15103 (growth nice-to-have), 15104 (analytics nice-to-have), 15106 (gro
 
 ## Qué está hecho
 
-- `docs/positions/growth-marketing-manager/`: `position.json`, `intro.html`, `cv-prompt.md`, `interview-prompt.md`, `blocks.json`, `questions.json` (10 supuestos w2 + mini-caso en 2 abiertas w5 + trayectoria w3 + compromiso w2 + salario + motivación), `QUESTIONS.md`, `outreach.md`.
+- `docs/positions/growth-marketing-manager/`: `position.json`, `intro.html`, `cv-prompt.md`, `interview-prompt.md`, `blocks.json`, `questions.json` v2 (12 ítems cortos: 2 múltiples de herramientas de IA y cuadros de mando montados, 1 abierta corta con un flujo de IA propio, 6 de opción única, compromiso, salario, motivación; objetivo 3-5 min), `QUESTIONS.md`, `outreach.md`.
 - Revisión externa con GPT 6 Astra (codex 0.154.0). Adoptado: tres supuestos con números (coste por oportunidad, atribución multi-toque, agente con muestra fallida), mayor peso del mini-caso (29 % del total), trayectoria de una iniciativa, "evidencia insuficiente" en el filtro de CV. Rechazado: fallo = 0 en scoring (global, afectaría a HoE y RT).
 - `push-position.js --dry` OK · `npm run test:unit` 13/13 · POST 201 en producción, estado `paused`.
 
 ## Qué NO está hecho / deuda
 
-- **Activación** (`--status active`) y verificación de landing, índice y config pública sin `correct`.
-- Smoke de punta a punta con candidato sintético (CV → test → informe con `<!--SCORES {"10","11","12"}-->` → evento `interview_case_scored`).
+- Código pendiente de **deploy manual** (`vercel deploy --prod --yes`): estimación de duración por tipo de pregunta en `interview.html` (antes decía 11-16 min para este banco) y cabeceras de `positions.html` / `index.html` sin "Remoto desde España" (este puesto es híbrido en Madrid).
+- Smoke de punta a punta: candidato sintético `SMOKE TEST GMM` (app `b623fbbe-a338-48cd-9153-77f497a24579`, CV 8/10) con enlace de test emitido para Salvador; falta completar el test y revisar informe + evento `interview_case_scored` (`<!--SCORES {"1": n}-->`).
 - Playwright `positions-v2.spec.js` con `POSITION_SLUGS=hoe,responsable-transacciones,growth-marketing-manager`.
 - Pills de bloque sin color en `interview.html` para `medicion`, `ia`, `caso`, `trackrecord` (cosmético, heredado; RT tampoco los tiene). Arreglarlo requiere deploy manual (`vercel deploy --prod --yes`; integración GitHub→Vercel rota desde el 20-abr).
 - Scoring global fallo = w×1 (Astra propone 0). Deuda de plataforma, no de esta posición.
