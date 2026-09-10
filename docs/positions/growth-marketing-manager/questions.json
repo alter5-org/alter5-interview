@@ -157,15 +157,6 @@
     "sus": 60
   },
   {
-    "block": "compensation",
-    "type": "salary",
-    "w": 1,
-    "text": "¿Cuál es tu expectativa de sueldo bruto anual fijo?",
-    "hint": "La banda publicada es de 35.000 a 40.000 € fijos, más un 15 % de variable por objetivos y la posibilidad de entrar en el plan de acciones. Escribe solo la cifra en euros — se formatea automáticamente.",
-    "min": 3,
-    "sus": 60
-  },
-  {
     "block": "motivation",
     "type": "single",
     "w": 1,

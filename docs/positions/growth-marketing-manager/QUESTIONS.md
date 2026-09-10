@@ -4,17 +4,17 @@ Documento de referencia interno. Fuente de verdad del banco: `questions.json`
 (se sube con `scripts/push-position.js growth-marketing-manager`).
 
 **Formato general (v2, 2026-09-10):**
-- 12 ítems · objetivo 3-5 minutos reales. Decisión del fundador tras probar la
+- 11 ítems · objetivo 3-5 minutos reales. Decisión del fundador tras probar la
   v1 (16 ítems con mini-caso largo): la prueba debe ser corta y centrarse en
   automatización, atribución con datos propios y herramientas reales (Claude
   Code, GitHub, n8n, agentes), con 3 preguntas de negocio como máximo.
 - 2 selección múltiple (declaración de herramientas y de cuadros de mando
   montados) + 1 respuesta libre corta (flujo de IA propio, 120 caracteres
-  mínimo) + 6 opción única + compromiso + salario + motivación.
+  mínimo) + 6 opción única + compromiso + motivación. Sin pregunta de
+  salario (decisión del fundador 2026-09-10): la banda está publicada.
 - Scoring server-side (`lib/interview-scoring.js`): single acierto `w×3`,
   fallo `w×1`; multi ≥2 opciones `w×3`, 1 opción `w×2`; abierta
-  `w×3×score/10` (grader vía `<!--SCORES {"1": n}-->`). `compensation` y
-  `motivation` no puntúan; `multiwork` marca flag.
+  `w×3×score/10` (grader vía `<!--SCORES {"1": n}-->`). `motivation` no puntúa; `multiwork` marca flag.
 - Pesos efectivos (máximo por bloque): IA 33 (48 %) · Atribución 15 (22 %) ·
   Negocio 18 (26 %) · Compromiso 3. Total 69.
 - Duración mostrada: `interview.html` estima por tipo (0,4 min single, 0,6
@@ -78,8 +78,8 @@ Abrir las ocho, empezar por marca, pedir refuerzo.
 semanal a originación. Publicar y esperar, correo único adjunto, nota de
 prensa.
 
-## Compromiso (#9 · single · w1) · Compensación (#10 · salary) · Motivación (#11)
-Heredados. Motivación añade la opción "empresa nativa de IA".
+## Compromiso (#9 · single · w1) · Motivación (#10)
+Heredados. Sin pregunta de compensación. Motivación añade la opción "empresa nativa de IA".
 
 ---
 

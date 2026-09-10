@@ -1,11 +1,5 @@
 [
  {
-  "id": "compensation",
-  "label": "Compensación",
-  "icon": "◆",
-  "desc": "Alineamos expectativas económicas desde el inicio. La banda está publicada en la oferta."
- },
- {
   "id": "ia",
   "label": "IA y automatización",
   "icon": "◎",
