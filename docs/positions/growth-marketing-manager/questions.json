@@ -1,0 +1,171 @@
+[
+  {
+    "block": "ejecucion", "type": "single", "w": 2,
+    "text": "Es tu primera semana. El cofundador te entrega el plan de marketing: ocho iniciativas priorizadas, tú a tiempo completo y un presupuesto cerrado. ¿Cómo arrancas?",
+    "hint": "",
+    "options": [
+      "Abrir las ocho en paralelo con un cronograma detallado, para mostrar avance en todos los frentes desde el principio",
+      "Acordar con el cofundador dos o tres iniciativas en marcha, cada una con objetivo, métrica principal y fecha, y dejar el resto en una cola explícita con el criterio para entrar",
+      "Empezar por la iniciativa de marca, que es la más visible, y planificar el resto cuando haya tracción",
+      "Pedir la incorporación de una persona de apoyo antes de comprometer fechas"
+    ],
+    "correct": 1, "min": 10, "sus": 90
+  },
+  {
+    "block": "ejecucion", "type": "single", "w": 2,
+    "text": "El observatorio sectorial se publica en diez días. El proveedor que desarrolla la web lleva dos semanas de retraso y todavía faltan la visualización interactiva y el formulario de registro. ¿Qué haces?",
+    "hint": "",
+    "options": [
+      "Mantener alcance y fecha, y presionar al proveedor con reuniones diarias de seguimiento",
+      "Recortar a una versión publicable con lo que existe (informe descargable tras un formulario simple), fijar entregables diarios para lo que falta y comunicar al cofundador la fecha nueva de la versión completa con el plan",
+      "Retrasar la publicación hasta que esté completo, sin cambiar el mensaje al mercado",
+      "Cambiar de proveedor para no depender de quien ya ha fallado"
+    ],
+    "correct": 1, "min": 10, "sus": 90
+  },
+  {
+    "block": "ejecucion", "type": "single", "w": 2,
+    "text": "El informe financiero para empresas está terminado y es bueno. Recursos: cero euros de presupuesto adicional, una base de 1.200 contactos de empresas con consentimiento, la página de LinkedIn de Alter5 con 3.000 seguidores y dos horas semanales del equipo de originación. Objetivo: reuniones cualificadas. ¿Cuál es tu plan de distribución?",
+    "hint": "",
+    "options": [
+      "Publicarlo en la web y en LinkedIn y medir las descargas",
+      "Enviarlo adjunto en un único correo a los 1.200 contactos",
+      "Segmentar la base por sector y tamaño, lanzar una secuencia de correos con landing de descarga tras formulario y UTM por segmento, publicar tres piezas derivadas en LinkedIn y pasar cada semana a originación la lista de quienes descargan y encajan con el criterio",
+      "Enviar una nota de prensa a medios económicos para ganar alcance"
+    ],
+    "correct": 2, "min": 10, "sus": 90
+  },
+  {
+    "block": "medicion", "type": "single", "w": 2,
+    "text": "Dos campañas de captación llevan ocho semanas con la misma definición de oportunidad y cohortes comparables. Campaña A: 2.000 € de gasto, 100 leads, 2 oportunidades aceptadas por originación. Campaña B: 3.000 €, 30 leads, 6 oportunidades aceptadas. Todavía no hay cierres. ¿Qué propones?",
+    "hint": "",
+    "options": [
+      "Escalar A: tiene el coste por lead más bajo",
+      "Triplicar B: genera tres veces más oportunidades",
+      "Aumentar B de forma limitada y seguir midiendo el avance y el valor de sus oportunidades antes de decidir más",
+      "Congelar ambas hasta tener ingresos cerrados que permitan comparar"
+    ],
+    "correct": 2, "min": 15, "sus": 120
+  },
+  {
+    "block": "medicion", "type": "single", "w": 2,
+    "text": "Un contacto descarga el informe financiero, tres semanas después asiste a un evento de un partner y tres meses más tarde solicita financiación entrando directamente en la web. El CRM conserva los tres contactos. ¿Cómo lo reportas?",
+    "hint": "",
+    "options": [
+      "Atribuir el 100 % al tráfico directo: es el canal por el que llegó la solicitud",
+      "Repartir un tercio a cada contacto como contribución causal",
+      "Atribuir el 100 % al informe: fue el primer contacto",
+      "Registrar el origen y los contactos que influyeron con una regla fija y documentada, y reportarlo sin afirmar causalidad"
+    ],
+    "correct": 3, "min": 10, "sus": 90
+  },
+  {
+    "block": "medicion", "type": "single", "w": 2,
+    "text": "Lanzas el observatorio sectorial. El cofundador te pide una única métrica principal para seguirlo. ¿Cuál eliges?",
+    "hint": "",
+    "options": [
+      "Visitas a la página del observatorio",
+      "Descargas totales del informe",
+      "Registros de empresas que encajan con el criterio de originación (sector, tamaño, necesidad de financiación), con descargas y visitas como métricas secundarias",
+      "Menciones en prensa e impresiones en LinkedIn"
+    ],
+    "correct": 2, "min": 10, "sus": 90
+  },
+  {
+    "block": "medicion", "type": "single", "w": 2,
+    "text": "Al montar el cuadro de mando descubres que las campañas de los últimos seis meses usan UTM inconsistentes y que el campo de origen del CRM está vacío en el 40 % de los contactos. El cofundador quiere el cuadro esta semana. ¿Qué haces?",
+    "hint": "",
+    "options": [
+      "Retrasar el cuadro hasta limpiar todo el histórico",
+      "Fijar desde hoy una convención de UTM y el campo de origen como obligatorio, reconstruir del histórico lo que permitan reglas claras, y entregar esta semana con una categoría explícita de origen desconocido y su porcentaje",
+      "Rellenar el origen vacío como tráfico directo para que el cuadro salga completo",
+      "Entregar solo los datos de GA4 y dejar el CRM fuera del cuadro"
+    ],
+    "correct": 1, "min": 10, "sus": 90
+  },
+  {
+    "block": "ia", "type": "single", "w": 2,
+    "text": "Un agente ha seleccionado 200 empresas para una campaña. Al revisar 20 al azar, seis no cumplen el criterio de elegibilidad. La campaña todavía no se ha activado. ¿Qué haces primero?",
+    "hint": "",
+    "options": [
+      "Bloquear la activación, clasificar los errores, corregir el criterio o el prompt y validar otra muestra antes de continuar",
+      "Ajustar el prompt, regenerar las 200 y activar",
+      "Retirar las seis incorrectas y activar con las otras 194",
+      "Revisar a mano las 200 esta vez y dejar el flujo como está para las próximas campañas"
+    ],
+    "correct": 0, "min": 10, "sus": 90
+  },
+  {
+    "block": "ia", "type": "single", "w": 2,
+    "text": "Es viernes. El flujo automatizado que genera el informe semanal para el cofundador ha fallado: el CRM cambió su API y el paso de extracción devuelve vacío. ¿Qué haces?",
+    "hint": "",
+    "options": [
+      "Localizar el paso que falla, sacar el informe de esta semana con un parche mínimo o a mano, y después añadir una alerta de fallo y una validación de la salida para que no vuelva a fallar en silencio",
+      "Pedir a tecnología que lo arregle y enviar el informe cuando esté",
+      "Reconstruir el flujo en otra herramienta más estable",
+      "Desactivar el flujo y volver al informe manual de forma permanente"
+    ],
+    "correct": 0, "min": 10, "sus": 90
+  },
+  {
+    "block": "ia", "type": "single", "w": 2,
+    "text": "Quieres automatizar con IA un boletín mensual para empresas a partir de los datos del observatorio. ¿Qué diseño eliges?",
+    "hint": "",
+    "options": [
+      "Un prompt abierto que redacte el boletín sobre financiación de pymes, con envío automático",
+      "Datos estructurados como entrada, plantilla con secciones fijas, redacción por el modelo citando los datos, revisión humana antes del envío y métricas de apertura y clic por edición",
+      "Redactarlo a mano y usar la IA solo para revisar el estilo",
+      "Contratar un redactor freelance y reservar la IA para otros procesos"
+    ],
+    "correct": 1, "min": 10, "sus": 90
+  },
+  {
+    "block": "caso", "type": "open", "w": 5,
+    "text": "Elige una de estas cuatro iniciativas del plan: informe financiero para empresas, observatorio sectorial, acuerdos con partners o campaña de captación. Datos de partida comunes: presupuesto de 6.000 € para seis semanas; tú a tiempo completo, más cuatro horas semanales de una persona de producto y dos de originación; base de 1.200 contactos de empresas con consentimiento; LinkedIn de Alter5 con 3.000 seguidores; CRM HubSpot con GA4 y Google Tag Manager instalados. Objetivo del cofundador: reuniones cualificadas con empresas que necesitan financiación de entre 1 y 10 millones de euros. Escribe tu plan de seis semanas: secuencia y entregables por semana, métrica principal y secundarias, cómo instrumentas la atribución, y qué regla aplicarías en la semana cuatro para decidir si paras, sigues o escalas.",
+    "hint": "Semanas, entregables y cifras. No hace falta que sea largo; hace falta que sea ejecutable y medible.",
+    "minChars": 500, "min": 120, "sus": 1500
+  },
+  {
+    "block": "caso", "type": "open", "w": 5,
+    "text": "Para esa misma iniciativa, describe una automatización con IA que montarías: qué datos entran, qué herramientas o agentes usas, qué sale, cómo validas la salida antes de que llegue a un cliente o al equipo de originación, qué puede fallar y cómo te enterarías, y qué tiempo o coste ahorra.",
+    "hint": "Vale cualquier herramienta. Nos interesa el flujo completo, incluidos la validación y el fallo.",
+    "minChars": 300, "min": 90, "sus": 1200
+  },
+  {
+    "block": "trackrecord", "type": "open", "w": 3,
+    "text": "Describe una iniciativa de marketing o growth que hayas ejecutado tú: punto de partida, periodo, qué hiciste personalmente y qué hicieron otros, qué mediste y cuál fue el resultado. Si no salió como esperabas, cuéntalo también: nos interesa saber por qué.",
+    "hint": "Cifras, aunque sean rangos o estén anonimizadas. Tu contribución exacta, no la del equipo.",
+    "minChars": 250, "min": 60, "sus": 900
+  },
+  {
+    "block": "multiwork", "type": "single", "w": 2,
+    "text": "¿Tienes actualmente algún compromiso profesional activo que tendrías que compatibilizar con este rol?",
+    "hint": "Respuesta directa — el rol exige dedicación exclusiva.",
+    "options": [
+      "No, dedicación exclusiva desde el día 1",
+      "Tengo un compromiso menor que termina en menos de 30 días",
+      "Tengo compromisos activos pero creo que puedo compatibilizarlos",
+      "Prefiero no responder"
+    ],
+    "correct": 0, "min": 5, "sus": 60
+  },
+  {
+    "block": "compensation", "type": "salary", "w": 1,
+    "text": "¿Cuál es tu expectativa de sueldo bruto anual fijo?",
+    "hint": "La banda publicada es de 35.000 a 40.000 € fijos, más un 15 % de variable por objetivos y la posibilidad de entrar en el plan de acciones. Escribe solo la cifra en euros — se formatea automáticamente.",
+    "min": 3, "sus": 60
+  },
+  {
+    "block": "motivation", "type": "single", "w": 1,
+    "text": "¿Qué es lo que MÁS te atrae de esta posición en Alter5?",
+    "hint": "Elige la que mejor refleje tu motivación principal. No hay respuesta correcta.",
+    "options": [
+      "Ejecutar iniciativas de principio a fin con autonomía real y reporte directo a un cofundador",
+      "Medir y demostrar con datos qué funciona y qué no",
+      "Construir automatizaciones con agentes IA sobre un caso real de negocio",
+      "Aprender del mercado de financiación de empresas y proyectos",
+      "Las condiciones económicas y el plan de acciones"
+    ],
+    "min": 3, "sus": 60
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {"id":"compensation","label":"Compensación","icon":"◆","desc":"Alineamos expectativas económicas desde el inicio. La banda está publicada en la oferta."},
+  {"id":"ejecucion","label":"Ejecución del plan","icon":"⬡","desc":"Evaluamos cómo conviertes una iniciativa en entregables y resultados con recursos limitados: prioridades, plazos, proveedores y distribución."},
+  {"id":"medicion","label":"Medición y atribución","icon":"◈","desc":"Evaluamos criterio con los datos: qué métrica manda, cómo se atribuye sin inventar causalidad y cómo se decide parar o escalar."},
+  {"id":"ia","label":"Agentes IA y automatización","icon":"◎","desc":"Evaluamos uso real de IA para ejecutar procesos: diseño del flujo, validación de la salida y qué haces cuando falla."},
+  {"id":"caso","label":"Mini-caso de ejecución","icon":"▣","desc":"Una iniciativa del plan con presupuesto y datos de partida reales. Nos interesa tu plan concreto y qué automatizarías, no la teoría."},
+  {"id":"trackrecord","label":"Trayectoria","icon":"▤","desc":"Una iniciativa que hayas ejecutado tú, con tu contribución exacta y el resultado."},
+  {"id":"multiwork","label":"Compromiso y dedicación","icon":"◉","desc":"Evaluamos dedicación exclusiva."},
+  {"id":"motivation","label":"Motivación","icon":"★","desc":"Nos ayuda a entender qué te mueve — no hay respuesta correcta."}
+]
