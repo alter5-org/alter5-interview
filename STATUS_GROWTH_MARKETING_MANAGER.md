@@ -1,6 +1,6 @@
 # Growth & Marketing Manager B2B — punto de situación (2026-09-10)
 
-**Producción:** https://careers.alter-5.com · sin cambios de código; la posición se subió por admin API.
+**Producción:** https://careers.alter-5.com · `main` en `5265bd5` desplegado a mano con `vercel deploy --prod --yes` (2026-09-10, tarde): estimación de duración por tipo de pregunta en `interview.html` y cabeceras sin "Remoto desde España".
 **Posición:** `growth-marketing-manager` (id `767edaf5-55a2-4d42-9d85-ad05a0a31676`), título público "Growth & Marketing Manager B2B | IA y automatización", `min_score_to_invite = 5`, compartida con headhunters.
 **Landing:** https://careers.alter-5.com/positions/growth-marketing-manager · Índice: https://careers.alter-5.com/
 **Fuente de la JD:** `~/Downloads/Alter5_JD_Growth_Marketing_Manager.pdf.pdf` (2026-09-10).
@@ -22,13 +22,14 @@ Searches 15103 (growth nice-to-have), 15104 (analytics nice-to-have), 15106 (gro
 
 ## Qué está hecho
 
-- `docs/positions/growth-marketing-manager/`: `position.json`, `intro.html`, `cv-prompt.md`, `interview-prompt.md`, `blocks.json`, `questions.json` v2 (12 ítems cortos: 2 múltiples de herramientas de IA y cuadros de mando montados, 1 abierta corta con un flujo de IA propio, 6 de opción única, compromiso, salario, motivación; objetivo 3-5 min), `QUESTIONS.md`, `outreach.md`.
+- `docs/positions/growth-marketing-manager/`: `position.json`, `intro.html`, `cv-prompt.md`, `interview-prompt.md`, `blocks.json`, `questions.json` v2 (11 ítems cortos: 2 múltiples de herramientas de IA y cuadros de mando montados, 1 abierta corta con un flujo de IA propio, 6 de opción única, compromiso, motivación; sin salario; objetivo 3-5 min, la página dice 4-6), `QUESTIONS.md`, `outreach.md`.
 - Revisión externa con GPT 6 Astra (codex 0.154.0). Adoptado: tres supuestos con números (coste por oportunidad, atribución multi-toque, agente con muestra fallida), mayor peso del mini-caso (29 % del total), trayectoria de una iniciativa, "evidencia insuficiente" en el filtro de CV. Rechazado: fallo = 0 en scoring (global, afectaría a HoE y RT).
 - `push-position.js --dry` OK · `npm run test:unit` 13/13 · POST 201 en producción, estado `paused`.
 
 ## Qué NO está hecho / deuda
 
-- Código pendiente de **deploy manual** (`vercel deploy --prod --yes`): estimación de duración por tipo de pregunta en `interview.html` (antes decía 11-16 min para este banco) y cabeceras de `positions.html` / `index.html` sin "Remoto desde España" (este puesto es híbrido en Madrid).
+- **Verificación de Miguel Solana** (correo enviado 2026-09-10 con landing + QUESTIONS.md). Lanzamiento de sourcing tras su OK.
+
 - Smoke de punta a punta: candidato sintético `SMOKE TEST GMM` (app `b623fbbe-a338-48cd-9153-77f497a24579`, CV 8/10) con enlace de test emitido para Salvador; falta completar el test y revisar informe + evento `interview_case_scored` (`<!--SCORES {"1": n}-->`).
 - Playwright `positions-v2.spec.js` con `POSITION_SLUGS=hoe,responsable-transacciones,growth-marketing-manager`.
 - Pills de bloque sin color en `interview.html` para `medicion`, `ia`, `caso`, `trackrecord` (cosmético, heredado; RT tampoco los tiene). Arreglarlo requiere deploy manual (`vercel deploy --prod --yes`; integración GitHub→Vercel rota desde el 20-abr).
