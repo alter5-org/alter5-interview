@@ -56,12 +56,21 @@
     {
       "source": "/positions/:slug",
       "destination": "/positions.html"
+    },
+    {
+      "source": "/julie-swan",
+      "destination": "/julie-swan.html"
     }
   ],
   "redirects": [
     {
       "source": "/sw-architect",
       "destination": "/hoe",
+      "permanent": true
+    },
+    {
+      "source": "/julie",
+      "destination": "/julie-swan",
       "permanent": true
     }
   ],
