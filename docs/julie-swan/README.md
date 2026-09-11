@@ -75,3 +75,25 @@ Same as every other page: `vercel deploy` for a preview, `vercel deploy --prod -
 LinkedIn / Nova outreach messages are sent from the CEO's account and are **signed by him,
 never by Julie**. Outreach links to the role page, not to this profile. This page is optional
 employer-branding context; it is not a step in the candidate flow.
+
+## Per-position video (Julie explains the process)
+
+A position landing (`/positions/<slug>`) shows a short pre-rendered video card from Julie when
+`julie/videos.json` has an entry for that slug. Nothing is generated per visit.
+
+```
+julie/videos.json              { "<slug>": { src, poster, track, avatar, title, subtitle, note, transcript } }
+julie/gmm-proceso.mp4          Growth & Marketing Manager video (Higgsfield Seedance 2.5, 30 s, 720p, Spanish)
+julie/gmm-proceso-poster.jpg   poster frame
+julie/gmm-proceso.es.vtt       Spanish subtitles
+tests/position-video.spec.js   Playwright (needs a deployed URL: the landing calls /api/positions)
+```
+
+Rules: manual play (no autoplay), subtitles + visible transcript, and the `note` must say the video
+is AI-generated and that Julie does not make hiring decisions. The card is rendered with DOM APIs in
+`positions.html` (`renderPositionVideo`); the JSON is data, never HTML. Videos must be self-hosted:
+the CSP only allows media from the site itself.
+
+To add a video for another position: generate it (same reference image `julie/avatar.webp`,
+script ≤ 80 words for 30 s), save the three files under `julie/`, add the slug entry to
+`videos.json`, deploy.
