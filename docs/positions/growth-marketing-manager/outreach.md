@@ -36,9 +36,10 @@ Marketing Manager, Digital Marketing Manager, Marketing Manager B2B.
 1. `GMM-ola1` — 30-40 perfiles desde la search 15106 (IA como MUST) más los
    marcados en 15103 con Claude Code, n8n o agentes en el titular. Secuencia
    de contacto con link a `/positions/growth-marketing-manager`.
-2. `GMM-ola2` — toda España fuera de Madrid (search Nova **15194**), abierta
-   el 2026-09-11 al pasar la posición a remoto: el pool de Madrid tiene
-   salario estimado mediana ≈57k€, por encima de la banda 35-40k.
+2. `GMM-ola2` — search Nova **15194** (toda España, 2-7 años, mismos roles
+   y keywords), shortlist **5056**. Abierta el 2026-09-11 al pasar la posición
+   a remoto. Motivo: el salario estimado por Nova lo mueve la experiencia, no
+   la geografía (Madrid 57k€ mediana, España sin Madrid 56k€, ≤7 años 38k€).
 
 ## Mensaje de contacto (≈80 palabras)
 
@@ -102,6 +103,43 @@ busca y contacta; sin motor propio; listas propias más adelante).
 **Nova follow-up:** mismo contenido con `utm_medium=nova`.
 
 2026-09-11: posición pasa a **remoto desde España** (JD, cv-prompt y mensajes actualizados). Motivo: la shortlist 5039 (Madrid) tiene salario estimado mediana ≈57k€, muy por encima de la banda 35-40k; se abre `GMM-ola2` fuera de Madrid.
+
+## Salario estimado (Nova, USD → €×0,86; 2026-09-11)
+
+| Pool | n | Q1 | Mediana | Q3 | ≤46k€ |
+|---|---|---|---|---|---|
+| Madrid (5039) | 40 | 51k€ | 57,5k€ | 73k€ | 4 |
+| España sin Madrid | 50 | 45k€ | 55,6k€ | 65k€ | 14 |
+| · Barcelona área | 26 | 47k€ | 57,7k€ | 65k€ | 6 |
+| · Resto España | 24 | 42k€ | 51k€ | 64k€ | 8 |
+| Fuera de Madrid, ≤7 años | 12 | 33k€ | 37,8k€ | 45k€ | 10 |
+
+Banda publicada 35-40k + 15 % ≈ 40-46k€ total. Decisión (Salvador): mantener
+los 40 de 5039 en la campaña 2146 (el mensaje lleva la banda y filtra solo) y
+añadir la ola 2 con tope de 7 años.
+
+## Shortlist GMM-ola2 (5056, 2026-09-11)
+
+32 perfiles elegidos de los 60 primeros de la search 15194 (`bestMatch:DESC`),
+leídos uno a uno. Criterio: growth/marketing B2B con ejecución propia, señal de
+automatización, analítica o IA; descartados B2C retail/ocio/educación sin señal,
+brand/social puros, project/product managers, consultores sin cuenta propia,
+salario estimado > 60k€ y repetidos de 5039 (mariaarcossacristan).
+
+Salario estimado de la selección: mediana **38,3k€**, Q1 35,5k€, Q3 42,3k€;
+27/32 ≤ 46k€. Experiencia 3-7 años. Adjunta a la campaña **2146** junto a 5039.
+
+Destacados: nilsole-revopsgrowthmarketing (Nova, AI-first GTM, BCN),
+carmen-concepcion-marketing (Head of Growth solar, lead gen + automatización),
+cristinaecheverri (Jellyfish, BI para marketing), fabio-granero (Factorial,
+demand gen ABM), guillem-bentué (IriusRisk, HubSpot automation),
+fernandocastroperez (paid media + CRM automation + IA), lauralopeznieto (BBVA),
+alejandro-garcía-gonzález (ProAlpha Capital, fintech), mariovelarubio (AI
+taskforce lead B2B).
+
+**Créditos:** 2146 suma 40 (5039) + 32 (5056) = 72 candidatos; hay 50. Antes
+de lanzar: comprar créditos o recortar. Nova cobra 1 crédito por candidato
+contactado.
 
 ## Supresión (manual hasta tener listas propias)
 
