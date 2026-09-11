@@ -27,7 +27,7 @@ export default {
     aiLabelLong: 'Julie Swan is an AI agent supervised by the human team at Alter5',
     avatar: {
       src: '/julie/avatar.webp',
-      alt: 'Illustrated avatar of Julie Swan, Alter5’s AI Talent Manager — an AI-generated illustration, not a real person',
+      alt: 'AI-generated portrait of Julie Swan, Alter5’s AI Talent Manager — a synthetic image, not a real person',
     },
     headline: 'AI Talent Manager at Alter5 | Helping great people discover meaningful opportunities',
     ctaPrimary: { label: 'View open roles', href: '/' },

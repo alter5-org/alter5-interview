@@ -17,7 +17,7 @@ julie/components.js      render functions: TopNav, ProfileHeader, AboutSection, 
                          SkillTags, WorkPrinciples, LimitsSection, FeaturedCards, Footer
 julie/app.js             mounts components, nav highlight on scroll
 julie/julie.css          styles (colors come from /ds/tokens.css — blue builds, teal decorates)
-julie/avatar.webp        400px avatar (illustrated, AI-generated, not a real person)
+julie/avatar.webp        400px avatar (photorealistic AI-generated portrait of a fictional person)
 julie/avatar@2x.webp     800px variant (not wired yet; swap in via srcset if needed)
 julie/og.jpg             1200px social preview
 tests/unit/julie-content.test.js   content shape + disclosure strings (npm run test:unit)
@@ -50,10 +50,12 @@ Text is HTML-escaped by the components, so write plain text (no tags). Run
 
 ## Swapping the avatar
 
-Replace `julie/avatar.webp` (square, ≥400px) and `julie/og.jpg` (≥1200px). Keep it clearly
-illustrated — never a photorealistic image that could pass as a real person — and keep the alt
-text in `content.en.js` saying it is AI-generated. Original generation: Higgsfield `soul_2`,
-1:1, editorial-illustration prompt (see session notes 2026-09-11).
+Replace `julie/avatar.webp` (square, ≥400px) and `julie/og.jpg` (≥1200px). The current avatar is a
+photorealistic AI-generated portrait of a fictional person (Salvador's decision, 2026-09-11, after
+an illustrated first version). Because it looks like a photo, the disclosure elements on the page
+(pill, avatar mark, Experience note, limits section, footer) and the alt text in `content.en.js`
+("AI-generated… not a real person") are mandatory. Never use a photo of a real person.
+Original generation: Higgsfield `soul_2`, 1:1, corporate-headshot prompt.
 
 ## Verify locally
 
