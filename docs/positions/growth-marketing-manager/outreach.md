@@ -36,8 +36,9 @@ Marketing Manager, Digital Marketing Manager, Marketing Manager B2B.
 1. `GMM-ola1` — 30-40 perfiles desde la search 15106 (IA como MUST) más los
    marcados en 15103 con Claude Code, n8n o agentes en el titular. Secuencia
    de contacto con link a `/positions/growth-marketing-manager`.
-2. `GMM-ola2` — ampliar a Barcelona remoto solo si la ola 1 no llena la
-   entrevista. La posición es híbrida en Madrid; no abrir sin decisión.
+2. `GMM-ola2` — toda España fuera de Madrid (search Nova **15194**), abierta
+   el 2026-09-11 al pasar la posición a remoto: el pool de Madrid tiene
+   salario estimado mediana ≈57k€, por encima de la banda 35-40k.
 
 ## Mensaje de contacto (≈80 palabras)
 
@@ -47,7 +48,7 @@ Marketing Manager, Digital Marketing Manager, Marketing Manager B2B.
 > cofundador: iniciativas de principio a fin, medición con atribución y
 > automatización con agentes IA. Vi en tu perfil {{señal: Claude Code / n8n /
 > agentes}} y me encaja con lo que necesitamos. Banda 35-40k más variable y
-> plan de acciones, Madrid híbrido. ¿Te apetece comentarlo 15 minutos?
+> plan de acciones, remoto desde España. ¿Te apetece comentarlo 15 minutos?
 
 Seguimiento (día +4): enlace directo a la landing y mención de que el proceso
 es asíncrono (CV + test breve en línea, respuesta en horas). Como
@@ -88,7 +89,7 @@ busca y contacta; sin motor propio; listas propias más adelante).
 
 **Mensaje LinkedIn (tras aceptar):**
 
-> Hola {{firstName}}, en Alter5 (plataforma de financiación de deuda y proyectos, más de 250 M€ cerrados, empresa nativa de IA) buscamos un/a Growth & Marketing Manager B2B que ejecute el plan de marketing reportando a un cofundador: iniciativas de principio a fin, medición con atribución y automatización con agentes IA. Tu perfil encaja con lo que necesitamos. Banda 35-40k fijos más 15 % variable y opción a plan de acciones, Madrid híbrido. ¿Te apetece comentarlo 15 minutos?
+> Hola {{firstName}}, en Alter5 (plataforma de financiación de deuda y proyectos, más de 250 M€ cerrados, empresa nativa de IA) buscamos un/a Growth & Marketing Manager B2B que ejecute el plan de marketing reportando a un cofundador: iniciativas de principio a fin, medición con atribución y automatización con agentes IA. Tu perfil encaja con lo que necesitamos. Banda 35-40k fijos más 15 % variable y opción a plan de acciones, remoto desde España. ¿Te apetece comentarlo 15 minutos?
 
 **Follow-up LinkedIn (+48 h):**
 
@@ -99,6 +100,8 @@ busca y contacta; sin motor propio; listas propias más adelante).
 > Tus datos profesionales proceden de tu perfil público de LinkedIn y solo los usamos para este proceso (más información: https://careers.alter-5.com/apply/privacy). Si prefieres que no te vuelva a contactar, dímelo y lo respeto.
 
 **Nova follow-up:** mismo contenido con `utm_medium=nova`.
+
+2026-09-11: posición pasa a **remoto desde España** (JD, cv-prompt y mensajes actualizados). Motivo: la shortlist 5039 (Madrid) tiene salario estimado mediana ≈57k€, muy por encima de la banda 35-40k; se abre `GMM-ola2` fuera de Madrid.
 
 ## Supresión (manual hasta tener listas propias)
 

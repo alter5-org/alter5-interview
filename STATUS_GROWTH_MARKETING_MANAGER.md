@@ -11,7 +11,7 @@
 
 - Título: variante de GPT 6 Astra, "Growth & Marketing Manager B2B | IA y automatización" (evita que "AI" se lea como producto). Subtítulo: "Ejecución del plan de marketing · Analítica, atribución y agentes IA".
 - Experiencia: desde 1 año, sin tope. El filtro de CV no penaliza años; solo expectativa de Head/CMO sin hands-on.
-- Condiciones publicadas: 35.000-40.000 € fijos + 15 % variable + posibilidad de plan de acciones. Madrid centro (Cuzco), híbrido.
+- Condiciones publicadas: 35.000-40.000 € fijos + 15 % variable + posibilidad de plan de acciones. ~~Madrid centro (Cuzco), híbrido~~ → **remoto desde España** (decisión 2026-09-11 para ampliar el pool fuera de Madrid y ajustar salario).
 - Candidatura: landing + CV + test. La "media página" de la JD es el mini-caso (#10 y #11). Email `info@alter-5.com` solo como alternativa en outreach.
 - Régimen anti-IA en el test: igual que HoE y RT (pegados y cambios de pestaña como señales).
 - La landing declara que el filtro de CV usa IA y que todo descarte automático lo revisa una persona. **Compromiso operativo:** revisar en `/admin` la cola `analyzed_auto_rejected` de esta posición antes de comunicar descartes.
