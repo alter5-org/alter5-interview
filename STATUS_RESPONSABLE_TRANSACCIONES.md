@@ -41,6 +41,7 @@
 - MCP Nova Talent registrado para este proyecto (`claude mcp add … nova-talent`); requiere sesión nueva para cargar herramientas.
 - Plan en `docs/positions/responsable-transacciones/outreach.md`: booleanos, empresas objetivo, mensaje de 80 palabras.
 - Orden: lista `RT-calibración` (3-5 perfiles conocidos, validar que el mini-caso discrimina) → lista `RT-ola1` (~40) → secuencia con link a la landing.
+- **2026-09-11:** shortlist `RT-ola1` = 4431 (49 perfiles); campaña Nova **2031** en DRAFT, actualizada con UTM `rt-ola1`, línea RGPD y Email deshabilitado. Bloqueo: conectar LinkedIn en Nova. Créditos: 50, GMM-ola1 (40) va primero → comprar o recortar antes de lanzar. Ver `docs/positions/responsable-transacciones/outreach.md` y `docs/sourcing/nova-replication-analysis.md`.
 
 ## Cómo operar
 

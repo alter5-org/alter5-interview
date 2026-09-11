@@ -37,3 +37,25 @@ Seguimiento (día +4): enlace directo a la landing y mención de que el proceso 
 
 - Landing pública `/positions/responsable-transacciones` (apply + CV).
 - CVs recibidos por email o LinkedIn → `/admin` → Subir CV manual con la posición seleccionada.
+
+## Campaña Nova (actualizado 2026-09-11)
+
+Decisión general en `docs/sourcing/nova-replication-analysis.md`.
+
+- Campaña **2031** `Responsable de Transacciones — ola 1`, `LINKEDIN_FIRST`,
+  Europe/Madrid, L-V. Shortlist **4431** `RT-ola1` (49 perfiles). DRAFT hasta
+  conectar LinkedIn en Nova. Coste: 49 créditos; hay 50 y GMM-ola1 (40) va
+  primero → comprar créditos (Starter €49/50, orientativo) o recortar 4431
+  con `shortlist_remove_profiles` antes de lanzar.
+- Pasos activos: invitación sin nota → mensaje LinkedIn → follow-up 48 h con
+  URL → Nova follow-up. Deshabilitados: 2º/3º follow-up LinkedIn y todos los
+  pasos Email (2026-09-11; antes el Email intro estaba activo).
+- 2026-09-11: UTM añadidos a las 3 URLs (`utm_campaign=rt-ola1`,
+  `utm_medium=linkedin|nova|email`) y línea RGPD art. 14 en follow-up, Nova y
+  Email. El mensaje inicial de LinkedIn no cambia (ver arriba).
+- Lanzar: `campaign_set_message` en cualquier paso → `previewToken` fresco →
+  `campaign_launch(2031, previewToken)`.
+
+## Supresión (manual hasta tener listas propias)
+
+- (vacío)

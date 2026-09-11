@@ -36,7 +36,7 @@ Searches 15103 (growth nice-to-have), 15104 (analytics nice-to-have), 15106 (gro
 - Playwright `positions-v2.spec.js` con `POSITION_SLUGS=hoe,responsable-transacciones,growth-marketing-manager`.
 - Pills de bloque sin color en `interview.html` para `medicion`, `ia`, `caso`, `trackrecord` (cosmético, heredado; RT tampoco los tiene). Arreglarlo requiere deploy manual (`vercel deploy --prod --yes`; integración GitHub→Vercel rota desde el 20-abr).
 - Scoring global fallo = w×1 (Astra propone 0). Deuda de plataforma, no de esta posición.
-- Sourcing: shortlist `GMM-ola1` desde search 15106; proveedor LinkedIn de Nova sigue NOT_CONNECTED.
+- Sourcing (2026-09-11): campaña Nova **2146** en DRAFT con shortlist 5039 (40 perfiles), mensajes en español con UTM `gmm-ola1` y línea RGPD, pasos Email deshabilitados. **Bloqueo: conectar LinkedIn en Nova Recruiter → Settings → Connections** y después `campaign_launch`. Decisión de no replicar Nova en `docs/sourcing/nova-replication-analysis.md`; detalle en `docs/positions/growth-marketing-manager/outreach.md`.
 
 ## Cómo operar
 
