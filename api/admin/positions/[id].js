@@ -20,6 +20,8 @@ const PATCHABLE = new Set([
   'min_score_to_invite', 'public_intro_html',
   'cv_analysis_prompt', 'interview_system_prompt',
   'interview_blocks', 'interview_questions',
+  'interview_mode', 'interview_orchestrator_prompt',
+  'interview_anchor_bank', 'interview_adaptive_bank',
 ]);
 
 async function getOne(id, res) {

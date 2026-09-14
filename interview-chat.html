@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrevista técnica — Alter5</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/ds/alter5-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ds/tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+body{
+  font-family:var(--a5-font-landing);
+  background:#fafbfc;
+  color:var(--a5-text-primary);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  line-height:var(--a5-leading-normal);
+  -webkit-font-smoothing:antialiased;
+}
+.hdr{
+  background:var(--a5-blue);
+  padding:14px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.hdr-logo img{height:28px;width:auto;display:block}
+.hdr-badge{
+  background:rgba(81,182,190,0.18);
+  color:var(--a5-teal);
+  padding:6px 12px;border-radius:var(--a5-radius-full);
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;
+  letter-spacing:0.06em;text-transform:uppercase;
+}
+.main{flex:1;max-width:680px;width:100%;margin:0 auto;padding:32px 20px 40px;display:flex;flex-direction:column;gap:16px}
+.screen{display:none}.screen.active{display:flex;flex-direction:column;gap:16px}
+
+/* ── Consent / intro screen (spec §25 checklist) ─────────── */
+.intro-card{
+  background:#fff;border:1px solid var(--a5-light-border);border-radius:var(--a5-radius-xl);
+  padding:28px 28px 24px;box-shadow:var(--a5-shadow-md);
+}
+.intro-title{font-size:20px;font-weight:700;color:var(--a5-blue);margin-bottom:12px;letter-spacing:-0.01em}
+.intro-list{margin:0 0 20px 18px;font-size:14px;color:var(--a5-slate);line-height:1.7}
+.intro-list li{margin-bottom:4px}
+.intro-note{font-size:13px;color:var(--a5-text-secondary);margin-bottom:20px;line-height:1.6}
+.intro-note a{color:var(--a5-teal-dark)}
+.lang-select{display:flex;gap:8px;margin-bottom:20px}
+.lang-btn{
+  font-family:'JetBrains Mono',monospace;font-size:12px;padding:8px 14px;border-radius:var(--a5-radius-full);
+  border:1px solid var(--a5-light-border);background:#fff;cursor:pointer;
+}
+.lang-btn[aria-pressed="true"]{background:var(--a5-blue);color:#fff;border-color:var(--a5-blue)}
+
+/* ── Progress ─────────────────────────────────────────────── */
+.progress-row{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--a5-slate);letter-spacing:0.04em;text-transform:uppercase}
+.progress-track{flex:1;height:5px;background:var(--a5-light-border);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--a5-teal);transition:width .3s ease;width:0%}
+
+/* ── Conversation ─────────────────────────────────────────── */
+.thread{display:flex;flex-direction:column;gap:14px}
+.turn{max-width:100%}
+.turn-system{}
+.turn-candidate{align-self:flex-end;max-width:88%}
+.bubble{
+  border-radius:14px;padding:14px 16px;font-size:14.5px;line-height:1.6;white-space:pre-wrap;
+}
+.bubble-system{background:#fff;border:1px solid var(--a5-light-border);color:var(--a5-text-primary)}
+.bubble-candidate{background:var(--a5-blue);color:#fff}
+.bubble-note{background:var(--a5-teal-light);color:var(--a5-teal-dark);font-size:13px;border:1px solid #cfeced}
+
+.composer{background:#fff;border:1px solid var(--a5-light-border);border-radius:var(--a5-radius-xl);padding:14px;box-shadow:var(--a5-shadow-md)}
+.composer textarea{
+  width:100%;min-height:72px;max-height:260px;resize:vertical;border:none;outline:none;
+  font-family:inherit;font-size:14.5px;line-height:1.55;color:var(--a5-text-primary);
+}
+.composer-hint{font-size:12px;color:var(--a5-text-secondary);margin-top:6px}
+.composer-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px;flex-wrap:wrap}
+.btn{
+  font-family:inherit;font-weight:600;font-size:14px;border:none;border-radius:var(--a5-radius-full);
+  padding:10px 20px;cursor:pointer;
+}
+.btn-primary{background:var(--a5-blue);color:#fff}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--a5-slate);text-decoration:underline;font-weight:500;padding:10px 4px}
+.status-line{font-size:12px;color:var(--a5-text-secondary)}
+.status-line.err{color:#b3261e}
+
+.end-card{background:#fff;border:1px solid var(--a5-light-border);border-radius:var(--a5-radius-xl);padding:32px;text-align:center}
+.end-title{font-size:19px;font-weight:700;color:var(--a5-blue);margin-bottom:8px}
+.end-copy{font-size:14.5px;color:var(--a5-slate);line-height:1.6}
+
+.err-card{background:#fff;border:1px solid var(--a5-light-border);border-radius:var(--a5-radius-xl);padding:32px;text-align:center}
+
+@media (max-width:640px){
+  .hdr{padding:12px 18px}
+  .main{padding:22px 14px 30px}
+  .intro-card{padding:22px 18px 18px}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <a class="hdr-logo" href="https://www.alter5.com" target="_blank" rel="noopener" aria-label="Alter5">
+    <img src="/ds/alter5-logo-white.svg" alt="Alter5">
+  </a>
+  <span class="hdr-badge" id="hdr-badge">Alter5 Technical Interview</span>
+</header>
+
+<main class="main">
+
+  <div class="screen active" id="screen-loading">
+    <p class="status-line">Cargando…</p>
+  </div>
+
+  <div class="screen" id="screen-error">
+    <div class="err-card">
+      <p id="error-message">No hemos podido cargar la entrevista. El enlace puede haber caducado o ya haberse usado.</p>
+    </div>
+  </div>
+
+  <!-- Consent / intro screen — spec §25 checklist, repeated verbatim before
+       any question is asked. This is the binding consent moment; the
+       marketing-copy disclosure on the position landing is separate. -->
+  <div class="screen" id="screen-intro">
+    <div class="intro-card">
+      <h1 class="intro-title">Entrevista técnica — Alter5</h1>
+      <ul class="intro-list">
+        <li>Duración habitual: 10-12 minutos. Máximo absoluto: 15 minutos.</li>
+        <li>Es una entrevista técnica realizada mediante un asistente conversacional de IA, supervisado por el equipo de Alter5.</li>
+        <li>Tus respuestas se guardan para la revisión del proceso de selección.</li>
+        <li>Responde de forma directa y con tus propias palabras, sin asistencia externa de IA salvo que se indique lo contrario.</li>
+        <li>No verás una puntuación ni un resultado automático al terminar: la decisión la toma el equipo humano de Alter5.</li>
+      </ul>
+      <p class="intro-note">
+        Puedes consultar cómo tratamos tus datos en la
+        <a href="/apply/privacy" target="_blank" rel="noopener">política de privacidad para candidatos</a>.
+      </p>
+      <div class="lang-select" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn" id="lang-es" aria-pressed="true">Español</button>
+        <button type="button" class="lang-btn" id="lang-en" aria-pressed="false" disabled title="Próximamente">English</button>
+      </div>
+      <button type="button" class="btn btn-primary" id="btn-start">Empezar</button>
+    </div>
+  </div>
+
+  <!-- Conversation screen -->
+  <div class="screen" id="screen-chat">
+    <div class="progress-row">
+      <span id="progress-label">0 de 4 áreas</span>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <div class="thread" id="thread" aria-live="polite"></div>
+
+    <form class="composer" id="composer">
+      <label class="sr-only" for="answer-input">Tu respuesta</label>
+      <textarea id="answer-input" placeholder="Escribe tu respuesta…" maxlength="8000" required></textarea>
+      <p class="composer-hint">Una respuesta concisa es suficiente. Si necesitas aclarar algún dato del caso, puedes preguntarlo.</p>
+      <div class="composer-actions">
+        <button type="button" class="btn btn-ghost" id="btn-clarify">¿Necesitas aclarar algo?</button>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="status-line" id="status-line"></span>
+          <button type="submit" class="btn btn-primary" id="btn-send">Enviar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- End screen — literal spec §25 copy, no score, no pass/fail. -->
+  <div class="screen" id="screen-end">
+    <div class="end-card">
+      <div class="end-title">Gracias</div>
+      <p class="end-copy">Hemos terminado la entrevista. El equipo de Alter5 revisará tus respuestas junto con el resto de tu candidatura.</p>
+    </div>
+  </div>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  const TOKEN_RE = /^[a-f0-9]{64}$/;
+
+  const screens = {};
+  ['loading', 'error', 'intro', 'chat', 'end'].forEach(function (id) {
+    screens[id] = document.getElementById('screen-' + id);
+  });
+  function show(id) {
+    Object.values(screens).forEach(function (el) { el.classList.remove('active'); });
+    screens[id].classList.add('active');
+  }
+  function fail(message) {
+    document.getElementById('error-message').textContent = message || 'No hemos podido cargar la entrevista.';
+    show('error');
+  }
+
+  if (!token || !TOKEN_RE.test(token)) { fail('Enlace no válido.'); return; }
+
+  const draftKey = 'a5_interview_chat_draft_' + token.slice(0, 16);
+  let sessionId = null;
+  let sending = false;
+
+  const thread = document.getElementById('thread');
+  const answerInput = document.getElementById('answer-input');
+  const btnSend = document.getElementById('btn-send');
+  const btnClarify = document.getElementById('btn-clarify');
+  const statusLine = document.getElementById('status-line');
+  const progressLabel = document.getElementById('progress-label');
+  const progressFill = document.getElementById('progress-fill');
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function addSystemTurn(text) {
+    const div = document.createElement('div');
+    div.className = 'turn turn-system';
+    div.innerHTML = '<div class="bubble bubble-system">' + esc(text) + '</div>';
+    thread.appendChild(div);
+    thread.scrollTop = thread.scrollHeight;
+  }
+  function addCandidateTurn(text) {
+    const div = document.createElement('div');
+    div.className = 'turn turn-candidate';
+    div.innerHTML = '<div class="bubble bubble-candidate">' + esc(text) + '</div>';
+    thread.appendChild(div);
+    thread.scrollTop = thread.scrollHeight;
+  }
+  function addNote(text) {
+    const div = document.createElement('div');
+    div.className = 'turn turn-system';
+    div.innerHTML = '<div class="bubble bubble-note">' + esc(text) + '</div>';
+    thread.appendChild(div);
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  function setProgress(p) {
+    const completed = (p && p.completed) || 0;
+    const total = (p && p.total) || 4;
+    progressLabel.textContent = completed + ' de ' + total + ' áreas';
+    progressFill.style.width = Math.min(100, Math.round((completed / total) * 100)) + '%';
+  }
+
+  function setSending(isSending) {
+    sending = isSending;
+    btnSend.disabled = isSending;
+    btnClarify.disabled = isSending;
+    statusLine.classList.remove('err');
+    statusLine.textContent = isSending ? 'Enviando…' : '';
+  }
+
+  async function postJson(url, body) {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    let data;
+    try { data = await res.json(); } catch { data = {}; }
+    return { status: res.status, data };
+  }
+
+  // Autosave the in-progress DRAFT only (not submitted answers — those are
+  // durably persisted server-side the moment they're sent). localStorage
+  // makes no network request, so it needs no CSP allowance beyond default.
+  function loadDraft() {
+    try { return window.localStorage.getItem(draftKey) || ''; } catch { return ''; }
+  }
+  function saveDraft(v) {
+    try { window.localStorage.setItem(draftKey, v); } catch { /* private mode, ignore */ }
+  }
+  function clearDraft() {
+    try { window.localStorage.removeItem(draftKey); } catch { /* ignore */ }
+  }
+  answerInput.addEventListener('input', function () { saveDraft(answerInput.value); });
+
+  async function boot() {
+    const r = await postJson('/api/interview-chat/start', { token: token });
+    if (!r.data || !r.data.ok) {
+      const reason = r.data && r.data.reason;
+      const messages = {
+        used: 'Este enlace ya se ha utilizado.',
+        expired: 'Este enlace ha caducado.',
+        completed: 'Ya has completado esta entrevista.',
+        wrong_interview_mode: 'Esta posición no usa este tipo de entrevista.',
+        not_found: 'Enlace no encontrado.',
+      };
+      fail(messages[reason] || 'No hemos podido cargar la entrevista.');
+      return;
+    }
+    sessionId = r.data.sessionId;
+    setProgress(r.data.question && r.data.question.progress);
+
+    if (r.data.resumed) {
+      (r.data.history || []).forEach(function (h) {
+        if (h.questionText) addSystemTurn(h.questionText);
+        if (h.answerText) addCandidateTurn(h.answerText);
+      });
+      addSystemTurn(r.data.question.text);
+      answerInput.value = loadDraft();
+      show('chat');
+      answerInput.focus();
+      return;
+    }
+
+    show('intro');
+    document.getElementById('btn-start').addEventListener('click', function () {
+      show('chat');
+      addSystemTurn(r.data.intro);
+      addSystemTurn(r.data.question.text);
+      answerInput.value = loadDraft();
+      answerInput.focus();
+    }, { once: true });
+  }
+
+  async function finish() {
+    await postJson('/api/interview-chat/complete', { token: token, sessionId: sessionId });
+    clearDraft();
+    show('end');
+  }
+
+  document.getElementById('composer').addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    if (sending) return;
+    const text = answerInput.value.trim();
+    if (!text) return;
+
+    setSending(true);
+    addCandidateTurn(text);
+    const submitted = text;
+    answerInput.value = '';
+
+    const r = await postJson('/api/interview-chat/respond', {
+      token: token, sessionId: sessionId, kind: 'answer', text: submitted,
+    });
+
+    if (!r.data || !r.data.ok) {
+      // Session recovery: the answer already reached the server before any
+      // failure could happen downstream (see respond.js) — restore the
+      // typed text so nothing is lost and let the candidate retry.
+      answerInput.value = submitted;
+      saveDraft(submitted);
+      statusLine.classList.add('err');
+      statusLine.textContent = 'No se pudo enviar. Vuelve a intentarlo.';
+      setSending(false);
+      return;
+    }
+
+    clearDraft();
+    setSending(false);
+
+    if (r.data.refusal) {
+      addNote(r.data.refusal);
+      setProgress(r.data.question && r.data.question.progress);
+      answerInput.focus();
+      return;
+    }
+    if (r.data.closing) {
+      addSystemTurn(r.data.message);
+      await finish();
+      return;
+    }
+    setProgress(r.data.question.progress);
+    addSystemTurn(r.data.question.text);
+    answerInput.focus();
+  });
+
+  btnClarify.addEventListener('click', async function () {
+    if (sending) return;
+    setSending(true);
+    const r = await postJson('/api/interview-chat/respond', { token: token, sessionId: sessionId, kind: 'clarify' });
+    setSending(false);
+    if (r.data && r.data.ok && r.data.clarification) addNote(r.data.clarification);
+  });
+
+  boot().catch(function () { fail(); });
+})();
+</script>
+</body>
+</html>

@@ -25,6 +25,7 @@ export const config = {
     '/api/analyze-cv',
     '/api/submit-interview',
     '/api/interview/:path*',
+    '/api/interview-chat/:path*',
     '/api/privacy/:path*',
     '/api/headhunter/:path*',
     '/api/positions/:path*',
@@ -52,6 +53,10 @@ const RATE_LIMITS = {
   '/api/analyze-cv':        { max: 3,  windowSec: 60 },
   '/api/submit-interview':  { max: 3,  windowSec: 60 },
   '/api/interview/':        { max: 20, windowSec: 60 },
+  // Conversational interview: one candidate makes several /respond calls per
+  // minute (one per turn, plus retries on a dropped connection), higher than
+  // the MCQ flow's single config fetch.
+  '/api/interview-chat/':   { max: 40, windowSec: 60 },
   '/api/privacy/':          { max: 5,  windowSec: 60 },
   '/api/headhunter/login':       { max: 10, windowSec: 60 },
   '/api/headhunter/register':    { max: 5,  windowSec: 60 },

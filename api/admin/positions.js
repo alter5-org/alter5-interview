@@ -64,6 +64,10 @@ async function create(req, res) {
     interview_system_prompt: payload.interview_system_prompt,
     interview_blocks: payload.interview_blocks,
     interview_questions: payload.interview_questions,
+    interview_mode: payload.interview_mode || 'mcq',
+    interview_orchestrator_prompt: payload.interview_orchestrator_prompt || null,
+    interview_anchor_bank: payload.interview_anchor_bank || null,
+    interview_adaptive_bank: payload.interview_adaptive_bank || null,
   };
 
   const { data, error } = await supabaseAdmin

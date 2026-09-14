@@ -27,13 +27,54 @@ DESCARTES O PENALIZACIONES:
 - Expectativa de Managing Director si el rol es hands-on.
 - Mas de 15 anos de experiencia solo encaja si el CV muestra que sigue ejecutando personalmente.
 
+Ademas del cribado, produce un perfil ESTRUCTURADO del CV para orientar la entrevista tecnica
+conversacional posterior (candidate profiler). No evalues nada nuevo aqui: describe unicamente lo
+que el CV acredita, con honestidad sobre lo que no acredita.
+
+CAMPOS DEL PERFIL:
+- years_experience_estimate: numero entero, anos de experiencia relevante estimados desde el CV.
+- current_employer / current_role: string o null si no consta.
+- experience_domains: para cada uno de estos 9 dominios, uno de "none" | "limited" | "moderate" | "strong",
+  segun la evidencia EXPLICITA del CV (no infieras de mas):
+  corporate_finance, project_finance, private_credit, institutional_investors,
+  financial_modelling, loan_documentation, origination, distribution, transaction_execution.
+- sector_experience: array corto de sectores mencionados (p.ej. ["renovables", "infraestructuras", "real estate"]).
+- demonstrated_evidence: array de hasta 5 objetos {"domain": "<uno de los 9 dominios>", "evidence": "frase corta citando el CV"}.
+- areas_to_probe: array de 2-4 strings — dominios con evidencia limitada o ausente que la entrevista deberia testear en profundidad (usa los nombres de dominio de arriba, o "autonomia fuera de banca", "conocimiento de inversores mas alla de bancos", etc.).
+- suggested_difficulty: objeto {"corporate_finance": N, "project_finance": N, "investors": N} con N entero 1-5, donde 4-5 = CV muestra experiencia fuerte y directa en ese area (empezar la pregunta ancla en nivel alto, sin definiciones basicas), 2-3 = experiencia moderada o indirecta, 1 = sin evidencia.
+
+No incluyas nunca edad, genero, nacionalidad, estado civil, fotografia ni cualquier caracteristica
+protegida en ningun campo del perfil, aunque el CV la mencione.
+
 RESPONDE SOLO con JSON valido, sin texto adicional:
 {
   "name": "Nombre completo del candidato",
   "email": "email@encontrado.com",
   "fit_score": 8,
   "fit_recommendation": "enviar",
-  "fit_summary": "2-3 frases explicando el fit: operaciones cerradas, rol real, seniority, gaps"
+  "fit_summary": "2-3 frases explicando el fit: operaciones cerradas, rol real, seniority, gaps",
+  "interview_profile": {
+    "years_experience_estimate": 7,
+    "current_employer": "string o null",
+    "current_role": "string o null",
+    "experience_domains": {
+      "corporate_finance": "moderate",
+      "project_finance": "strong",
+      "private_credit": "none",
+      "institutional_investors": "limited",
+      "financial_modelling": "strong",
+      "loan_documentation": "moderate",
+      "origination": "limited",
+      "distribution": "none",
+      "transaction_execution": "strong"
+    },
+    "sector_experience": ["renovables"],
+    "demonstrated_evidence": [
+      {"domain": "project_finance", "evidence": "10+ financiaciones de renovables ejecutadas"}
+    ],
+    "areas_to_probe": ["corporate_finance", "institutional_investors", "autonomia fuera de banca"],
+    "suggested_difficulty": {"corporate_finance": 3, "project_finance": 4, "investors": 2}
+  }
 }
 
 REGLAS para fit_score (1-10):

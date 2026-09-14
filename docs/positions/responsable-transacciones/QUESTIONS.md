@@ -1,6 +1,15 @@
 # Test — Responsable de Transacciones (ejecución de operaciones)
 
-Documento de referencia interno. Describe cada pregunta, la opción correcta,
+**Superseded 2026-09-14:** `position.json` sets `interview_mode: "conversational_text"`, so the
+18-item MCQ format described below is no longer what candidates take — `blocks.json`/
+`questions.json` stay in the DB (schema requires them, `interview_blocks`/`interview_questions`
+are `NOT NULL`) but the live candidate flow uses `orchestrator-prompt.md`, `anchor-bank.json` and
+`adaptive-bank.json` instead. This file is kept as historical rationale for the old bank and as
+the reference for switching back to `mcq` mode if the conversational interview is ever reverted.
+See `docs/positions/responsable-transacciones/interview-prompt.md` for the current (evaluator)
+rubric and `docs/julie-swan/README.md` / the project plan for the conversational-interview design.
+
+Documento de referencia interno (para el banco MCQ heredado). Describe cada pregunta, la opción correcta,
 el **objetivo** (qué discrimina) y por qué los distractores son creíbles.
 Fuente de verdad del banco: `questions.json` (se sube con
 `scripts/push-position.js responsable-transacciones`).

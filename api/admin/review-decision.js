@@ -107,7 +107,10 @@ module.exports.default = async function handler(req, res) {
       .eq('id', applicationId);
 
     const baseUrl = process.env.INTERVIEW_BASE_URL || 'https://careers.alter-5.com';
-    const interviewUrl = `${baseUrl}/interview?token=${token}`;
+    // Position-driven routing: conversational_text positions send candidates
+    // to the chat interview, everything else keeps the existing MCQ page.
+    const interviewPath = position?.interview_mode === 'conversational_text' ? '/interview-chat' : '/interview';
+    const interviewUrl = `${baseUrl}${interviewPath}?token=${token}`;
 
     const mail = await sendInterviewLinkEmail({
       to: app.email,

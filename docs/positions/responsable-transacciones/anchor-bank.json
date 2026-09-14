@@ -1,0 +1,48 @@
+[
+  {
+    "id": "corporate_debt",
+    "domain": "corporate_financing",
+    "case_text": "Una empresa industrial española tiene 80 millones de euros de ventas, 10 millones de EBITDA y 22 millones de deuda financiera neta. Quiere adquirir otra compañía y necesita 15 millones adicionales. La deuda existente es principalmente bancaria y amortiza en cuatro años. ¿Cómo plantearías la financiación?",
+    "evidence": "cash-flow y apalancamiento pro forma, perfil de vencimientos, economics del target, covenants, refinanciación vs deuda incremental, deuda senior bancaria, private credit/unitranche o subordinada si se justifica, garantías, amortización vs bullet, tenor, flexibilidad. No se puntúa por recuento de palabras clave: se puntúa si identifica los drivers clave y produce una estructura coherente.",
+    "followups": [
+      { "trigger": "la respuesta es genérica", "question": "¿Qué información necesitas antes de decidir la estructura?" },
+      { "trigger": "el candidato enumera productos financieros directamente sin analizar primero", "question": "Antes de elegir el producto, ¿qué determina para ti la capacidad real de endeudamiento?" },
+      { "trigger": "el candidato asume por defecto deuda bancaria sin cuestionarlo", "question": "¿En qué circunstancias dejarías de considerar una solución exclusivamente bancaria?" },
+      { "trigger": "la estructura propuesta sigue siendo vaga tras las repreguntas anteriores", "question": "Con la información disponible y dejando claras tus hipótesis, dame una estructura preliminar." }
+    ]
+  },
+  {
+    "id": "project_finance",
+    "domain": "project_finance",
+    "case_text": "Un proyecto BESS de 100 MW en España requiere 60 millones de euros de CAPEX. Aproximadamente la mitad de los ingresos están contratados y el resto tienen exposición a mercado. ¿Cómo determinarías qué deuda puede soportar el proyecto y qué estructura propondrías?",
+    "evidence": "calidad de ingresos contratados vs merchant, tenor y contraparte del contrato, dimensionamiento de deuda basado en cash-flow, DSCR/LLCR si aplica, tenor y amortización, haircuts de ingresos, casos downside, degradación, augmentation, disponibilidad/garantías, riesgo de completion/EPC, conexión a red, reservas, aportación de equity, paquete de seguridad. El juicio importa más que la terminología.",
+    "followups": [
+      { "trigger": "la respuesta es genérica", "question": "¿Qué variable tendría mayor impacto en el debt sizing?" },
+      { "trigger": "el candidato no cuestiona el apalancamiento propuesto por el promotor", "question": "El sponsor quiere maximizar deuda. ¿Dónde pondrías tú el límite y por qué?" },
+      { "trigger": "no ha mencionado análisis de escenarios adversos", "question": "¿Qué downside analizarías primero?" },
+      { "trigger": "no ha tratado de forma diferenciada los ingresos contratados y los merchant", "question": "¿Cómo tratarías los ingresos merchant?" }
+    ]
+  },
+  {
+    "id": "investors",
+    "domain": "investor_knowledge",
+    "case_text": "Una mid-cap española rentable busca 25 millones de euros a cinco años y quiere reducir su dependencia bancaria. ¿Qué financiadores considerarías?",
+    "evidence": "conecta institución → estrategia → ticket → producto → riesgo → geografía → apetito probable. No se premia una lista larga de nombres sin un fit razonado.",
+    "followups": [
+      { "trigger": "el candidato da solo categorías genéricas (fondos de deuda, bancos, etc.)", "question": "Dame cinco nombres concretos." },
+      { "trigger": "ya ha dado nombres concretos", "question": "¿Cuál llamarías primero y por qué?" },
+      { "trigger": "ya ha priorizado un primer contacto y queda tiempo", "question": "¿Cuál de esos cinco crees que tiene menor probabilidad de hacerlo y por qué?" }
+    ]
+  },
+  {
+    "id": "ownership",
+    "domain": "ownership_execution",
+    "case_text": "Te incorporas a Alter5 y recibes una operación interesante. Alter5 no tiene balance propio para financiarla y tampoco existe una lista evidente de financiadores para esa estructura. ¿Qué haces durante las primeras 48 horas?",
+    "evidence": "entender rápido la transacción, identificar variables de decisión, formar una hipótesis de financiación, construir y priorizar un universo de financiadores, usar inteligencia existente, investigar huecos, testear con mercado, incorporar feedback, adaptar la estructura, comunicar con el cliente, asumir responsabilidad sobre el avance. Señales negativas: esperar instrucciones, exigir un proceso completo antes de actuar, depender de otros para la lista de financiadores, escalar en exceso, buscar perfección antes de testear con mercado.",
+    "followups": [
+      { "trigger": "el plan descrito es pasivo o esperando instrucciones", "question": "¿Qué harías tú personalmente el primer día?" },
+      { "trigger": "el candidato dice que primero prepararía materiales antes de hablar con nadie", "question": "¿Cuándo hablarías con mercado y qué intentarías aprender de esas primeras conversaciones?" },
+      { "trigger": "el candidato asume que alguien más le proporciona la lista de financiadores", "question": "Supón que nadie te proporciona esa lista. ¿Cómo la construyes?" }
+    ]
+  }
+]

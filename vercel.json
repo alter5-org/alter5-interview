@@ -42,6 +42,10 @@
       "destination": "/interview.html"
     },
     {
+      "source": "/interview-chat",
+      "destination": "/interview-chat.html"
+    },
+    {
       "source": "/privacy/my-data",
       "destination": "/privacy-my-data.html"
     },
@@ -91,6 +95,12 @@
       "maxDuration": 60
     },
     "api/headhunter/upload-cv.js": {
+      "maxDuration": 60
+    },
+    "api/interview-chat/respond.js": {
+      "maxDuration": 60
+    },
+    "api/interview-chat/complete.js": {
       "maxDuration": 60
     }
   },

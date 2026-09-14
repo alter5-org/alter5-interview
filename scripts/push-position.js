@@ -4,12 +4,22 @@
 //   node --env-file=.env.local scripts/push-position.js <slug> [--base URL] [--dry] [--status active|paused|closed]
 //
 // Files read from docs/positions/<slug>/:
-//   position.json        slug, title, subtitle, status, share_with_headhunters, min_score_to_invite
-//   intro.html           -> public_intro_html (optional / may be empty)
-//   cv-prompt.md         -> cv_analysis_prompt
-//   interview-prompt.md  -> interview_system_prompt
-//   blocks.json          -> interview_blocks
-//   questions.json       -> interview_questions
+//   position.json          slug, title, subtitle, status, share_with_headhunters,
+//                          min_score_to_invite, interview_mode ('mcq' default, or
+//                          'conversational_text')
+//   intro.html             -> public_intro_html (optional / may be empty)
+//   cv-prompt.md           -> cv_analysis_prompt
+//   interview-prompt.md    -> interview_system_prompt (the EVALUATOR prompt in both
+//                            modes — for 'conversational_text' this grades the whole
+//                            transcript post-hoc, it never sees the live interview)
+//   blocks.json            -> interview_blocks
+//   questions.json         -> interview_questions
+//
+// Only when position.json sets "interview_mode": "conversational_text":
+//   orchestrator-prompt.md -> interview_orchestrator_prompt (the live interviewer's
+//                            static instructions — no scoring rubric in this file)
+//   anchor-bank.json       -> interview_anchor_bank (exactly 4 entries)
+//   adaptive-bank.json     -> interview_adaptive_bank (1+ entries)
 //
 // The payload is validated locally with lib/position-validation.js (same
 // rules as the server) before any request. If the slug already exists the
@@ -55,6 +65,8 @@ if (meta.slug !== slug) {
   process.exit(2);
 }
 
+const interviewMode = meta.interview_mode === 'conversational_text' ? 'conversational_text' : 'mcq';
+
 const payload = {
   slug: meta.slug,
   title: meta.title,
@@ -67,7 +79,14 @@ const payload = {
   interview_system_prompt: read('interview-prompt.md').trim(),
   interview_blocks: readJson('blocks.json'),
   interview_questions: readJson('questions.json'),
+  interview_mode: interviewMode,
 };
+
+if (interviewMode === 'conversational_text') {
+  payload.interview_orchestrator_prompt = read('orchestrator-prompt.md').trim();
+  payload.interview_anchor_bank = readJson('anchor-bank.json');
+  payload.interview_adaptive_bank = readJson('adaptive-bank.json');
+}
 
 const v = validatePosition(payload, { requireAll: true });
 if (!v.ok) {
@@ -83,12 +102,18 @@ const summary = {
   status: payload.status,
   share_with_headhunters: payload.share_with_headhunters,
   min_score_to_invite: payload.min_score_to_invite,
+  interview_mode: payload.interview_mode,
   blocks: payload.interview_blocks.map(b => b.id),
   questions: qs.length,
   by_type: qs.reduce((a, q) => ({ ...a, [q.type]: (a[q.type] || 0) + 1 }), {}),
   intro_html_chars: (payload.public_intro_html || '').length,
   cv_prompt_chars: payload.cv_analysis_prompt.length,
   interview_prompt_chars: payload.interview_system_prompt.length,
+  ...(interviewMode === 'conversational_text' ? {
+    orchestrator_prompt_chars: payload.interview_orchestrator_prompt.length,
+    anchors: payload.interview_anchor_bank.map(a => a.id),
+    adaptive_questions: payload.interview_adaptive_bank.map(a => a.id),
+  } : {}),
 };
 console.log(JSON.stringify(summary, null, 2));
 

@@ -1,0 +1,48 @@
+[
+  {
+    "id": "b1_personal_ownership",
+    "domain": "transaction_execution",
+    "case_text": "Cuéntame una operación concreta en la que una decisión tuya cambiase materialmente la estructura o el resultado.",
+    "evidence": "distingue ownership directo de participación en un equipo fuerte.",
+    "followups": [
+      { "trigger": "la respuesta describe un resultado de equipo sin aportación personal clara", "question": "¿Qué hiciste tú personalmente?" },
+      { "trigger": "no queda clara la alternativa que se descartó", "question": "¿Qué alternativa defendiste? ¿Por qué?" },
+      { "trigger": "falta el desenlace de la operación", "question": "¿Qué ocurrió finalmente?" }
+    ]
+  },
+  {
+    "id": "b2_unlearn",
+    "domain": "ownership_execution",
+    "case_text": "¿Qué parte de tu forma actual de trabajar crees que tendrías que cambiar para funcionar bien en una compañía como Alter5?",
+    "evidence": "menos jerarquía, menos recursos, mayor autonomía, velocidad, alcance más amplio, responsabilidad comercial directa, información incompleta, construir procesos, ejecución end-to-end. No exigir vocabulario específico de Alter5; no reveles la respuesta esperada de antemano.",
+    "followups": []
+  },
+  {
+    "id": "b3_ai_mindset",
+    "domain": "technology_mindset",
+    "case_text": "Si mañana pudieras automatizar la mitad del trabajo que haces actualmente, ¿qué automatizarías y qué no automatizarías?",
+    "evidence": "capacidad de separar trabajo repetible/analítico (automatizable) de juicio, negociación, relación y responsabilidad (no automatizable). No se exige conocer herramientas de IA concretas.",
+    "followups": []
+  },
+  {
+    "id": "b4_financial_model_challenge",
+    "domain": "corporate_financing",
+    "case_text": "Recibes un modelo de Project Finance que da un DSCR cómodo en el caso base, pero la deuda cae mucho en varios downsides. ¿Qué revisarías antes de concluir que el proyecto está mal dimensionado?",
+    "evidence": "hipótesis del modelo, mecánica, ingresos, calendario de deuda, sculpting, sensibilidades, integridad del modelo. Usar cuando la capacidad de modelización del candidato no esté clara o sea central a lo que reclama en su CV.",
+    "followups": []
+  },
+  {
+    "id": "b5_covenant_judgement",
+    "domain": "loan_documentation",
+    "case_text": "Un financiador acepta el pricing y el tenor, pero propone un covenant package que el cliente considera demasiado restrictivo. ¿Cómo decidirías qué puntos merece la pena negociar y cuáles aceptar?",
+    "evidence": "juicio de negociación, no memoria de redacción legal.",
+    "followups": []
+  },
+  {
+    "id": "b7_origination_judgement",
+    "domain": "origination",
+    "case_text": "Tienes una reunión con un CFO que cree que no necesita asesor porque ya trabaja con tres bancos. ¿Cómo plantearías la conversación para determinar si Alter5 puede aportar valor?",
+    "evidence": "diagnóstico, escucha, propuesta de valor, alternativas de mercado, criterio comercial. No premiar un discurso agresivo de venta.",
+    "followups": []
+  }
+]

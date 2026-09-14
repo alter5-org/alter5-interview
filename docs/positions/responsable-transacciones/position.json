@@ -4,5 +4,6 @@
   "subtitle": "Ejecución de operaciones · Deuda y capital",
   "status": "paused",
   "share_with_headhunters": true,
-  "min_score_to_invite": 5
+  "min_score_to_invite": 5,
+  "interview_mode": "conversational_text"
 }

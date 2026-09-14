@@ -709,7 +709,51 @@ function renderDetail(d){
     </div>`);
   }
 
-  if(iv){
+  if(iv && iv.channel==='conversational_text'){
+    const ev=iv.evaluation_json;
+    const DIM_LABELS={corporate_financing:'Financiación corporativa',project_finance:'Project Finance',investor_knowledge:'Inversores',transaction_judgement:'Criterio de transacción',ownership_execution:'Ownership / ejecución',commercial_judgement:'Criterio comercial',technology_mindset:'Mentalidad tecnológica',communication_clarity:'Claridad de comunicación'};
+    const dimRows=ev&&ev.dimensions?Object.entries(ev.dimensions).map(([k,d])=>{
+      const label=DIM_LABELS[k]||k;
+      const score=d.tested&&d.score_0_4!=null?`${d.score_0_4}/4`:'<span class="muted">no evaluada</span>';
+      return `<tr><td>${esc(label)}</td><td style="font-family:var(--mono)">${score}</td><td class="muted">${esc(d.confidence||'—')}</td></tr>`;
+    }).join(''):'';
+    const bullets=(arr)=>Array.isArray(arr)&&arr.length?`<ul style="margin:0.3rem 0 0 1.1rem;padding:0">${arr.map(x=>`<li style="margin-bottom:0.2rem">${esc(x)}</li>`).join('')}</ul>`:'<span class="muted">—</span>';
+    const NEXT_STEP_LABEL={
+      strong_evidence_prioritise_human_interview:'Evidencia sólida — priorizar para entrevista humana',
+      positive_evidence_human_interview_recommended:'Evidencia positiva — se recomienda entrevista humana',
+      mixed_evidence_human_review_required:'Evidencia mixta — revisión humana necesaria',
+      insufficient_evidence_review_transcript:'Evidencia insuficiente — revisar transcripción',
+    };
+    const statusLabel=iv.status==='in_progress'?'<span class="badge b-amber">En curso</span>':iv.status==='abandoned'?'<span class="badge b-red">Abandonada</span>':'<span class="badge b-blue">Completada</span>';
+    const transcript=(d.interview_answers||[]).filter(t=>t.interview_id===iv.id).sort((x,y)=>x.question_idx-y.question_idx);
+    const transcriptHtml=transcript.length?transcript.map(t=>{
+      const meta=t.turn_meta||{};
+      return `<div style="margin-bottom:0.7rem;padding:0.55rem 0.7rem;background:var(--bg);border-radius:6px">
+        <div class="muted" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.2rem">${esc(meta.turn_kind||'—')} · ${meta.elapsed_seconds_at_submit!=null?Math.floor(meta.elapsed_seconds_at_submit/60)+':'+String(meta.elapsed_seconds_at_submit%60).padStart(2,'0'):'—'}</div>
+        <div style="font-size:0.86rem;font-weight:600;margin-bottom:0.25rem">${esc(meta.question_text||'')}</div>
+        <div style="font-size:0.86rem;white-space:pre-wrap">${esc(t.answer_text||'(sin respuesta)')}</div>
+      </div>`;
+    }).join(''):'<span class="muted">Sin turnos registrados.</span>';
+
+    blocks.push(`<div class="modal-sec"><h3>Entrevista técnica conversacional</h3>
+      <dl class="kv">
+        <dt>Estado</dt><dd>${statusLabel}</dd>
+        <dt>Puntuación</dt><dd><strong style="font-family:var(--mono);font-size:1.1rem">${iv.global_score!=null?iv.global_score:'—'}/10</strong>${ev&&ev.overall_evidence_score!=null?` <span class="muted">(${ev.overall_evidence_score}/100)</span>`:''}</dd>
+        <dt>Siguiente paso sugerido</dt><dd>${ev&&ev.suggested_next_step?esc(NEXT_STEP_LABEL[ev.suggested_next_step]||ev.suggested_next_step):'<span class="muted">—</span>'}</dd>
+        <dt>Confianza</dt><dd>${ev?esc(ev.confidence||'—'):'<span class="muted">—</span>'}</dd>
+        <dt>Tiempo total</dt><dd>${iv.total_time_sec?Math.floor(iv.total_time_sec/60)+' min':'—'}</dd>
+        <dt>Completada</dt><dd>${fmtDate(iv.completed_at)}</dd>
+      </dl>
+      ${dimRows?`<table style="width:100%;margin-top:0.6rem;font-size:0.85rem;border-collapse:collapse"><tbody>${dimRows}</tbody></table>`:''}
+      ${ev?`<div style="margin-top:0.6rem"><strong style="font-size:0.85rem">Evidencia más fuerte</strong>${bullets(ev.strongest_evidence)}</div>
+      <div style="margin-top:0.5rem"><strong style="font-size:0.85rem">Principales incertidumbres</strong>${bullets(ev.main_uncertainties)}</div>
+      <div style="margin-top:0.5rem"><strong style="font-size:0.85rem">Foco sugerido para la entrevista humana</strong>${bullets(ev.human_interview_focus)}</div>`:''}
+      ${iv.ai_analysis_html?`<div class="ai-report" style="margin-top:0.85rem">${sanitizeHTML(iv.ai_analysis_html)}</div>`:''}
+      <details style="margin-top:0.7rem"><summary style="cursor:pointer;font-size:0.85rem;font-weight:600">Transcripción completa (${transcript.length} turnos)</summary>
+        <div style="margin-top:0.5rem">${transcriptHtml}</div>
+      </details>
+    </div>`);
+  } else if(iv){
     const dims=iv.dim_scores||{};
     const dimHtml=Object.entries(dims).map(([k,v])=>`<span class="badge b-blue" style="margin:0.15rem">${esc(v.name||k)}: ${v.pct||0}%</span>`).join('');
     blocks.push(`<div class="modal-sec"><h3>Entrevista</h3>
