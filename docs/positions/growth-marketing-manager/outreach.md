@@ -48,8 +48,8 @@ Marketing Manager, Digital Marketing Manager, Marketing Manager B2B.
 > & Marketing Manager B2B que ejecute el plan de marketing reportando a un
 > cofundador: iniciativas de principio a fin, medición con atribución y
 > automatización con agentes IA. Vi en tu perfil {{señal: Claude Code / n8n /
-> agentes}} y me encaja con lo que necesitamos. Retribución abierta según
-> valía, con variable y plan de acciones, remoto desde España. ¿Te apetece comentarlo 15 minutos?
+> agentes}} y me encaja con lo que necesitamos. Banda 35-40k más variable y
+> plan de acciones, remoto desde España. ¿Te apetece comentarlo 15 minutos?
 
 Seguimiento (día +4): enlace directo a la landing y mención de que el proceso
 es asíncrono (CV + test breve en línea, respuesta en horas). Como
@@ -90,7 +90,7 @@ busca y contacta; sin motor propio; listas propias más adelante).
 
 **Mensaje LinkedIn (tras aceptar):**
 
-> Hola {{firstName}}, en Alter5 (plataforma de financiación de deuda y proyectos, más de 250 M€ cerrados, empresa nativa de IA) buscamos un/a Growth & Marketing Manager B2B que ejecute el plan de marketing reportando a un cofundador: iniciativas de principio a fin, medición con atribución y automatización con agentes IA. Tu perfil encaja con lo que necesitamos. Retribución abierta según valía, con variable y opción a plan de acciones, remoto desde España. ¿Te apetece comentarlo 15 minutos?
+> Hola {{firstName}}, en Alter5 (plataforma de financiación de deuda y proyectos, más de 250 M€ cerrados, empresa nativa de IA) buscamos un/a Growth & Marketing Manager B2B que ejecute el plan de marketing reportando a un cofundador: iniciativas de principio a fin, medición con atribución y automatización con agentes IA. Tu perfil encaja con lo que necesitamos. Banda 35-40k fijos más 15 % variable y opción a plan de acciones, remoto desde España. ¿Te apetece comentarlo 15 minutos?
 
 **Follow-up LinkedIn (+48 h):**
 
@@ -103,6 +103,8 @@ busca y contacta; sin motor propio; listas propias más adelante).
 **Nova follow-up:** mismo contenido con `utm_medium=nova`.
 
 2026-09-11: posición pasa a **remoto desde España** (JD, cv-prompt y mensajes actualizados). Motivo: la shortlist 5039 (Madrid) tiene salario estimado mediana ≈57k€, muy por encima de la banda 35-40k; se abre `GMM-ola2` fuera de Madrid.
+
+2026-09-14: la web ya no publica cifra (rango abierto según valía); **en Nova sí se dice la banda 35-40k** (decisión Salvador). No sincronizar.
 
 ## Salario estimado (Nova, USD → €×0,86; 2026-09-11)
 
