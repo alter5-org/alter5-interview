@@ -11,7 +11,8 @@ Documento de referencia interno. Fuente de verdad del banco: `questions.json`
 - 2 selección múltiple (declaración de herramientas y de cuadros de mando
   montados) + 1 respuesta libre corta (flujo de IA propio, 120 caracteres
   mínimo) + 6 opción única + compromiso + motivación. Sin pregunta de
-  salario (decisión del fundador 2026-09-10): la banda está publicada.
+  salario (decisión del fundador 2026-09-10); desde 2026-09-14 la landing
+  publica rango abierto según valía, sin cifra.
 - Scoring server-side (`lib/interview-scoring.js`): single acierto `w×3`,
   fallo `w×1`; multi ≥2 opciones `w×3`, 1 opción `w×2`; abierta
   `w×3×score/10` (grader vía `<!--SCORES {"1": n}-->`). `motivation` no puntúa; `multiwork` marca flag.
