@@ -3,20 +3,17 @@
 // deployed URL (needs /api/positions); lenient when the API is unavailable.
 import { test, expect } from '@playwright/test';
 
-const SLUG = process.env.VIDEO_SLUG || 'growth-marketing-manager';
-
-test('GMM landing shows Julie\'s video card with disclosure, subtitles and transcript', async ({ page }) => {
-  const res = await page.goto(`/positions/${SLUG}`);
-  if (!res || res.status() !== 200) test.skip(true, 'landing not reachable');
+async function expectVideoCard(page, slug, { titleMatch = 'Julie', noteMatch = ['generado con IA', 'toma decisiones de contratación'] } = {}) {
+  const res = await page.goto(`/positions/${slug}`);
+  if (!res || res.status() !== 200) { test.skip(true, 'landing not reachable'); return; }
   const content = page.locator('#content');
   await expect(content).toBeVisible({ timeout: 15000 });
 
   const card = page.locator('#pvideo');
   await expect(card).toBeVisible();
-  await expect(card.locator('#pvideo-title')).toContainText('Julie');
+  await expect(card.locator('#pvideo-title')).toContainText(titleMatch);
   await expect(card.locator('.pvideo-sub')).toContainText('agente de IA');
-  await expect(card.locator('.pvideo-note')).toContainText('generado con IA');
-  await expect(card.locator('.pvideo-note')).toContainText('no toma decisiones de contratación');
+  for (const m of noteMatch) await expect(card.locator('.pvideo-note')).toContainText(m);
 
   const video = card.locator('video');
   await expect(video).toHaveAttribute('controls', '');
@@ -31,11 +28,34 @@ test('GMM landing shows Julie\'s video card with disclosure, subtitles and trans
     const r = await page.request.get(src);
     expect(r.status(), `${sel} ${src}`).toBe(200);
   }
+}
+
+test('GMM landing shows Julie\'s video card with disclosure, subtitles and transcript', async ({ page }) => {
+  await expectVideoCard(page, process.env.VIDEO_SLUG || 'growth-marketing-manager');
 });
 
-test('a position without a video shows no card', async ({ page }) => {
+test('RT landing shows Julie\'s video card describing the conversational interview', async ({ page }) => {
   const res = await page.goto('/positions/responsable-transacciones');
-  if (!res || res.status() !== 200) test.skip(true, 'landing not reachable');
+  if (!res || res.status() !== 200) { test.skip(true, 'landing not reachable'); return; }
+  await expect(page.locator('#content')).toBeVisible({ timeout: 15000 });
+  const card = page.locator('#pvideo');
+  await expect(card).toBeVisible();
+  // RT's note additionally clarifies the human team runs the technical
+  // interview stage too (not just the hiring decision) — the conversational
+  // interview evaluator is advisory, never automatic.
+  await expect(card.locator('.pvideo-note')).toContainText('entrevista técnica y la decisión las gestiona el equipo humano');
+  await expect(card.locator('details p')).toContainText('entrevista técnica conversacional');
+  const video = card.locator('video');
+  for (const sel of ['source', 'track']) {
+    const src = await video.locator(sel).getAttribute('src');
+    const r = await page.request.get(src);
+    expect(r.status(), `${sel} ${src}`).toBe(200);
+  }
+});
+
+test('a position without a video (hoe) shows no card', async ({ page }) => {
+  const res = await page.goto('/positions/hoe');
+  if (!res || res.status() !== 200) { test.skip(true, 'landing not reachable'); return; }
   await expect(page.locator('#content')).toBeVisible({ timeout: 15000 });
   await expect(page.locator('#pvideo')).toBeHidden();
 });
