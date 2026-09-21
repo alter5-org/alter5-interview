@@ -115,3 +115,35 @@ request form. It is read-only and safe to run against production.
 - [ ] `/admin` (Basic Auth) → review queue, all apps, manual upload.
 - [ ] `/reports` (Basic Auth) → funnel, histogram, CSV export.
 - [ ] Cron runs daily at 03:00 UTC and logs `affected`.
+
+## 10. Releasing
+
+`.github/workflows/deploy-production.yml` deploys to production on every push
+to `main`, and can be run by hand from the Actions tab (`workflow_dispatch`).
+It exists because the GitHub → Vercel git integration on this project stopped
+firing: between 2026-09-11 and 2026-09-21 `main` moved eleven commits ahead of
+production, and the Responsable de Transacciones video sat in the repo while
+its landing served no `<video>` and its `.vtt` returned 404.
+
+Required GitHub secret (Settings → Secrets and variables → Actions):
+
+| Secret | Where to get it |
+|---|---|
+| `VERCEL_TOKEN` | Vercel → Account Settings → Tokens. Scope it to the `salvas-workspaces-projects` team. |
+
+`VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` are set inline in the workflow — they
+identify the project and grant nothing on their own.
+
+Manual release, if the workflow is unavailable:
+
+```bash
+vercel deploy            # preview
+vercel deploy --prod --yes
+```
+
+After any release that changes a static asset, check it is actually served —
+a 404 on a new file means the deploy did not include it:
+
+```bash
+curl -sI https://careers.alter-5.com/julie/rt-proceso.es.vtt | head -1
+```
