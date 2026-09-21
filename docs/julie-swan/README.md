@@ -99,6 +99,12 @@ its cues, joined with single spaces — that is what `npm run test:unit` checks.
 the previous sentence starts lowercase and carries no added punctuation; split long lines at
 clause boundaries, not by rewriting the words.
 
+Spanish pronunciation: the generator mispronounces two words every time, so substitute them
+phonetically **in the generation prompt only** — `Alter5` → `Álter Cinco` (otherwise it says
+"Alter finfo") and `CV` → `ce uve` (otherwise "sebi"). The `.vtt` and the `transcript` keep the
+real spelling; they are what the candidate reads. Same fix as "IA" vs "AI" in `c01caa6`. Neither
+published take carries these two corrections yet.
+
 Rules: manual play (no autoplay), subtitles + visible transcript, and the `note` must say the video
 is AI-generated and that Julie does not make hiring decisions. The card is rendered with DOM APIs in
 `positions.html` (`renderPositionVideo`); the JSON is data, never HTML. Videos must be self-hosted:
