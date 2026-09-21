@@ -66,3 +66,42 @@ test('components render every section and escape text', async () => {
   const imgs = html.match(/<img[^>]*>/g) || [];
   for (const img of imgs) assert.match(img, /\balt="/, `img without alt: ${img}`);
 });
+
+// --- Per-position videos (julie/videos.json + the .vtt subtitle files) ---
+
+const fs = require('fs');
+
+// The landing shows subtitles and the visible transcript side by side, so the
+// transcript must be exactly what the cues say — see docs/julie-swan/README.md.
+const cueText = (vtt) =>
+  vtt
+    .split(/\r?\n\r?\n/)
+    .slice(1) // drop the WEBVTT header
+    .map((block) => block.split(/\r?\n/).slice(1).join(' ').trim())
+    .filter(Boolean)
+    .join(' ');
+
+const videos = JSON.parse(fs.readFileSync(path.join(ROOT, 'julie/videos.json'), 'utf8'));
+
+test('every position video entry has the required fields', () => {
+  for (const [slug, v] of Object.entries(videos)) {
+    for (const key of ['src', 'poster', 'track', 'avatar', 'title', 'subtitle', 'note', 'transcript']) {
+      assert.ok(v[key], `${slug} is missing "${key}"`);
+    }
+    for (const key of ['src', 'poster', 'track']) {
+      assert.ok(fs.existsSync(path.join(ROOT, v[key].replace(/^\//, ''))), `${slug}: ${v[key]} not on disk`);
+    }
+    assert.match(v.note, /IA/, `${slug}: note must disclose the video is AI-generated`);
+    assert.match(v.note, /no toma decisiones de contrataci[óo]n|la decisi[óo]n las gestiona el equipo humano/i,
+      `${slug}: note must say Julie does not make hiring decisions`);
+  }
+});
+
+test('each transcript is the literal concatenation of its subtitle cues', () => {
+  for (const [slug, v] of Object.entries(videos)) {
+    const vtt = fs.readFileSync(path.join(ROOT, v.track.replace(/^\//, '')), 'utf8');
+    assert.match(vtt, /^WEBVTT/, `${slug}: ${v.track} is not a WebVTT file`);
+    assert.equal(cueText(vtt), v.transcript,
+      `${slug}: transcript in videos.json does not match the cues in ${v.track}`);
+  }
+});

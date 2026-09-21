@@ -67,8 +67,8 @@ PLAYWRIGHT_BASE_URL=http://127.0.0.1:4173 npx playwright test tests/julie-swan.s
 
 ## Deploy
 
-Same as every other page: `vercel deploy` for a preview, `vercel deploy --prod --yes` to release
-(the GitHub → Vercel trigger is broken; see `DEPLOYMENT.md`).
+Pushing to `main` releases to production via `.github/workflows/deploy-production.yml`. Use
+`vercel deploy` for a one-off preview. See `DEPLOYMENT.md` § 10.
 
 ## Outreach rule (from the GPT-6 Astra review, 2026-09-11)
 
@@ -86,8 +86,18 @@ julie/videos.json              { "<slug>": { src, poster, track, avatar, title, 
 julie/gmm-proceso.mp4          Growth & Marketing Manager video (Higgsfield Seedance 2.5, 30 s, 720p, Spanish)
 julie/gmm-proceso-poster.jpg   poster frame
 julie/gmm-proceso.es.vtt       Spanish subtitles
+julie/rt-proceso.mp4           Responsable de Transacciones video (same generator and parameters)
+julie/rt-proceso-poster.jpg    poster frame
+julie/rt-proceso.es.vtt        Spanish subtitles
+tests/unit/julie-content.test.js   transcript == subtitle cues, required fields, disclosure (npm run test:unit)
 tests/position-video.spec.js   Playwright (needs a deployed URL: the landing calls /api/positions)
 ```
+
+The landing shows the subtitles and the visible transcript at the same time, so they must say
+exactly the same thing. Write the `.vtt` first and make `transcript` the literal concatenation of
+its cues, joined with single spaces — that is what `npm run test:unit` checks. A cue that continues
+the previous sentence starts lowercase and carries no added punctuation; split long lines at
+clause boundaries, not by rewriting the words.
 
 Rules: manual play (no autoplay), subtitles + visible transcript, and the `note` must say the video
 is AI-generated and that Julie does not make hiring decisions. The card is rendered with DOM APIs in
@@ -95,5 +105,6 @@ is AI-generated and that Julie does not make hiring decisions. The card is rende
 the CSP only allows media from the site itself.
 
 To add a video for another position: generate it (same reference image `julie/avatar.webp`,
-script ≤ 80 words for 30 s), save the three files under `julie/`, add the slug entry to
-`videos.json`, deploy.
+script ≤ 80 words for 30 s), save the three files under `julie/`, write the `.vtt`, derive the
+`transcript` from its cues, add the slug entry to `videos.json`, run `npm run test:unit`, and push
+to `main`.
